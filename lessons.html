@@ -40,7 +40,10 @@ main { flex: 1; display: grid; grid-template-columns: 240px 320px 1fr; gap: 12px
 #avatar { width: 100%; height: auto; max-width: 200px; }
 #caption-box { flex: 1; background: #1e293b; border-radius: 12px; padding: 14px; overflow-y: auto; border: 1px solid #334155; min-height: 0; }
 #caption-box::before { content: '💬 NARRATION'; color: #fbbf24; font-size: 10px; letter-spacing: 1px; display: block; margin-bottom: 6px; font-weight: 600; }
-#caption { font-size: 14px; line-height: 1.6; color: #e2e8f0; }
+#caption { font-size: 14px; line-height: 1.7; color: #e2e8f0; }
+#caption .word { transition: background 0.12s, color 0.12s; padding: 1px 2px; border-radius: 3px; }
+#caption .word.active { background: #fbbf24; color: #0f172a; font-weight: 600; }
+#caption .word.spoken { color: #cbd5e1; opacity: 0.85; }
 #right-panel { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 #visual-box { flex: 1; background: white; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 0; position: relative; }
 #visual { max-width: 100%; max-height: 100%; border-radius: 8px; }
@@ -2673,7 +2676,7 @@ function updateUI() {
   if (!scene) return;
   window.currentScene = scene;
   scene.exTitle = scene.exTitle || (phase === 'example' ? lesson.title + ' — example' : lesson.title);
-  document.getElementById('caption').textContent = scene.text;
+  renderCaption(scene.text);
   setFormula(scene.formula, lesson.title);
   const totalScenes = lesson.scenes.length + (lesson.example ? lesson.example.steps.length + 1 : 0);
   let curScene;
@@ -2685,37 +2688,178 @@ function updateUI() {
   sceneStartTime = Date.now();
 }
 
-function speak(text) {
+// ============== CAPTION + WORD HIGHLIGHTING ==============
+function renderCaption(text) {
+  const el = document.getElementById('caption');
+  if (!el) return;
+  el.innerHTML = '';
+  // Tokenize preserving whitespace
+  const tokens = text.split(/(\s+)/);
+  let pos = 0;
+  let wordIdx = 0;
+  tokens.forEach(tok => {
+    if (tok.length === 0) return;
+    if (/^\s+$/.test(tok)) {
+      el.appendChild(document.createTextNode(tok));
+    } else {
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.dataset.start = pos;
+      span.dataset.end = pos + tok.length;
+      span.dataset.idx = wordIdx++;
+      span.textContent = tok;
+      el.appendChild(span);
+    }
+    pos += tok.length;
+  });
+}
+
+function clearWordHighlights() {
+  document.querySelectorAll('#caption .word').forEach(s => s.classList.remove('active', 'spoken'));
+}
+
+function highlightByCharIndex(idx) {
+  const spans = document.querySelectorAll('#caption .word');
+  spans.forEach(span => {
+    const s = +span.dataset.start;
+    const e = +span.dataset.end;
+    span.classList.toggle('active', idx >= s && idx < e);
+    if (idx >= e) span.classList.add('spoken');
+  });
+}
+
+function highlightByWordIndex(idx) {
+  const spans = document.querySelectorAll('#caption .word');
+  spans.forEach((span, i) => {
+    span.classList.toggle('active', i === idx);
+    if (i < idx) span.classList.add('spoken');
+    else if (i > idx) span.classList.remove('spoken');
+  });
+}
+
+// ============== AUDIO PLAYBACK ==============
+let currentAudioEl = null;
+let currentTimingInterval = null;
+
+function getCurrentSceneId() {
+  if (phase === 'teach') return `L${lessonIdx}_T${phaseSceneIdx}`;
+  if (phase === 'example') {
+    if (phaseSceneIdx === 0) return `L${lessonIdx}_EI`;
+    return `L${lessonIdx}_E${phaseSceneIdx - 1}`;
+  }
+  return `L${lessonIdx}_unknown`;
+}
+
+function stopPlayback() {
+  if (currentAudioEl) {
+    currentAudioEl.pause();
+    currentAudioEl.src = '';
+    currentAudioEl = null;
+  }
+  if (currentTimingInterval) {
+    clearInterval(currentTimingInterval);
+    currentTimingInterval = null;
+  }
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  clearWordHighlights();
+}
+
+async function tryLoadSceneAudio(sceneId) {
+  try {
+    const r = await fetch(`lesson_audio/${sceneId}.json`, { cache: 'force-cache' });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+function playWithAudio(sceneId, timing, onEnd) {
+  const audio = new Audio(`lesson_audio/${sceneId}.mp3`);
+  audio.playbackRate = speechRate;
+  currentAudioEl = audio;
+  audio.addEventListener('ended', () => {
+    currentAudioEl = null;
+    if (currentTimingInterval) { clearInterval(currentTimingInterval); currentTimingInterval = null; }
+    if (onEnd) onEnd();
+  });
+  audio.addEventListener('error', () => {
+    currentAudioEl = null;
+    // Fall back to browser TTS
+    playWithBrowserTTS(window.currentScene?.text || '', onEnd);
+  });
+  audio.play().catch(err => {
+    console.warn('Audio play blocked, falling back to TTS:', err);
+    currentAudioEl = null;
+    playWithBrowserTTS(window.currentScene?.text || '', onEnd);
+  });
+  // Word highlighting via timing JSON
+  const words = (timing && timing.words) || [];
+  if (currentTimingInterval) clearInterval(currentTimingInterval);
+  currentTimingInterval = setInterval(() => {
+    if (!currentAudioEl) return;
+    const t = audio.currentTime;
+    let activeIdx = -1;
+    for (let i = 0; i < words.length; i++) {
+      if (t >= words[i].start && t < words[i].end) { activeIdx = i; break; }
+      if (t >= words[i].end) activeIdx = i;
+    }
+    if (activeIdx >= 0) highlightByWordIndex(activeIdx);
+  }, 60);
+}
+
+function playWithBrowserTTS(text, onEnd) {
+  if (!window.speechSynthesis) {
+    if (onEnd) onEnd();
+    return;
+  }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   if (chosenVoice) u.voice = chosenVoice;
   u.rate = speechRate;
-  speechSynthesis.speak(u);
-}
-
-function speakCurrent() {
-  const scene = getCurrentScene();
-  if (!scene) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(scene.text);
-  if (chosenVoice) u.voice = chosenVoice;
-  u.rate = speechRate;
-  u.onend = () => {
-    if (!isPlaying) return;
-    nextScene();
+  u.onend = () => { if (onEnd) onEnd(); };
+  u.onboundary = (e) => {
+    if (e.name === 'word' || e.charIndex !== undefined) {
+      highlightByCharIndex(e.charIndex);
+    }
   };
   speechSynthesis.speak(u);
 }
 
+function speak(text) {
+  stopPlayback();
+  playWithBrowserTTS(text, null);
+}
+
+async function speakCurrent() {
+  const scene = getCurrentScene();
+  if (!scene) return;
+  stopPlayback();
+  const sceneId = getCurrentSceneId();
+  const timing = await tryLoadSceneAudio(sceneId);
+  const onEnd = () => { if (isPlaying) nextScene(); };
+  if (timing) {
+    playWithAudio(sceneId, timing, onEnd);
+  } else {
+    playWithBrowserTTS(scene.text, onEnd);
+  }
+}
+
 function togglePlay() {
   if (isPlaying) {
-    speechSynthesis.pause();
+    if (currentAudioEl) currentAudioEl.pause();
+    if (window.speechSynthesis) speechSynthesis.pause();
     isPlaying = false;
     document.getElementById('play-btn').textContent = '▶ Resume';
   } else {
     isPlaying = true;
-    if (speechSynthesis.paused) speechSynthesis.resume();
-    else speakCurrent();
+    if (currentAudioEl && currentAudioEl.paused) {
+      currentAudioEl.play().catch(()=>{});
+    } else if (window.speechSynthesis && speechSynthesis.paused) {
+      speechSynthesis.resume();
+    } else {
+      speakCurrent();
+    }
     document.getElementById('play-btn').textContent = '⏸ Pause';
   }
 }
