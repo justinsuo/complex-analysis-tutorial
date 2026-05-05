@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Now a harder one: integral of e to the 2 z over z to the fourth, around the unit circle. Here z = 0 IS inside, and the denominator z to the fourth signals a pole of order 4. Use the n-th derivative version of CIF with n = 3."}

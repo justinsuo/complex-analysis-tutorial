@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Sin x as a real function is bounded between negative 1 and 1. But sin z as a complex function is NOT bounded. To see this, evaluate sin at i times y for real y. Use the definition: sine i y equals (e to the negative y minus e to the y) over 2 i, which equals i times sinh y."}

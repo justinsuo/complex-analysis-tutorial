@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Both partial derivatives of u are zero on D. The gradient of u is the zero vector everywhere. Since D is a connected domain, this forces u to be constant on D. A function with zero gradient on a connected set is constant."}

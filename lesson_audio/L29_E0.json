@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Find the residue of 1 over ((z minus 1)(z minus 2)) at z = 1. The factor (z minus 1) is a simple zero in the denominator, so z = 1 is a simple pole. Use the simple pole formula: residue equals the limit as z approaches 1 of (z minus 1) times f(z)."}

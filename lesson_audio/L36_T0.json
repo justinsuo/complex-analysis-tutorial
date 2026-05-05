@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Problem 3. Show that u of x y equals natural log of square root of open paren x squared plus y squared close paren is harmonic on the punctured plane. We need to verify Laplace's equation: u sub xx plus u sub yy equals zero."}

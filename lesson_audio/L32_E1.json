@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "No singularity inside the indented contour, so by Cauchy-Goursat, the total integral is zero. Now collect terms. The big arc goes to zero by Jordan's lemma. The small clockwise indent contributes negative i pi times the residue. The residue at zero of e to the i z over z is just e to the i times zero equals 1."}

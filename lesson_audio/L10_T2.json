@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Where do these come from? Take the limit ratio in two directions. From the x direction, you get u sub x plus i v sub x. From the y direction, you get v sub y minus i u sub y. For these to be equal \u2014 the limit must be unique \u2014 separate real and imaginary parts. Boom: Cauchy-Riemann."}

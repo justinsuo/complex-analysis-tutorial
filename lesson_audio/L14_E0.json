@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Parametrize the line x = 1 as z equals 1 plus iy, with y ranging over all reals. Compute 1 over z by multiplying top and bottom by the conjugate. We get (1 minus iy) over (1 plus y squared)."}

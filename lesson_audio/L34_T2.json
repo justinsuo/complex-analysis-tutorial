@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Step 2: compute partial derivatives of u. With respect to r, e to the negative theta is constant. Derivative of cosine of natural log r needs the chain rule. Derivative of cosine is negative sine, times derivative of natural log r which is one over r."}

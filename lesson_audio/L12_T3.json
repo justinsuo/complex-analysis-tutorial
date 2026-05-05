@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Critical example: f equals modulus z squared. We computed it's differentiable only at z equals 0. So it's NOT analytic at 0 \u2014 there's no open neighborhood where it's differentiable. In fact, modulus z squared is analytic nowhere."}

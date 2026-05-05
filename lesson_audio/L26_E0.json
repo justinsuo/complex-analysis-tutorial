@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Find the max of modulus z squared plus 1 on the closed unit disk. Z squared plus 1 is analytic everywhere and clearly non-constant. By the maximum modulus principle, the max must be on the boundary, that is, on the unit circle."}

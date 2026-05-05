@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Proof idea: cut the annular region with two straight lines. This makes it simply connected. Apply Cauchy-Goursat. The cut lines cancel out, leaving only the two boundary circles."}

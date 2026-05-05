@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Step 2: apply the Cauchy-Riemann equations. f is analytic, so CR holds throughout D. The first equation says u sub x equals v sub y. But v is identically zero, so v sub y is zero. Therefore u sub x is zero on D."}

@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Now compute on the unit circle. z equals e to the i theta, dz equals i e to the i theta d theta. So 1 over z dz becomes (1 over e^i\u03b8) times i e^i\u03b8 d theta \u2014 the e^i\u03b8's cancel \u2014 equals i d theta."}

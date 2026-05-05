@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Real integrals involving sine and cosine require a special trick: don't extend with cos z or sin z, those are unbounded. Instead use e to the i a z, which is bounded by 1 in the upper half plane."}

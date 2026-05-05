@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "First example: integral of cos z over z squared plus 9, around the unit circle. Singularities of the integrand are where z squared plus 9 equals zero, i.e., z equals plus or minus 3 i. Both are OUTSIDE the unit circle, so the integrand is analytic inside."}

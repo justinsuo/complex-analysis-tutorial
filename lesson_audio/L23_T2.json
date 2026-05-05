@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Proof sketch: by deformation, replace C with a tiny circle of radius rho around z naught. Parametrize and let rho go to zero. Continuity of f makes the integrand approach f at z naught."}

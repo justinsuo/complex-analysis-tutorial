@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Why k different values? Because when we add 2 pi to the angle, we get the same complex number. But when we divide that angle by k, the resulting angles differ by 2 pi over k. That gives k distinct roots before they cycle."}

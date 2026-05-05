@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Here's the easy proof, assuming f prime is continuous. Apply Green's theorem to break the contour integral into two real double integrals. Cauchy-Riemann makes both integrands zero. Done."}

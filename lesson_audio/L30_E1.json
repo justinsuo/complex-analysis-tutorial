@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Compute the residue at z = i. Factor the denominator: z squared plus 1 equals (z minus i)(z plus i). The (z minus i) is the simple zero, so residue equals 1 over (z plus i) at z = i, which is 1 over 2 i."}

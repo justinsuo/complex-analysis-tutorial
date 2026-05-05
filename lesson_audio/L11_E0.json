@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "f equals modulus z squared, which we can write as z times z bar. Now take partial over partial z bar, treating z and z bar as independent variables. The z stays put, the z bar differentiates to 1, so we get just z."}

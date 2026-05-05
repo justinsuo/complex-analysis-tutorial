@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Same poles as before: z equals plus or minus i. Only z = i is in UHP. Compute the residue: numerator at z = i is e to the i times i, which is e to the minus 1. Denominator derivative: 2 z at z = i is 2 i. So residue equals e to the negative 1 over 2 i."}

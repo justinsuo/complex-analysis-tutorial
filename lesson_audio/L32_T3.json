@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "For integrals like x to the negative a over (x plus 1), with branch cut along positive real axis, use a 'keyhole' contour. Wrap around the branch cut. Residue at the singularity inside, use the multivalued nature on top and bottom."}

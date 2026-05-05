@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Compute the integral of cos x over (x squared plus 1). Don't extend with cos z \u2014 it's unbounded in the UHP. Instead, use f of z equals e to the i z over (z squared plus 1). On the upper half plane, modulus of e to the i z is e to the minus y, which is at most 1."}

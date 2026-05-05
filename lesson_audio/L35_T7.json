@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "But analytic at a point requires differentiability in an open neighborhood, not just at one point. There's no open disk around zero where f is differentiable, because every neighborhood of zero contains points where x is non-zero or y is non-zero. Therefore f is nowhere analytic."}

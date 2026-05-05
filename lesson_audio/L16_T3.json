@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "But there's a problem. Big Log z is NOT continuous on the negative real axis. Approach -1 from above: theta approaches pi. Approach from below: theta approaches negative pi. Two limits \u2014 a jump discontinuity."}

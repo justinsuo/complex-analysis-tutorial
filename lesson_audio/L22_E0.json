@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Suppose C is some weird-shaped loop around zero. We can't easily parametrize it. The trick: 1 over z is analytic everywhere except at z = 0. So between C and a small unit circle, 1 over z is analytic. By the deformation theorem, the two integrals are equal."}

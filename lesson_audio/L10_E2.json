@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Check Cauchy-Riemann: u sub x equals 2 x equals v sub y. \u2713 And u sub y equals minus 2 y equals minus v sub x. \u2713 Both hold, partials continuous, so f is differentiable. And f prime equals u sub x plus i v sub x equals 2 x plus 2 i y, which equals 2 z. As expected!"}

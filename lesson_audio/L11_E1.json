@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "For CR, we need partial f over partial z bar equals zero. But z is not identically zero \u2014 it's only zero at the single point z = 0. So f is differentiable only at z = 0, and analytic nowhere."}

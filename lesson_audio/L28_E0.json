@@ -1,0 +1,1 @@
+{"words": [], "voice": "en-US-AvaMultilingualNeural", "text": "Find the Laurent series of 1 over (z (z plus 1)) around z = 0. Singularities at 0 and at -1, so the annulus is 0 less than modulus z less than 1. Start with partial fractions: 1 over (z(z+1)) splits as 1 over z minus 1 over (z+1)."}
