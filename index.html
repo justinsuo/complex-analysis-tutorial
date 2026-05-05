@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complex Analysis — Interactive Tutorial</title>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: { enableMenu: false }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #fafaf8; color: #222; line-height: 1.6;
+}
+#layout { display: flex; min-height: 100vh; }
+#sidebar {
+  width: 280px; background: #1e293b; color: #e2e8f0; padding: 24px 16px;
+  position: fixed; top: 0; bottom: 0; overflow-y: auto;
+}
+#sidebar h2 { color: #fbbf24; margin-top: 0; font-size: 18px; }
+#sidebar ol { padding-left: 20px; margin: 8px 0 24px; }
+#sidebar li { margin: 6px 0; cursor: pointer; font-size: 14px; }
+#sidebar li:hover { color: #fbbf24; }
+#sidebar a { color: inherit; text-decoration: none; display: block; }
+#sidebar .completed::before { content: "✓ "; color: #4ade80; }
+main { margin-left: 280px; flex: 1; padding: 40px 60px; max-width: 900px; }
+h1 { color: #1e293b; border-bottom: 3px solid #fbbf24; padding-bottom: 12px; }
+h2 { color: #334155; margin-top: 40px; }
+h3 { color: #475569; }
+.module { display: none; padding-bottom: 80px; }
+.module.active { display: block; }
+.intro { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px 20px; margin: 16px 0; border-radius: 4px; }
+.def { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px 20px; margin: 16px 0; border-radius: 4px; }
+.def::before { content: "📘 Definition"; font-weight: bold; color: #92400e; display: block; margin-bottom: 6px; }
+.thm { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; margin: 16px 0; border-radius: 4px; }
+.thm::before { content: "⭐ Theorem"; font-weight: bold; color: #065f46; display: block; margin-bottom: 6px; }
+.thm.sub::before { content: "Theorem"; font-weight: bold; color: #065f46; display: block; margin-bottom: 6px; }
+.lemma { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 18px; margin: 12px 0; border-radius: 4px; }
+.lemma::before { content: "Lemma"; font-weight: bold; color: #15803d; display: block; }
+.example { background: #f5f3ff; border-left: 4px solid #8b5cf6; padding: 16px 20px; margin: 16px 0; border-radius: 4px; }
+.example::before { content: "✏️ Example"; font-weight: bold; color: #5b21b6; display: block; margin-bottom: 6px; }
+.warning { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px 18px; margin: 12px 0; border-radius: 4px; }
+.warning::before { content: "⚠️ Watch out"; font-weight: bold; color: #991b1b; display: block; }
+.note { background: #f1f5f9; border-left: 3px solid #64748b; padding: 10px 16px; margin: 10px 0; font-size: 0.95em; border-radius: 4px; }
+.proof { margin: 8px 0; padding: 10px 14px; background: #f8fafc; border-left: 2px dashed #94a3b8; font-size: 0.95em; border-radius: 4px; }
+details { margin: 8px 0; }
+details summary { cursor: pointer; color: #2563eb; font-weight: 500; user-select: none; }
+details summary:hover { text-decoration: underline; }
+details > div { margin-top: 10px; }
+.try { background: #fff7ed; border: 2px solid #fb923c; padding: 16px 20px; margin: 18px 0; border-radius: 8px; }
+.try::before { content: "🧠 Try it"; font-weight: bold; color: #c2410c; display: block; margin-bottom: 6px; }
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 50px; padding-top: 20px; border-top: 1px solid #e2e8f0; }
+.nav-buttons button {
+  background: #1e293b; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+  cursor: pointer; font-size: 14px; font-weight: 500;
+}
+.nav-buttons button:hover { background: #334155; }
+.nav-buttons button:disabled { background: #cbd5e1; cursor: not-allowed; }
+code { background: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', Menlo, monospace; font-size: 0.9em; }
+.formula-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; margin: 10px 0; border-radius: 6px; text-align: center; }
+.progress { position: fixed; top: 0; left: 280px; right: 0; height: 4px; background: #e2e8f0; z-index: 10; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); transition: width 0.3s; }
+ul { padding-left: 24px; }
+li { margin: 4px 0; }
+.q-block { background: #fef9c3; border: 2px solid #facc15; padding: 14px 18px; margin: 14px 0; border-radius: 6px; }
+.q-block::before { content: "❓ Quick Check"; font-weight: bold; color: #854d0e; display: block; margin-bottom: 6px; }
+table { border-collapse: collapse; margin: 16px 0; }
+th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+th { background: #f1f5f9; }
+.tag { display: inline-block; background: #1e293b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; vertical-align: middle; }
+hr.thin { border: none; border-top: 1px dashed #cbd5e1; margin: 30px 0; }
+</style>
+</head>
+<body>
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<div id="layout">
+
+<nav id="sidebar">
+<h2>📚 Complex Analysis</h2>
+<ol id="module-list">
+<li data-mod="0">Welcome</li>
+<li data-mod="1">1. Complex Numbers</li>
+<li data-mod="2">2. Polar Form & Roots</li>
+<li data-mod="3">3. Topology of ℂ</li>
+<li data-mod="4">4. Limits & Continuity</li>
+<li data-mod="5">5. Differentiation</li>
+<li data-mod="6">6. Cauchy–Riemann</li>
+<li data-mod="7">7. Analytic & Harmonic</li>
+<li data-mod="8">8. Möbius Transformations</li>
+<li data-mod="9">9. Exponential & Log</li>
+<li data-mod="10">10. Powers & Trig</li>
+<li data-mod="11">11. Contour Integration</li>
+<li data-mod="12">12. Cauchy–Goursat</li>
+<li data-mod="13">13. Cauchy Integral Formula</li>
+<li data-mod="14">14. Liouville & FTA</li>
+<li data-mod="15">15. Maximum Modulus</li>
+<li data-mod="16">16. Power Series</li>
+<li data-mod="17">17. Taylor & Laurent</li>
+<li data-mod="18">18. Singularities</li>
+<li data-mod="19">19. Residues</li>
+<li data-mod="20">20. Real Integrals (rational)</li>
+<li data-mod="21">21. Real Integrals (trig + Jordan)</li>
+<li data-mod="22">22. Indented Paths & Branch Cuts</li>
+<li data-mod="23">🎯 Final Summary</li>
+</ol>
+</nav>
+
+<main>
+
+<!-- ============== MODULE 0: WELCOME ============== -->
+<section class="module active" id="mod-0">
+<h1>Welcome 👋</h1>
+<div class="intro">
+This tutorial walks you through <b>every concept</b> from your Complex Analysis course (Brown & Churchill, 9th ed.) — from $z = x+iy$ all the way to evaluating real integrals using residues. We go <b>slowly</b>: each concept gets a definition, intuition, an example, and a quick check.
+</div>
+<h2>How to use this</h2>
+<ul>
+<li>Click a module on the left, or use <b>Next/Prev</b> at the bottom.</li>
+<li>Click any <span style="color:#2563eb;">blue underlined link</span> labeled "Show proof" or "Show solution" to reveal hidden content.</li>
+<li>The orange <b>Try it</b> boxes have hidden solutions — try yourself first!</li>
+<li>Math is rendered with MathJax, so $z = x + iy$ should look pretty.</li>
+</ul>
+<h2>Big picture: why complex analysis is amazing</h2>
+<p>You'll see this <i>over and over</i>: complex analysis is much "tighter" than real analysis.</p>
+<table>
+<tr><th>In ℝ</th><th>In ℂ</th></tr>
+<tr><td>Differentiable doesn't imply $C^\infty$</td><td>Differentiable in an open set ⟹ infinitely differentiable</td></tr>
+<tr><td>Continuous ⟹ has antiderivative</td><td>Need analytic + simply connected</td></tr>
+<tr><td>Bounded everywhere-differentiable functions exist (e.g. $\sin x$)</td><td>Bounded entire ⟹ <b>constant</b> (Liouville)</td></tr>
+<tr><td>$x^2 + 1$ has no roots</td><td>Every poly has all its roots (FTA)</td></tr>
+<tr><td>Two functions agreeing on a small set tells you nothing</td><td>Agreeing on a tiny segment ⟹ equal everywhere</td></tr>
+</table>
+<p>Ready? Let's go.</p>
+<div class="nav-buttons"><button onclick="prev()" disabled>← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 1: COMPLEX NUMBERS ============== -->
+<section class="module" id="mod-1">
+<h1>Module 1 — Complex Numbers</h1>
+<div class="intro">Why do we need complex numbers? To solve $x^2 + 1 = 0$. We invent $i$ with $i^2 = -1$, and suddenly <i>every</i> polynomial has roots.</div>
+
+<h2>1.1 Definition</h2>
+<div class="def">
+A <b>complex number</b> is $z = x + iy$ where $x, y \in \mathbb{R}$ and $i^2 = -1$.
+<ul>
+<li>$\operatorname{Re}(z) = x$ — the <b>real part</b></li>
+<li>$\operatorname{Im}(z) = y$ — the <b>imaginary part</b> (just $y$, NOT $iy$ — this trips people up!)</li>
+</ul>
+The set of all complex numbers is $\mathbb{C}$.
+</div>
+
+<div class="note">
+You can identify $\mathbb{C}$ with $\mathbb{R}^2$ via $z = x+iy \leftrightarrow (x,y)$. They share the same metric and topology. But $\mathbb{C}$ has <b>extra structure</b>: a multiplication rule that $\mathbb{R}^2$ alone doesn't have.
+</div>
+
+<h2>1.2 Arithmetic</h2>
+<p>Addition is component-wise; multiplication uses $i^2 = -1$:</p>
+<div class="formula-box">
+$$(x_1 + iy_1) + (x_2 + iy_2) = (x_1 + x_2) + i(y_1 + y_2)$$
+$$(x_1 + iy_1)(x_2 + iy_2) = (x_1 x_2 - y_1 y_2) + i(x_1 y_2 + x_2 y_1)$$
+</div>
+
+<div class="example">
+$(2 + 3i)(1 - i) = 2 - 2i + 3i - 3i^2 = 2 + i + 3 = 5 + i$.
+</div>
+
+<h2>1.3 The trickiest formula: $1/z$</h2>
+<p>For $z = x + iy \neq 0$:</p>
+<div class="def">
+$$\frac{1}{z} = \frac{x}{x^2 + y^2} - i\,\frac{y}{x^2 + y^2}$$
+</div>
+<details><summary>Show derivation (it's a great trick: multiply by conjugate)</summary>
+<div class="proof">
+$\dfrac{1}{x+iy} = \dfrac{1}{x+iy} \cdot \dfrac{x-iy}{x-iy} = \dfrac{x-iy}{x^2+y^2}$.
+This trick — multiplying by the conjugate — is how you'll <i>always</i> simplify division.
+</div></details>
+
+<h2>1.4 Modulus and Conjugate</h2>
+<div class="def">
+<ul>
+<li><b>Modulus</b>: $|z| = \sqrt{x^2 + y^2}$ — the length of the vector $(x,y)$.</li>
+<li><b>Conjugate</b>: $\bar z = x - iy$ — reflect across the real axis.</li>
+</ul>
+</div>
+
+<p>The single most useful identity in this whole class:</p>
+<div class="formula-box">$$z \bar z = |z|^2$$</div>
+<p>Proof: $(x+iy)(x-iy) = x^2 - (iy)^2 = x^2 + y^2$. Use this <i>everywhere</i>.</p>
+
+<h2>1.5 Properties to remember</h2>
+<ul>
+<li>$\overline{z_1 + z_2} = \bar z_1 + \bar z_2$ (and same for −, ×, ÷)</li>
+<li>$|z_1 z_2| = |z_1||z_2|$, $|z_1/z_2| = |z_1|/|z_2|$</li>
+<li><b>Triangle inequality</b>: $|z_1 + z_2| \leq |z_1| + |z_2|$</li>
+<li><b>Reverse triangle</b>: $\big||z_1| - |z_2|\big| \leq |z_1 - z_2|$</li>
+<li>$\operatorname{Re}(z) = (z + \bar z)/2$, $\operatorname{Im}(z) = (z - \bar z)/(2i)$</li>
+<li>$z$ is real ⟺ $z = \bar z$; purely imaginary ⟺ $z = -\bar z$</li>
+</ul>
+
+<div class="example">
+<b>Find $\operatorname{Re}$ and $\operatorname{Im}$ of $\dfrac{4+i}{2-3i}$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+Multiply by conjugate of denominator:
+$$\frac{4+i}{2-3i} \cdot \frac{2+3i}{2+3i} = \frac{(4+i)(2+3i)}{4+9} = \frac{8 + 12i + 2i - 3}{13} = \frac{5 + 14i}{13}.$$
+So $\operatorname{Re} = 5/13$, $\operatorname{Im} = 14/13$.
+</div></details>
+</div>
+
+<div class="try">
+Compute $(1+i)(1-i)$ and $|3 + 4i|$.
+<details><summary>Answers</summary>
+<div class="proof">$(1+i)(1-i) = 1 - i^2 = 2$. And $|3+4i| = \sqrt{9+16} = 5$.</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 2: POLAR FORM ============== -->
+<section class="module" id="mod-2">
+<h1>Module 2 — Polar Form, Euler's Formula, Roots</h1>
+<div class="intro">Cartesian form $x+iy$ is great for adding. Polar form $re^{i\theta}$ is great for <b>multiplying</b>. We need both.</div>
+
+<h2>2.1 Polar form</h2>
+<p>Any nonzero complex number can be written as</p>
+<div class="formula-box">$$z = r(\cos\theta + i \sin\theta)$$</div>
+<p>where $r = |z|$ and $\theta$ is the angle from the positive real axis.</p>
+
+<h2>2.2 Euler's formula</h2>
+<div class="thm">
+For any real $\theta$: $\quad e^{i\theta} = \cos\theta + i\sin\theta$.
+</div>
+<p>Why is this <i>defined</i> this way? Because we want $e^{iz}$ to satisfy its Taylor series. If you plug $iy$ into $e^z = \sum z^n/n!$, separate into real/imaginary parts, you get exactly $\cos y + i\sin y$. So this is the only consistent definition.</p>
+
+<div class="formula-box">$$z = re^{i\theta}, \quad \bar z = re^{-i\theta}$$</div>
+
+<h2>2.3 The killer feature: multiplication</h2>
+<div class="thm sub">
+$$z_1 z_2 = r_1 r_2 \, e^{i(\theta_1 + \theta_2)}$$
+<b>Multiply moduli, add angles.</b>
+</div>
+
+<div class="example">
+$(1+i)(1+i)$ in polar: $1+i = \sqrt 2 \, e^{i\pi/4}$, so square it gives $2 \, e^{i\pi/2} = 2i$. ✓ (matches $(1+i)^2 = 2i$).
+</div>
+
+<h2>2.4 De Moivre's formula</h2>
+<p>By induction:</p>
+<div class="formula-box">$$z^n = r^n e^{in\theta} \quad \text{for any integer } n$$</div>
+
+<div class="example">
+<b>Compute $(-1+i)^7$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+$-1+i = \sqrt 2\, e^{i 3\pi/4}$. So $(-1+i)^7 = (\sqrt 2)^7 e^{i 21\pi/4}$. Reduce $21\pi/4$ mod $2\pi$: $21\pi/4 - 4\pi = 5\pi/4$. So $= 8\sqrt 2 \cdot e^{i 5\pi/4} = 8\sqrt 2 \,(-1/\sqrt 2 - i/\sqrt 2) = -8 - 8i$.
+</div></details>
+</div>
+
+<h2>2.5 Argument is multivalued!</h2>
+<div class="warning">
+$\theta$ is <b>not unique</b>: you can add $2\pi n$ for any integer $n$ and get the same $z$. We write
+$$\arg z = \{\theta + 2n\pi : n \in \mathbb{Z}\}$$
+This multivaluedness comes back to bite us with $\log z$ and $z^c$.
+</div>
+<div class="def">
+The <b>principal argument</b> $\operatorname{Arg} z$ is the unique value in $(-\pi, \pi]$.
+</div>
+
+<h2>2.6 $k$-th roots</h2>
+<div class="thm sub">
+The equation $w^k = z$ where $z = re^{i\theta} \neq 0$ has exactly $k$ solutions:
+$$w_n = r^{1/k}\, e^{i(\theta + 2n\pi)/k}, \quad n = 0, 1, \ldots, k-1.$$
+</div>
+
+<div class="example">
+<b>Find $\sqrt[4]{-16}$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+$-16 = 16 e^{i\pi}$. So $(-16)^{1/4} = 2 \cdot e^{i(\pi + 2n\pi)/4}$ for $n=0,1,2,3$.
+<ul>
+<li>$n=0$: $2e^{i\pi/4} = \sqrt 2 + i\sqrt 2$</li>
+<li>$n=1$: $2e^{i 3\pi/4} = -\sqrt 2 + i\sqrt 2$</li>
+<li>$n=2$: $2e^{i 5\pi/4} = -\sqrt 2 - i\sqrt 2$</li>
+<li>$n=3$: $2e^{i 7\pi/4} = \sqrt 2 - i\sqrt 2$</li>
+</ul>
+The 4 roots sit at the corners of a square centered at 0.
+</div></details>
+</div>
+
+<div class="try">
+Find all values of $\sqrt[3]{1}$ (cube roots of unity).
+<details><summary>Answer</summary>
+<div class="proof">$1, e^{2\pi i/3}, e^{4\pi i/3}$, equivalently $1, \tfrac{-1+i\sqrt 3}{2}, \tfrac{-1 - i\sqrt 3}{2}$.</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 3: TOPOLOGY ============== -->
+<section class="module" id="mod-3">
+<h1>Module 3 — Topology of $\mathbb{C}$</h1>
+<div class="intro">Most of this is identical to $\mathbb{R}^2$ — same distance, same open/closed sets. But we need new vocabulary: <b>simply connected</b> matters a lot later.</div>
+
+<h2>3.1 Distance and neighborhoods</h2>
+<div class="def">
+The <b>$r$-neighborhood</b> of $z_0$ is $B_r(z_0) = \{z : |z - z_0| < r\}$ — an open disk.<br>
+The <b>deleted $r$-neighborhood</b> is $0 < |z - z_0| < r$ — disk minus center.
+</div>
+
+<h2>3.2 Open / closed / boundary</h2>
+<div class="def">
+A set $S \subseteq \mathbb{C}$ is <b>open</b> if every point of $S$ has some $r$-neighborhood entirely inside $S$.<br>
+$S$ is <b>closed</b> if its complement is open (equivalently, $S$ contains all its limit points).<br>
+The <b>boundary</b> $\partial S$ = points where every neighborhood meets both $S$ and its complement.
+</div>
+
+<h2>3.3 Connected and simply connected</h2>
+<div class="def">
+$S$ is <b>(path-)connected</b> if any two points in $S$ can be joined by a continuous path lying inside $S$.
+</div>
+
+<div class="def">
+A <b>domain</b> is an open + connected subset of $\mathbb{C}$. We use $D$ for domains throughout.
+</div>
+
+<div class="def">
+$D$ is <b>simply connected</b> if every closed curve in $D$ can be continuously shrunk to a point <i>within $D$</i>.
+</div>
+
+<div class="warning">
+Equivalent (and more practical!) condition in $\mathbb{C}$:<br>
+$D$ simply connected ⟺ for every simple closed curve $C \subset D$, the <b>interior of $C$ is also in $D$</b>.<br>
+In plain English: <b>no holes</b>.
+</div>
+
+<h3>Examples</h3>
+<ul>
+<li>$\mathbb{C}$ itself ✓ simply connected</li>
+<li>An open disk ✓ simply connected</li>
+<li>$\mathbb{C} \setminus \{0\}$ ✗ <b>not</b> simply connected — has a hole at 0</li>
+<li>$\{re^{i\theta}: r>0,\ -\pi < \theta < \pi\}$ (slit plane) ✓ simply connected — we removed an entire ray, no hole left</li>
+</ul>
+
+<div class="note">
+<b>Why care?</b> Many theorems (Cauchy–Goursat, antiderivative existence, branches of log) require simply connected domains. The whole reason $\log z$ needs a branch cut is that $\mathbb{C} \setminus \{0\}$ isn't simply connected.
+</div>
+
+<div class="q-block">
+Is $\{z : 1 < |z| < 2\}$ (an annulus) simply connected?
+<details><summary>Answer</summary><div class="proof">No — it has a hole (the disk $|z|\leq 1$ is missing). A loop around 0 can't be shrunk to a point inside the annulus.</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 4: LIMITS & CONTINUITY ============== -->
+<section class="module" id="mod-4">
+<h1>Module 4 — Limits and Continuity</h1>
+<div class="intro">For limits and continuity, complex analysis is <b>basically the same as real $\mathbb{R}^2 \to \mathbb{R}^2$</b>. The big difference comes with <i>differentiation</i> next module.</div>
+
+<h2>4.1 Complex functions</h2>
+<p>A complex function $f: \mathbb{C} \to \mathbb{C}$ can always be written</p>
+<div class="formula-box">$$f(z) = u(x,y) + i\, v(x,y)$$</div>
+<p>where $u, v: \mathbb{R}^2 \to \mathbb{R}$ are the real and imaginary parts. There's a 1-1 correspondence between $f$ and the pair $(u,v)$.</p>
+
+<div class="example">
+$f(z) = z^2$. With $z = x+iy$, expand: $z^2 = (x^2-y^2) + 2xyi$. So $u = x^2 - y^2$, $v = 2xy$.
+</div>
+
+<h2>4.2 Limits</h2>
+<div class="def">
+$\displaystyle\lim_{z \to z_0} f(z) = w_0$ means: for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+$$0 < |z - z_0| < \delta \implies |f(z) - w_0| < \varepsilon.$$
+</div>
+<div class="thm sub">
+With $f = u + iv$, $z_0 = x_0 + iy_0$, $w_0 = u_0 + iv_0$:
+$$\lim_{z\to z_0} f = w_0 \iff \lim u = u_0 \text{ and } \lim v = v_0.$$
+</div>
+
+<h2>4.3 Limits at and to infinity</h2>
+<p>There's only <b>one $\infty$</b> in $\mathbb{C}$ (no $\pm\infty$). The trick: use $1/z$.</p>
+<ul>
+<li>$\lim_{z\to z_0} f(z) = \infty \iff \lim_{z\to z_0} 1/f(z) = 0$</li>
+<li>$\lim_{z\to\infty} f(z) = w_0 \iff \lim_{z\to 0} f(1/z) = w_0$</li>
+</ul>
+
+<div class="example">
+$\displaystyle\lim_{z \to \infty} \frac{2z + i}{z+1}$. Apply the trick: replace $z$ with $1/z$ and let $z\to 0$:
+$$\frac{2/z + i}{1/z + 1} = \frac{2 + iz}{1 + z} \xrightarrow{z\to 0} 2.$$
+</div>
+
+<h2>4.4 Continuity</h2>
+<div class="def">
+$f$ is <b>continuous at $z_0$</b> if $\lim_{z\to z_0} f(z) = f(z_0)$.<br>
+$f$ continuous ⟺ $u$ and $v$ both continuous (as real functions of $(x,y)$).
+</div>
+<div class="note">All the usual rules apply: sums, products, quotients (where denom ≠ 0), and compositions of continuous functions are continuous.</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 5: DIFFERENTIATION ============== -->
+<section class="module" id="mod-5">
+<h1>Module 5 — Complex Differentiation</h1>
+<div class="intro">Here is where everything diverges from $\mathbb{R}^2$. The complex derivative is <b>much stronger</b> than partial derivatives — and that strength forces the Cauchy–Riemann equations.</div>
+
+<h2>5.1 The definition (looks innocent)</h2>
+<div class="def">
+$f$ is <b>(complex) differentiable at $z_0$</b> if
+$$f'(z_0) = \lim_{\Delta z \to 0} \frac{f(z_0 + \Delta z) - f(z_0)}{\Delta z}$$
+exists.
+</div>
+
+<div class="warning">
+The catch: $\Delta z$ can approach 0 from <i>any direction</i> in the complex plane. The limit must exist and be the same regardless of how $\Delta z \to 0$. This is a much stronger condition than in 1D real calculus.
+</div>
+
+<h2>5.2 First example: $f(z) = z^2$</h2>
+<div class="example">
+$$\frac{(z+\Delta z)^2 - z^2}{\Delta z} = 2z + \Delta z \to 2z.$$
+So $(z^2)' = 2z$. Same as real case.
+</div>
+
+<h2>5.3 The shocking example: $f(z) = \bar z$</h2>
+<p>Let's try the limit:</p>
+<div class="formula-box">$$\frac{\overline{z + \Delta z} - \bar z}{\Delta z} = \frac{\overline{\Delta z}}{\Delta z}$$</div>
+<p>Now compute this limit two ways:</p>
+<ul>
+<li>$\Delta z = \Delta x$ (real direction): ratio $= \Delta x / \Delta x = 1$.</li>
+<li>$\Delta z = i\Delta y$ (imaginary direction): ratio $= -i\Delta y / (i\Delta y) = -1$.</li>
+</ul>
+<p>Different limits! So $f(z) = \bar z$ is <b>nowhere differentiable</b>, even though it's smooth as a function of $(x,y)$.</p>
+<div class="note">
+This is the moral: complex differentiability is a strong, restrictive condition.
+</div>
+
+<h2>5.4 Standard rules (same as real)</h2>
+<ul>
+<li>$(f+g)' = f' + g'$</li>
+<li>$(fg)' = f'g + fg'$</li>
+<li>$(f/g)' = (f'g - fg')/g^2$</li>
+<li>Chain rule: $(g \circ f)'(z) = g'(f(z)) \cdot f'(z)$</li>
+<li>$(z^n)' = n z^{n-1}$ for any integer $n$</li>
+</ul>
+
+<h2>5.5 Notation</h2>
+<p>$f'(z)$, $\dfrac{df}{dz}$, $\dfrac{d}{dz}f$ all mean the same thing.</p>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 6: CR ============== -->
+<section class="module" id="mod-6">
+<h1>Module 6 — Cauchy–Riemann Equations <span class="tag">⭐ KEY</span></h1>
+<div class="intro">The CR equations are the engine of complex analysis. They tell you exactly when a function is complex-differentiable in terms of partial derivatives of $u$ and $v$.</div>
+
+<h2>6.1 The big theorem</h2>
+<div class="thm">
+Let $f(z) = u(x,y) + iv(x,y)$. Then $f$ is complex-differentiable at $z_0$ if and only if:
+<ol>
+<li>$u, v$ are <b>real-differentiable</b> at $(x_0, y_0)$, AND</li>
+<li>The <b>Cauchy–Riemann equations</b> hold:
+$$u_x = v_y, \qquad u_y = -v_x.$$</li>
+</ol>
+And in that case:
+$$f'(z_0) = u_x + iv_x = v_y - iu_y.$$
+</div>
+
+<h2>6.2 Where do the CR equations come from?</h2>
+<details open><summary>Show the slick derivation</summary>
+<div class="proof">
+Take $\Delta z \to 0$ from two directions:
+<ul>
+<li>$\Delta z = \Delta x$ (along x-axis): limit becomes $\dfrac{\partial f}{\partial x} = u_x + iv_x$.</li>
+<li>$\Delta z = i\Delta y$ (along y-axis): limit becomes $\dfrac{1}{i}\dfrac{\partial f}{\partial y} = v_y - iu_y$ (since $1/i = -i$).</li>
+</ul>
+For the limit to exist, both must agree. Equating real and imaginary parts:
+$$u_x = v_y, \quad v_x = -u_y. \quad \blacksquare$$
+</div>
+</details>
+
+<h2>6.3 A practical sufficient condition</h2>
+<div class="thm sub">
+If $u_x, u_y, v_x, v_y$ are <b>continuous</b> in a neighborhood and CR holds — then $f$ is differentiable.
+</div>
+<div class="note">In practice, partials are almost always continuous, so we just check CR.</div>
+
+<h2>6.4 Worked example</h2>
+<div class="example">
+<b>Is $f(z) = z^2$ differentiable?</b><br>
+$u = x^2 - y^2$, $v = 2xy$. Compute partials:
+<ul>
+<li>$u_x = 2x$, $u_y = -2y$</li>
+<li>$v_x = 2y$, $v_y = 2x$</li>
+</ul>
+Check CR: $u_x = 2x = v_y$ ✓; $u_y = -2y = -v_x$ ✓.<br>
+All continuous, CR holds everywhere ⟹ $f$ entire. And $f' = u_x + iv_x = 2x + 2yi = 2z$. ✓
+</div>
+
+<h2>6.5 Classic non-example: $f(z) = \bar z$</h2>
+<div class="example">
+$u = x$, $v = -y$. So $u_x = 1$, $v_y = -1$. Already $u_x \neq v_y$, so CR fails. $\bar z$ is nowhere differentiable.
+</div>
+
+<h2>6.6 CR in polar coordinates</h2>
+<p>If you write $f$ using $r$ and $\theta$:</p>
+<div class="thm sub">
+$f$ differentiable ⟺ $u, v$ real-differentiable AND
+$$r u_r = v_\theta, \qquad u_\theta = -r v_r.$$
+And $f'(z) = e^{-i\theta}(u_r + i v_r)$.
+</div>
+<p>Useful when $f$ is naturally expressed in polar form (e.g. $\sqrt z$, $\log z$).</p>
+
+<h2>6.7 The slick formulation: $\partial/\partial \bar z$</h2>
+<p>Define</p>
+<div class="formula-box">
+$$\frac{\partial}{\partial z} = \frac{1}{2}\!\left(\frac{\partial}{\partial x} - i\frac{\partial}{\partial y}\right), \quad \frac{\partial}{\partial \bar z} = \frac{1}{2}\!\left(\frac{\partial}{\partial x} + i\frac{\partial}{\partial y}\right)$$
+</div>
+<div class="thm sub">
+$f$ satisfies CR ⟺ $\dfrac{\partial f}{\partial \bar z} = 0$.<br>
+And if so, $f' = \dfrac{\partial f}{\partial z}$.
+</div>
+<div class="note">
+Slogan: "$f$ is analytic ⟺ $f$ has no $\bar z$ in it."<br>
+Quick test: $|z|^2 = z\bar z$ has a $\bar z$, so it's not analytic (except where $\partial/\partial \bar z = z = 0$).
+</div>
+
+<div class="try">
+For $f(z) = e^z = e^x(\cos y + i\sin y)$: write $u, v$ and verify CR.
+<details><summary>Solution</summary>
+<div class="proof">
+$u = e^x \cos y$, $v = e^x \sin y$.
+$u_x = e^x \cos y$, $v_y = e^x \cos y$. ✓<br>
+$u_y = -e^x \sin y$, $v_x = e^x \sin y$, so $u_y = -v_x$. ✓<br>
+Hence $f$ is entire and $f'(z) = u_x + iv_x = e^x \cos y + i e^x \sin y = e^z$. (Same as real exponential!)
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 7: ANALYTIC AND HARMONIC ============== -->
+<section class="module" id="mod-7">
+<h1>Module 7 — Analytic & Harmonic Functions</h1>
+<div class="intro">"Analytic" means differentiable in an <b>open neighborhood</b>, not just at one point. This subtle distinction unlocks all the deep theorems.</div>
+
+<h2>7.1 Definition</h2>
+<div class="def">
+$f$ is <b>analytic at $z_0$</b> if it is differentiable on some open disk around $z_0$.<br>
+$f$ is <b>analytic on a domain $D$</b> if it's differentiable at every point of $D$.<br>
+$f$ is <b>entire</b> if it's analytic on all of $\mathbb{C}$.
+</div>
+
+<h2>7.2 Why "open neighborhood" matters</h2>
+<div class="example">
+$f(z) = |z|^2 = x^2 + y^2$. CR gives $2x = 0, 2y = 0$, only at $z=0$. So $f$ is differentiable only at $z=0$, but <b>not analytic anywhere</b> — there's no open disk where $f$ is differentiable.
+</div>
+
+<h2>7.3 Constancy theorem</h2>
+<div class="thm">
+If $f$ is analytic on a domain $D$ and $f'(z) = 0$ everywhere on $D$, then $f$ is constant.
+</div>
+<details><summary>Idea of proof</summary>
+<div class="proof">$f' = 0$ ⟹ $u_x = u_y = v_x = v_y = 0$ ⟹ $u, v$ constant on the connected $D$ ⟹ $f$ constant.</div></details>
+
+<h3>Friend corollaries</h3>
+<ul>
+<li>If $f$ and $\bar f$ are both analytic on $D$ ⟹ $f$ is constant.</li>
+<li>If $|f|$ is constant on $D$ ⟹ $f$ is constant.</li>
+<li>If $f$ takes only real values on $D$ ⟹ $f$ is constant.</li>
+</ul>
+
+<h2>7.4 Harmonic functions</h2>
+<div class="def">
+A real-valued function $u(x,y)$ is <b>harmonic</b> if $u_{xx} + u_{yy} = 0$ (Laplace equation), with continuous second partials.
+</div>
+
+<div class="thm">
+If $f = u + iv$ is analytic on $D$, then both $u$ and $v$ are harmonic on $D$.
+</div>
+<details><summary>Proof</summary>
+<div class="proof">
+From CR: $u_x = v_y$, so $u_{xx} = v_{yx}$. Also $u_y = -v_x$, so $u_{yy} = -v_{xy}$. Adding: $u_{xx} + u_{yy} = v_{yx} - v_{xy} = 0$ (mixed partials equal when continuous). Same for $v$.
+</div></details>
+
+<h2>7.5 Harmonic conjugate</h2>
+<div class="thm sub">
+If $u$ is harmonic on a <b>simply connected</b> domain, there exists $v$ (a "harmonic conjugate") such that $f = u+iv$ is analytic.
+</div>
+<div class="warning">
+Simply connected is essential! Counterexample: $u = \ln\sqrt{x^2+y^2}$ is harmonic on $\mathbb{C}\setminus\{0\}$ — but no global $v$ exists. (The natural choice would be $v = \theta$, but $\theta$ isn't single-valued on $\mathbb{C}\setminus\{0\}$.)
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 8: MOBIUS ============== -->
+<section class="module" id="mod-8">
+<h1>Module 8 — Möbius Transformations</h1>
+<div class="intro">A small but elegant detour. These maps connect analysis, geometry, and algebra in a beautiful way.</div>
+
+<h2>8.1 Definition</h2>
+<div class="def">
+A <b>Möbius transformation</b> is
+$$f(z) = \frac{az + b}{cz + d}, \quad ad - bc \neq 0.$$
+</div>
+<p>The condition $ad - bc \neq 0$ ensures $f$ isn't constant.</p>
+
+<h2>8.2 Properties</h2>
+<ul>
+<li>$f'(z) = \dfrac{ad - bc}{(cz+d)^2}$</li>
+<li>$f$ is invertible: $f^{-1}(w) = \dfrac{-dw + b}{cw - a}$</li>
+<li>The inverse is also Möbius — so Möbius transformations form a <b>group</b> under composition.</li>
+</ul>
+
+<h2>8.3 Generators</h2>
+<div class="thm sub">
+Every Möbius transformation is a composition of:
+<ol>
+<li>Translation: $z \mapsto z + b$</li>
+<li>Dilation: $z \mapsto rz$ (real $r > 0$)</li>
+<li>Rotation: $z \mapsto e^{i\theta}z$</li>
+<li>Inversion: $z \mapsto 1/z$</li>
+</ol>
+</div>
+
+<h2>8.4 The geometric magic: circles → circles</h2>
+<div class="thm">
+Every Möbius transformation maps "circles" to "circles", where a <b>line counts as a circle through $\infty$</b>.
+</div>
+<p>The proof reduces to inversion: any circle in the plane has equation $a(x^2+y^2) + bx + cy = d$, and a calculation shows $1/z$ maps such an equation to another of the same form.</p>
+
+<div class="example">
+$1/z$ maps the line $x = 1$ to a circle: substituting $z = 1+iy$, $1/z = (1-iy)/(1+y^2)$, so $u = 1/(1+y^2)$, $v = -y/(1+y^2)$. You can verify $u^2 + v^2 = u$, i.e., $(u - 1/2)^2 + v^2 = 1/4$ — a circle of radius $1/2$.
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 9: EXPONENTIAL & LOG ============== -->
+<section class="module" id="mod-9">
+<h1>Module 9 — Exponential and Logarithm</h1>
+<div class="intro">$e^z$ is the simplest analytic function. $\log z$ is the trickiest — and a great window into <b>multivalued functions</b> and <b>branch cuts</b>.</div>
+
+<h2>9.1 Complex exponential</h2>
+<div class="def">
+$$e^z = e^{x+iy} = e^x(\cos y + i\sin y)$$
+</div>
+
+<h3>Key facts</h3>
+<ul>
+<li>$e^z$ is <b>entire</b>, with $(e^z)' = e^z$.</li>
+<li>$e^{z_1 + z_2} = e^{z_1} e^{z_2}$ ✓</li>
+<li>$|e^z| = e^x$ (so $|e^z| \neq 0$ ever, but can be huge or tiny).</li>
+<li><b>Periodic with period $2\pi i$:</b> $e^{z_1} = e^{z_2} \iff z_1 - z_2 = 2n\pi i$. (This is HUGE.)</li>
+<li>Range of $e^z$ = $\mathbb{C} \setminus \{0\}$. Yes, you can have $e^z = -1$: $z = i\pi$ does it.</li>
+</ul>
+
+<h2>9.2 Complex logarithm</h2>
+<p>We want $\log z$ to satisfy $e^{\log z} = z$. Since $e^z$ is periodic, taking $\log$ is multivalued:</p>
+<div class="def">
+For $z = re^{i\theta} \neq 0$:
+$$\log z = \ln r + i(\theta + 2n\pi), \quad n \in \mathbb{Z}.$$
+</div>
+<p>Real part is uniquely $\ln |z|$, but imaginary part has infinitely many values differing by $2\pi i$.</p>
+
+<div class="example">
+$\log(1) = 0, 2\pi i, 4\pi i, \ldots$ ✓ (since $e^{2\pi i k} = 1$).<br>
+$\log(-1) = i\pi + 2n\pi i$.<br>
+$\log(i) = i\pi/2 + 2n\pi i$.
+</div>
+
+<h2>9.3 Principal log</h2>
+<div class="def">
+The <b>principal log</b> $\operatorname{Log} z = \ln r + i\Theta$, where $\Theta = \operatorname{Arg} z \in (-\pi, \pi]$.
+</div>
+
+<div class="warning">
+$\operatorname{Log} z$ is <b>not continuous</b> on the negative real axis! Approaching $-1$ from above: $\theta \to \pi$. From below: $\theta \to -\pi$. Two different limits ⟹ discontinuity.
+</div>
+
+<h2>9.4 Branches</h2>
+<div class="def">
+A <b>branch</b> of $\log z$ on a domain $D$ is a single-valued analytic function on $D$ whose value is one of the values of $\log z$.
+</div>
+<div class="thm sub">
+On the slit plane $D = \{re^{i\theta}: r > 0,\ -\pi < \theta < \pi\}$, the principal log is analytic with
+$$(\operatorname{Log} z)' = \frac{1}{z}.$$
+</div>
+<p>The <b>branch cut</b> is the negative real axis (the set we removed). Cross it and the function jumps.</p>
+
+<h3>General branches</h3>
+<p>Pick any $\alpha \in \mathbb{R}$. On $\{r > 0, \alpha < \theta < \alpha + 2\pi\}$, define $f(z) = \ln r + i\theta$. This is analytic — the branch cut is the ray $\theta = \alpha$.</p>
+
+<h2>9.5 Why no antiderivative for $1/z$ on $\mathbb{C}\setminus\{0\}$</h2>
+<p>We'll see later that $\oint_{|z|=1} dz/z = 2\pi i \neq 0$, which (via a theorem we'll prove) means $1/z$ has no antiderivative on $\mathbb{C}\setminus\{0\}$. But on the <i>slit plane</i> (simply connected), $\operatorname{Log} z$ <b>is</b> an antiderivative.</p>
+
+<div class="try">
+Compute $\operatorname{Log}(-1 - \sqrt 3 i)$.
+<details><summary>Solution</summary>
+<div class="proof">
+$|-1 - \sqrt 3 i| = 2$. $\operatorname{Arg} = -2\pi/3$ (third quadrant, principal value in $(-\pi, \pi]$).<br>
+So $\operatorname{Log}(-1-\sqrt 3 i) = \ln 2 - 2\pi i/3$.
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 10: POWERS & TRIG ============== -->
+<section class="module" id="mod-10">
+<h1>Module 10 — Powers, Exponentials with Other Bases, Trig</h1>
+
+<h2>10.1 General power $z^c$</h2>
+<div class="def">
+For $z \neq 0$ and any complex $c$:
+$$z^c = e^{c \log z}.$$
+</div>
+
+<p>How many values? It depends on $c$:</p>
+<ul>
+<li>$c \in \mathbb{Z}$: <b>1 value</b> (no branch needed)</li>
+<li>$c = p/q$ in lowest terms: <b>$q$ values</b></li>
+<li>$c$ irrational or non-real: <b>infinitely many</b> values</li>
+</ul>
+
+<h3>Branch of $z^c$</h3>
+<p>Same idea as log: pick a branch of $\log z$ (cut a ray), and $z^c = e^{c \cdot (\text{branch of } \log)}$ is single-valued and analytic on the slit plane, with</p>
+<div class="formula-box">$$(z^c)' = c\, z^{c-1}.$$</div>
+
+<div class="example">
+<b>Compute the principal value of $i^i$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+$i = e^{i\pi/2}$, so $\operatorname{Log} i = i\pi/2$. Then
+$$i^i = e^{i \cdot i\pi/2} = e^{-\pi/2}.$$
+Yes, that's a real number! (All values: $e^{-\pi/2 - 2n\pi}$.)
+</div></details>
+</div>
+
+<h2>10.2 Exponential with base $c$</h2>
+<div class="def">
+For $c \neq 0$:
+$$c^z = e^{z \log c}.$$
+</div>
+<div class="note">
+Here $z$ is in the exponent, not in the log. So once you fix one branch of $\log c$ (i.e., pick one value), $c^z$ is <b>entire</b>! No branch cut needed.
+</div>
+
+<h2>10.3 Trigonometric functions</h2>
+<p>Inspired by $e^{ix} = \cos x + i\sin x$ and $e^{-ix} = \cos x - i\sin x$:</p>
+<div class="def">
+$$\sin z = \frac{e^{iz} - e^{-iz}}{2i}, \qquad \cos z = \frac{e^{iz} + e^{-iz}}{2}.$$
+</div>
+
+<h3>Properties (mostly the same as real)</h3>
+<ul>
+<li>$(\sin z)' = \cos z$, $(\cos z)' = -\sin z$ — entire functions.</li>
+<li>$\sin^2 z + \cos^2 z = 1$ ✓</li>
+<li>All addition formulas hold: $\sin(z_1+z_2) = \sin z_1 \cos z_2 + \cos z_1 \sin z_2$, etc.</li>
+<li>$\sin(-z) = -\sin z$ (odd), $\cos(-z) = \cos z$ (even).</li>
+</ul>
+
+<h3>The shocker: not bounded!</h3>
+<div class="warning">
+$\sin(iy) = (e^{-y} - e^y)/(2i) = i\sinh y$. As $y \to \infty$, $|\sin(iy)| \to \infty$. So $\sin, \cos$ are <b>unbounded</b> on $\mathbb{C}$.
+</div>
+
+<h3>Zeros</h3>
+<div class="thm sub">
+$\sin z = 0 \iff z = n\pi$, $\cos z = 0 \iff z = (n + \tfrac{1}{2})\pi$. (All real!)
+</div>
+
+<h2>10.4 Hyperbolic functions</h2>
+<div class="def">
+$$\sinh z = \frac{e^z - e^{-z}}{2}, \qquad \cosh z = \frac{e^z + e^{-z}}{2}.$$
+</div>
+<p>Useful identities:</p>
+<ul>
+<li>$\sinh(iz) = i\sin z$, $\cosh(iz) = \cos z$ — sinh/cosh and sin/cos are essentially the same in complex world!</li>
+<li>$\cosh^2 z - \sinh^2 z = 1$.</li>
+<li>$\sinh z = 0 \iff z = n\pi i$, $\cosh z = 0 \iff z = (n+\tfrac{1}{2})\pi i$. (All purely imaginary!)</li>
+</ul>
+
+<h2>10.5 Inverse trig</h2>
+<p>Solve $\sin w = z$ by setting $t = e^{iw}$ → quadratic equation in $t$:</p>
+<div class="formula-box">
+$$\sin^{-1} z = -i\, \log\!\left(iz + (1-z^2)^{1/2}\right)$$
+$$\cos^{-1} z = -i\, \log\!\left(z + i(1-z^2)^{1/2}\right)$$
+</div>
+<p>Both are multivalued; pick branches. Derivatives match real case: $(\sin^{-1} z)' = 1/\sqrt{1-z^2}$.</p>
+
+<div class="try">
+Compute all values of $\sin^{-1} i$.
+<details><summary>Solution</summary>
+<div class="proof">
+$\sin^{-1} i = -i\log(i\cdot i + (1 - i^2)^{1/2}) = -i \log(-1 + \sqrt 2)$.<br>
+$-1 + \sqrt 2 > 0$, so $\log(-1 + \sqrt 2) = \ln(\sqrt 2 - 1) + 2n\pi i$.<br>
+Or take the other root $\sqrt{}$ value: $-1 - \sqrt 2 < 0$, so $\log = \ln(\sqrt 2 + 1) + i\pi + 2n\pi i$.<br>
+Multiplying by $-i$ gives the values.
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 11: CONTOUR INTEGRATION ============== -->
+<section class="module" id="mod-11">
+<h1>Module 11 — Contour Integration</h1>
+<div class="intro">In real calculus you integrate over intervals. In complex analysis, you integrate over <b>curves</b> (contours). Everything that follows depends on this.</div>
+
+<h2>11.1 Integrals of complex-valued functions of a real variable</h2>
+<p>For $w(t) = u(t) + iv(t)$ continuous on $[a,b]$:</p>
+<div class="formula-box">
+$$\int_a^b w(t)\,dt = \int_a^b u(t)\,dt + i \int_a^b v(t)\,dt.$$
+</div>
+<p>Real and imaginary parts integrate separately. FTC: $\int_a^b W'(t)\,dt = W(b) - W(a)$.</p>
+
+<h2>11.2 Contours</h2>
+<div class="def">
+A <b>contour</b> $C$ is a piecewise-smooth curve, parametrized by $z(t): [a,b] \to \mathbb{C}$ with $z'(t) \neq 0$ except at finitely many corners.
+</div>
+
+<h2>11.3 Contour integral</h2>
+<div class="def">
+$$\int_C f(z)\,dz = \int_a^b f(z(t))\, z'(t)\, dt.$$
+</div>
+
+<h3>Recipe</h3>
+<ol>
+<li>Parametrize $C$ as $z(t)$.</li>
+<li>Substitute $z = z(t)$ into $f$.</li>
+<li>Multiply by $z'(t)$.</li>
+<li>Integrate the resulting (complex-valued) function of $t$ over $[a,b]$.</li>
+</ol>
+
+<div class="example">
+<b>Compute $\int_C z^2\, dz$ where $C$ is the upper semicircle $|z|=1$, from $1$ to $-1$.</b>
+<details open><summary>Solution</summary>
+<div class="proof">
+Parametrize: $z(\theta) = e^{i\theta}$, $\theta \in [0, \pi]$. Then $z' = ie^{i\theta}$, $z^2 = e^{2i\theta}$.
+$$\int_0^\pi e^{2i\theta}\cdot ie^{i\theta}\,d\theta = i\int_0^\pi e^{3i\theta}\,d\theta = i \cdot \left[\frac{e^{3i\theta}}{3i}\right]_0^\pi = \frac{e^{3i\pi}-1}{3} = \frac{-1-1}{3} = -\frac{2}{3}.$$
+</div></details>
+</div>
+
+<h2>11.4 Length of a contour</h2>
+<div class="formula-box">$$L = \int_a^b |z'(t)|\, dt$$</div>
+
+<h2>11.5 Crucial inequality (the "ML inequality")</h2>
+<div class="thm">
+If $|f(z)| \leq M$ on $C$ and $C$ has length $L$, then
+$$\left| \int_C f(z)\, dz \right| \leq M L.$$
+</div>
+<div class="note">We use this <b>everywhere</b> to show integrals vanish.</div>
+
+<h2>11.6 Antiderivative theorem</h2>
+<div class="thm">
+For $f$ continuous on a domain $D$, the following are <b>equivalent</b>:
+<ol>
+<li><b>(A)</b> $f$ has an antiderivative $F$ on $D$ (i.e., $F'=f$).</li>
+<li><b>(B)</b> $\int_C f\,dz$ depends only on the endpoints of $C$, not the path.</li>
+<li><b>(C)</b> $\int_C f\,dz = 0$ for every closed contour $C$ in $D$.</li>
+</ol>
+And if (A) holds, $\int_{z_1}^{z_2} f\,dz = F(z_2) - F(z_1)$.
+</div>
+
+<h3>Big example: $f(z) = 1/z$ on $\mathbb{C}\setminus\{0\}$</h3>
+<div class="example">
+$\oint_{|z|=1} \dfrac{dz}{z} = \int_0^{2\pi} \dfrac{1}{e^{i\theta}}\, ie^{i\theta}\,d\theta = \int_0^{2\pi} i\,d\theta = 2\pi i \neq 0$.<br>
+So <b>$1/z$ has no antiderivative on $\mathbb{C}\setminus\{0\}$</b>.<br>
+But on the <b>slit plane</b> (simply connected), $\operatorname{Log} z$ is an antiderivative.
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 12: CAUCHY-GOURSAT ============== -->
+<section class="module" id="mod-12">
+<h1>Module 12 — Cauchy–Goursat Theorem <span class="tag">⭐⭐</span></h1>
+<div class="intro">If a function is analytic, integrals around closed loops vanish. This is the cornerstone of everything that follows.</div>
+
+<h2>12.1 The theorem</h2>
+<div class="thm">
+Let $C$ be a simple closed contour and $f$ analytic on and inside $C$. Then
+$$\oint_C f(z)\, dz = 0.$$
+</div>
+
+<details><summary>Show easy proof using Green's theorem (assumes $f'$ continuous)</summary>
+<div class="proof">
+Write $f = u + iv$, $dz = dx + i\,dy$. So
+$$\oint_C f\,dz = \oint_C (u\,dx - v\,dy) + i\oint_C (v\,dx + u\,dy).$$
+By Green's theorem (need continuous partials):
+$$= \iint_R (-v_x - u_y)\,dA + i \iint_R (u_x - v_y)\,dA.$$
+By CR: $u_x = v_y$ and $u_y = -v_x$, so both integrands are $0$. Done.
+</div>
+</details>
+<details><summary>Goursat's full proof (no extra assumption — sketch)</summary>
+<div class="proof">
+Divide the region into many small squares. On each tiny square, write $f(z) = f(z_j) + f'(z_j)(z - z_j) + \delta_j(z)(z - z_j)$ with $\delta_j \to 0$. The constant and linear parts have antiderivatives, so their loop integrals are 0. The remainder is shown to vanish via the ML inequality as squares shrink. Adding contributions, interior edges cancel and only the original $C$ remains, giving 0.
+</div>
+</details>
+
+<h2>12.2 Massive corollary: simply connected case</h2>
+<div class="thm sub">
+If $D$ is simply connected and $f$ is analytic on $D$, then $\oint_C f\,dz = 0$ for every closed $C$ in $D$. So $f$ has an antiderivative on $D$.
+</div>
+
+<h2>12.3 Multiply connected domains: deformation</h2>
+<div class="thm sub">
+If $C_1, C_2$ are simple closed contours, $C_1$ inside $C_2$, both counterclockwise, and $f$ analytic in the region <b>between</b> them, then
+$$\oint_{C_1} f\,dz = \oint_{C_2} f\,dz.$$
+</div>
+
+<p>Picture: cut the annular region with two crosscuts to make a simply connected region whose boundary is $C_2$ minus $C_1$.</p>
+
+<div class="example">
+<b>Compute $\oint_C \dfrac{dz}{z}$ for any simple closed $C$ enclosing 0.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+By the deformation theorem, this equals the integral over the unit circle, which we computed: $2\pi i$. So <b>any</b> loop enclosing 0 gives $2\pi i$. (And any loop NOT enclosing 0 gives 0 by Cauchy–Goursat.)
+</div></details>
+</div>
+
+<h2>12.4 More general version</h2>
+<div class="thm sub">
+If $C$ is a simple closed (counterclockwise) contour, and $C_1, \ldots, C_n$ are simple closed contours inside $C$ (each counterclockwise, mutually disjoint), and $f$ analytic in the region inside $C$ but outside $C_1, \ldots, C_n$:
+$$\oint_C f\,dz = \sum_{k=1}^n \oint_{C_k} f\,dz.$$
+</div>
+<p>Used when $f$ has multiple isolated singularities — wrap a small loop around each.</p>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 13: CIF ============== -->
+<section class="module" id="mod-13">
+<h1>Module 13 — Cauchy Integral Formula <span class="tag">⭐⭐⭐</span></h1>
+<div class="intro">This is the magical formula. It says: if $f$ is analytic, the value <i>inside</i> the contour is determined by values <i>on</i> the contour. From this, all derivatives exist!</div>
+
+<h2>13.1 The CIF</h2>
+<div class="thm">
+Let $C$ be a simple closed contour (counterclockwise), $f$ analytic on and inside $C$, and $z_0$ inside $C$. Then
+$$f(z_0) = \frac{1}{2\pi i}\oint_C \frac{f(z)}{z - z_0}\, dz.$$
+</div>
+
+<details><summary>Proof sketch</summary>
+<div class="proof">
+$f(z)/(z-z_0)$ is analytic on the region bounded by $C$ and a small circle $C_\rho$ of radius $\rho$ around $z_0$. By the deformation theorem,
+$$\oint_C \frac{f(z)}{z-z_0}\,dz = \oint_{C_\rho} \frac{f(z)}{z-z_0}\,dz.$$
+On $C_\rho$, parametrize $z = z_0 + \rho e^{i\theta}$. As $\rho \to 0$, $f(z) \to f(z_0)$ (continuity), and the integral approaches $f(z_0) \int_0^{2\pi} i\,d\theta = 2\pi i\, f(z_0)$.
+</div>
+</details>
+
+<h2>13.2 Extension: all derivatives</h2>
+<div class="thm">
+Under the same hypotheses:
+$$f^{(n)}(z_0) = \frac{n!}{2\pi i}\oint_C \frac{f(z)}{(z - z_0)^{n+1}}\,dz.$$
+</div>
+
+<h2>13.3 Earth-shattering consequences</h2>
+<div class="thm sub">
+<b>Analytic ⟹ infinitely differentiable.</b>
+</div>
+<p>Why: the CIF expresses $f(z_0)$ as an integral. Differentiate under the integral sign — you can differentiate $1/(z-z_0)$ as many times as you want. So all derivatives $f^{(n)}$ exist.</p>
+
+<div class="thm sub">
+If $f$ has an antiderivative on $D$, then $f$ is analytic.
+</div>
+<p>Why: if $F' = f$, then $F$ analytic ⟹ $F$ has all derivatives ⟹ $F''$ exists ⟹ $f' = F''$ exists ⟹ $f$ analytic.</p>
+
+<h2>13.4 Worked example</h2>
+<div class="example">
+<b>Compute $\oint_{|z|=1} \dfrac{\cos z}{z^2 + 9}\,dz$.</b>
+<details open><summary>Solution</summary>
+<div class="proof">
+The denominator is zero at $z = \pm 3i$, both <b>outside</b> the unit circle. So the integrand factor $\cos z/(z^2+9)$ is analytic inside. Treat as $f(z)/z$ where $f(z) = \cos z/(z^2+9)$:
+$$\oint \frac{f(z)}{z - 0}\,dz = 2\pi i\, f(0) = 2\pi i \cdot \frac{1}{9} = \frac{2\pi i}{9}.$$
+</div></details>
+</div>
+
+<div class="example">
+<b>Compute $\oint_{|z|=1} \dfrac{e^{2z}}{z^4}\,dz$.</b>
+<details open><summary>Solution</summary>
+<div class="proof">
+Use the extended formula with $f(z) = e^{2z}$, $z_0 = 0$, $n = 3$ (since $z^4 = z^{n+1}$):
+$$\oint \frac{e^{2z}}{z^4}\,dz = \frac{2\pi i}{3!}\, f^{(3)}(0).$$
+$f^{(3)}(z) = 8e^{2z}$, so $f^{(3)}(0) = 8$. Answer: $\dfrac{2\pi i \cdot 8}{6} = \dfrac{8\pi i}{3}$.
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 14: LIOUVILLE & FTA ============== -->
+<section class="module" id="mod-14">
+<h1>Module 14 — Liouville & Fundamental Theorem of Algebra</h1>
+
+<h2>14.1 Liouville's theorem</h2>
+<div class="thm">
+A bounded entire function is constant.
+</div>
+<details><summary>Proof (clean and short!)</summary>
+<div class="proof">
+Suppose $|f(z)| \leq M$ for all $z$. Pick any $z_0$ and $R > 0$. By the CIF derivative formula on the circle $|z - z_0| = R$:
+$$|f'(z_0)| = \left|\frac{1}{2\pi i}\oint \frac{f(z)}{(z-z_0)^2}\,dz\right| \leq \frac{1}{2\pi}\cdot 2\pi R \cdot \frac{M}{R^2} = \frac{M}{R}.$$
+Let $R \to \infty$: $f'(z_0) = 0$. Since $z_0$ was arbitrary, $f' \equiv 0$, so $f$ is constant. $\blacksquare$
+</div>
+</details>
+
+<div class="warning">
+This dramatically fails in real analysis! $\sin x$ is bounded and infinitely differentiable on $\mathbb{R}$. The complex sine, by contrast, is unbounded — and that's <i>required</i>, by Liouville.
+</div>
+
+<h2>14.2 Fundamental Theorem of Algebra</h2>
+<div class="thm">
+Every non-constant complex polynomial has at least one root in $\mathbb{C}$.
+</div>
+<details><summary>Proof using Liouville</summary>
+<div class="proof">
+Suppose $P(z)$ has no roots. Then $1/P(z)$ is entire. We show it's bounded.<br>
+For $|z|$ large enough, the leading term $a_n z^n$ dominates and $|P(z)| \geq |a_n||z|^n / 2$, so $|1/P(z)|$ is small. On any bounded compact set, $1/P$ is continuous, hence bounded.<br>
+So $1/P$ is entire and bounded ⟹ constant ⟹ $P$ constant. Contradiction.
+</div>
+</details>
+
+<h3>Stronger form</h3>
+<div class="thm sub">
+A degree-$n$ polynomial $P(z) = a_n z^n + \cdots + a_0$ factors as
+$$P(z) = a_n(z - z_1)(z - z_2)\cdots(z - z_n)$$
+(the $z_k$ may repeat).
+</div>
+<p>By induction: find one root $z_1$, divide out $(z - z_1)$, get a degree $(n-1)$ poly, repeat.</p>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 15: MAX MODULUS ============== -->
+<section class="module" id="mod-15">
+<h1>Module 15 — Maximum Modulus Principle</h1>
+
+<h2>15.1 The principle</h2>
+<div class="thm">
+If $f$ is analytic on a domain $D$ and $|f|$ attains a maximum at some interior point $z_0 \in D$, then $f$ is constant on $D$.
+</div>
+<p>In other words: <b>$|f|$ can only attain its max on the boundary</b> (unless $f$ is constant).</p>
+
+<h2>15.2 Local version</h2>
+<div class="lemma">
+If $f$ is analytic on a disk $|z - z_0| < R$ and $|f(z)| \leq |f(z_0)|$ for all $z$ in this disk, then $f$ is constant on the disk.
+</div>
+<details><summary>Proof using CIF (mean value property)</summary>
+<div class="proof">
+For any $r < R$, $f(z_0) = \frac{1}{2\pi}\int_0^{2\pi} f(z_0 + re^{i\theta})\,d\theta$ (CIF on circle of radius $r$).<br>
+Take absolute values, apply $|f| \leq |f(z_0)|$ inside the integral:
+$$|f(z_0)| \leq \frac{1}{2\pi}\int_0^{2\pi} |f(z_0 + re^{i\theta})|\,d\theta \leq |f(z_0)|.$$
+Both bounds match ⟹ $|f(z_0 + re^{i\theta})| = |f(z_0)|$ for all $\theta$. So $|f|$ is constant on each circle, hence on the disk. Then $f$ is constant.
+</div>
+</details>
+
+<p>The global version follows: cover any path from one point to another with overlapping disks.</p>
+
+<h2>15.3 Useful applications</h2>
+<ul>
+<li>If $f$ analytic on a closed bounded region, $|f|$ attains its max <b>on the boundary</b>.</li>
+<li><b>Schwarz lemma</b> (variant): if $f$ analytic on $|z|<1$, $f(0)=0$, $|f|\leq 1$, then $|f(z)| \leq |z|$ everywhere.</li>
+</ul>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 16: POWER SERIES ============== -->
+<section class="module" id="mod-16">
+<h1>Module 16 — Sequences and Power Series</h1>
+
+<h2>16.1 Sequences</h2>
+<p>$\{z_n\}$ converges to $z_0$ if $|z_n - z_0| \to 0$. Equivalent to: real and imaginary parts both converge.</p>
+<p>$\sum z_n$ converges if partial sums converge. Standard tests work (absolute convergence, comparison, ratio).</p>
+
+<h2>16.2 Power series</h2>
+<div class="def">
+A <b>power series</b> centered at $z_0$ is
+$$\sum_{n=0}^\infty a_n (z - z_0)^n.$$
+</div>
+
+<h2>16.3 Radius of convergence</h2>
+<div class="thm">
+For each power series, there exists $R \in [0, \infty]$ — the <b>radius of convergence</b> — such that:
+<ul>
+<li>The series <b>converges absolutely</b> for $|z - z_0| < R$.</li>
+<li>It <b>diverges</b> for $|z - z_0| > R$.</li>
+<li>On $|z - z_0| < R$, convergence is uniform on compact subsets.</li>
+</ul>
+The formula:
+$$\frac{1}{R} = \limsup_{n\to\infty} |a_n|^{1/n}.$$
+</div>
+
+<div class="example">
+$\sum z^n$: $a_n = 1$, $\limsup |a_n|^{1/n} = 1$, so $R = 1$. Converges for $|z| < 1$ to $1/(1-z)$.
+</div>
+
+<h2>16.4 Power series define analytic functions</h2>
+<div class="thm">
+A power series with radius $R > 0$ defines an analytic function on $|z - z_0| < R$, and you can <b>differentiate term by term</b>:
+$$f'(z) = \sum_{n=1}^\infty n\, a_n (z - z_0)^{n-1},$$
+also valid on $|z - z_0| < R$.
+</div>
+
+<h2>16.5 Term-by-term integration</h2>
+<div class="thm sub">
+On any contour $C$ inside the disk of convergence:
+$$\int_C f(z)\, g(z)\, dz = \sum_{n=0}^\infty a_n \int_C g(z)(z - z_0)^n\, dz$$
+(uniform convergence allows swapping integral and sum).
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 17: TAYLOR & LAURENT ============== -->
+<section class="module" id="mod-17">
+<h1>Module 17 — Taylor and Laurent Series <span class="tag">⭐</span></h1>
+<div class="intro">If $f$ is analytic, you can expand it as a power series. If $f$ has a singularity, you extend with negative powers — the Laurent series. The coefficient $b_1$ in the Laurent series will become THE residue.</div>
+
+<h2>17.1 Taylor's theorem</h2>
+<div class="thm">
+If $f$ is analytic on $|z - z_0| < R$, then for all $z$ in this disk:
+$$f(z) = \sum_{n=0}^\infty \frac{f^{(n)}(z_0)}{n!}(z - z_0)^n.$$
+</div>
+<div class="warning">
+In real analysis, you need extra hypotheses (bounded derivatives) for Taylor series to converge to $f$. <b>In complex, analytic alone is enough!</b>
+</div>
+
+<details><summary>Proof idea</summary>
+<div class="proof">
+Use CIF. For $z$ inside $|s - z_0| = R'$, write $1/(s-z) = \sum (z-z_0)^n / (s-z_0)^{n+1}$ (geometric series). Plug into CIF and integrate term by term — the coefficients become $f^{(n)}(z_0)/n!$ by the extended CIF.
+</div></details>
+
+<h3>Common Taylor series at $z_0 = 0$</h3>
+<div class="formula-box">
+$\dfrac{1}{1-z} = \sum_{n=0}^\infty z^n$, valid for $|z|<1$<br>
+$e^z = \sum \dfrac{z^n}{n!}$, valid everywhere<br>
+$\sin z = \sum \dfrac{(-1)^n z^{2n+1}}{(2n+1)!}$, valid everywhere<br>
+$\cos z = \sum \dfrac{(-1)^n z^{2n}}{(2n)!}$, valid everywhere
+</div>
+
+<h2>17.2 Laurent series</h2>
+<div class="thm">
+If $f$ is analytic on an annulus $R_1 < |z - z_0| < R_2$, then for all $z$ in the annulus:
+$$f(z) = \underbrace{\sum_{n=0}^\infty a_n (z - z_0)^n}_{\text{regular part}} + \underbrace{\sum_{n=1}^\infty \frac{b_n}{(z - z_0)^n}}_{\text{principal part}}.$$
+The coefficients are uniquely determined by $f$.
+</div>
+
+<h2>17.3 Practical: compute series by tricks, not the formula</h2>
+<p>The textbook formula for $a_n, b_n$ is rarely useful. Instead:</p>
+
+<div class="example">
+<b>Laurent series of $f(z) = \dfrac{1}{z(1+z^2)}$ for $0 < |z| < 1$.</b>
+<details open><summary>Solution</summary>
+<div class="proof">
+$\dfrac{1}{1+z^2} = \dfrac{1}{1-(-z^2)} = \sum_{n=0}^\infty (-z^2)^n = \sum_{n=0}^\infty (-1)^n z^{2n}$ for $|z| < 1$.<br>
+Multiply by $1/z$:
+$$f(z) = \frac{1}{z} - z + z^3 - z^5 + \cdots$$
+The principal part is just $1/z$; coefficient $b_1 = 1$.
+</div></details>
+</div>
+
+<div class="example">
+<b>Same function $f$, but for $|z| > 1$.</b>
+<details open><summary>Solution</summary>
+<div class="proof">
+Now $|1/z^2| < 1$. Write $\dfrac{1}{1+z^2} = \dfrac{1}{z^2}\dfrac{1}{1 + 1/z^2} = \dfrac{1}{z^2}\sum (-1/z^2)^n = \sum \dfrac{(-1)^n}{z^{2n+2}}$.<br>
+Multiply by $1/z$: $f(z) = \sum \dfrac{(-1)^n}{z^{2n+3}}$ for $|z| > 1$. Different region, different series!
+</div></details>
+</div>
+
+<div class="warning">
+<b>Series depends on the annulus.</b> Same function, same center, different annulus → different series. Always specify the region.
+</div>
+
+<h2>17.4 Identity theorem</h2>
+<div class="thm">
+If $f, g$ analytic on a domain $D$ and $f = g$ on a small subdomain (or even on a non-trivial line segment, or on any sequence with a limit point in $D$), then $f \equiv g$ on all of $D$.
+</div>
+<p>Stunning consequence: tiny information determines the function globally. (Compare to real analysis where you can patch smoothly varying functions on disjoint pieces.)</p>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 18: SINGULARITIES ============== -->
+<section class="module" id="mod-18">
+<h1>Module 18 — Isolated Singularities</h1>
+
+<h2>18.1 Three types</h2>
+<div class="def">
+$z_0$ is an <b>isolated singularity</b> of $f$ if $f$ is analytic on some deleted neighborhood $0 < |z - z_0| < r$, but not at $z_0$.
+</div>
+
+<p>Look at the principal part of the Laurent series at $z_0$:</p>
+<table>
+<tr><th>Type</th><th>Principal part</th><th>Equivalent</th></tr>
+<tr><td>Removable</td><td>$= 0$ (no negative powers)</td><td>$f$ is bounded near $z_0$. Define $f(z_0) = a_0$ and $f$ becomes analytic.</td></tr>
+<tr><td>Pole of order $m$</td><td>finitely many terms, largest is $b_m/(z-z_0)^m$</td><td>$|f(z)| \to \infty$ as $z \to z_0$. Equivalently $(z-z_0)^m f(z)$ is analytic and nonzero at $z_0$.</td></tr>
+<tr><td>Essential</td><td>infinitely many nonzero $b_n$</td><td><b>Casorati–Weierstrass:</b> image of any deleted neighborhood is dense in $\mathbb{C}$ (function "goes everywhere").</td></tr>
+</table>
+
+<h2>18.2 Examples</h2>
+<div class="example">
+$f(z) = \dfrac{\sin z}{z}$ at $z=0$: $\sin z = z - z^3/6 + \cdots$, so $f(z) = 1 - z^2/6 + \cdots$ — Taylor series, no principal part. <b>Removable.</b> Defining $f(0) = 1$ makes $f$ entire.
+</div>
+<div class="example">
+$f(z) = \dfrac{1}{z^2(1-z)}$ at $z=0$: expand $\dfrac{1}{1-z} = 1 + z + z^2 + \cdots$, so $f = \dfrac{1}{z^2} + \dfrac{1}{z} + 1 + z + \cdots$. Largest negative power is $1/z^2$. <b>Pole of order 2.</b>
+</div>
+<div class="example">
+$f(z) = e^{1/z}$ at $z=0$: $e^{1/z} = \sum \dfrac{1}{n!\, z^n}$. Infinitely many negative powers. <b>Essential.</b>
+</div>
+
+<h2>18.3 Zeros and poles</h2>
+<div class="def">
+$f$ has a <b>zero of order $m$</b> at $z_0$ if $f(z) = (z-z_0)^m g(z)$ where $g$ is analytic and $g(z_0) \neq 0$.
+</div>
+<div class="thm sub">
+Zeros of a non-constant analytic function are <b>isolated</b>.
+</div>
+
+<div class="thm sub">
+If $f_1(z_0) \neq 0$ and $f_2$ has a zero of order $m$ at $z_0$, then $f_1/f_2$ has a <b>pole of order $m$</b> at $z_0$.
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 19: RESIDUES ============== -->
+<section class="module" id="mod-19">
+<h1>Module 19 — Residues <span class="tag">⭐⭐⭐</span></h1>
+<div class="intro">The residue is just the coefficient $b_1$ in the Laurent series. But it controls the entire integral around the singularity. This is the most powerful tool you'll learn.</div>
+
+<h2>19.1 Definition</h2>
+<div class="def">
+If $z_0$ is an isolated singularity of $f$ with Laurent expansion $\sum a_n (z-z_0)^n + \sum b_n/(z-z_0)^n$, the <b>residue</b> is
+$$\operatorname{Res}_{z = z_0} f = b_1.$$
+</div>
+
+<p>Equivalent integral definition: for any small circle $C$ around $z_0$,</p>
+<div class="formula-box">$$\operatorname{Res}_{z=z_0} f = \frac{1}{2\pi i}\oint_C f(z)\,dz.$$</div>
+
+<h2>19.2 Cauchy's residue theorem</h2>
+<div class="thm">
+Let $C$ be a simple closed contour (counterclockwise) and $f$ analytic on and inside $C$ except at finitely many isolated singularities $z_1, \ldots, z_n$ inside $C$. Then
+$$\oint_C f(z)\,dz = 2\pi i \sum_{k=1}^n \operatorname{Res}_{z = z_k} f.$$
+</div>
+
+<h2>19.3 How to compute residues — practical formulas</h2>
+
+<h3>Simple pole (order 1)</h3>
+<div class="thm sub">
+$$\operatorname{Res}_{z=z_0} f = \lim_{z \to z_0} (z - z_0) f(z).$$
+</div>
+
+<h3>Quotient at simple pole</h3>
+<div class="thm sub">
+If $f = p/q$, $p(z_0) \neq 0$, $q(z_0) = 0$ but $q'(z_0) \neq 0$:
+$$\operatorname{Res}_{z=z_0} \frac{p}{q} = \frac{p(z_0)}{q'(z_0)}.$$
+</div>
+
+<h3>Pole of order $m$</h3>
+<div class="thm sub">
+Let $\varphi(z) = (z - z_0)^m f(z)$ (which becomes analytic and nonzero at $z_0$). Then
+$$\operatorname{Res}_{z=z_0} f = \frac{\varphi^{(m-1)}(z_0)}{(m-1)!}.$$
+</div>
+
+<h2>19.4 Worked examples</h2>
+
+<div class="example">
+<b>$\operatorname{Res}_{z=i} \dfrac{z+4}{z^2+1}$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+$z^2+1 = (z-i)(z+i)$. Simple pole at $z=i$. Use $p/q'$ formula: $p(i) = i+4$, $q'(z) = 2z$, $q'(i) = 2i$. Residue $= (i+4)/(2i) = 1/2 - 2i$ (after simplification).
+</div></details>
+</div>
+
+<div class="example">
+<b>$\operatorname{Res}_{z=i} \dfrac{z^3 + 2z}{(z-i)^3}$.</b>
+<details><summary>Solution</summary>
+<div class="proof">
+Pole of order 3. $\varphi(z) = (z-i)^3 f(z) = z^3 + 2z$. Take $\varphi''(z)$ and divide by $2!$:<br>
+$\varphi'' = 6z$. So $\operatorname{Res} = 6i / 2 = 3i$.
+</div></details>
+</div>
+
+<div class="example">
+<b>$\operatorname{Res}_{z=0} \dfrac{1 - \cos z}{z^3}$ — careful, looks like order 3, but isn't!</b>
+<details><summary>Solution</summary>
+<div class="proof">
+$1 - \cos z = z^2/2 - z^4/24 + \cdots$. So $f(z) = (z^2/2 - z^4/24 + \cdots)/z^3 = 1/(2z) - z/24 + \cdots$.<br>
+The actual order is 1, and $\operatorname{Res} = 1/2$.<br>
+<b>Lesson:</b> always verify $\varphi(z_0) \neq 0$ before using the order-$m$ formula! Otherwise you got the order wrong.
+</div></details>
+</div>
+
+<h2>19.5 Residue at infinity (occasionally useful)</h2>
+<div class="def">
+For $f$ analytic outside some disk:
+$$\operatorname{Res}_{z=\infty} f = -\operatorname{Res}_{w=0}\frac{1}{w^2} f\!\left(\frac{1}{w}\right).$$
+</div>
+<p>If $C$ encloses <i>all</i> singularities, $\oint_C f\, dz = -2\pi i\,\operatorname{Res}_{\infty} f$. Useful when there are many finite singularities — sometimes the residue at $\infty$ is easier.</p>
+
+<div class="try">
+Compute $\oint_{|z|=2} \dfrac{z+1}{z(z-1)}\,dz$.
+<details><summary>Solution</summary>
+<div class="proof">
+Poles at $z=0$ (residue $= (0+1)/(0-1) = -1$) and $z=1$ (residue $= (1+1)/1 = 2$). Both inside.<br>
+Integral $= 2\pi i (-1 + 2) = 2\pi i$.
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 20: REAL INTEGRALS RATIONAL ============== -->
+<section class="module" id="mod-20">
+<h1>Module 20 — Real Integrals via Residues (Rational Functions)</h1>
+<div class="intro">Now we cash in. Hard real integrals — that you'd need clever substitutions or have no elementary form — fall to residues in two lines.</div>
+
+<h2>20.1 The recipe</h2>
+<p>To compute $\int_{-\infty}^\infty f(x)\,dx$ where $f$ is rational, no real poles, $\deg(\text{denom}) \geq \deg(\text{numer}) + 2$:</p>
+<ol>
+<li>Replace $x$ with complex $z$: get $f(z)$.</li>
+<li>Take the contour: $[-R, R]$ on the real axis, plus the upper semicircle $C_R$.</li>
+<li>By the residue theorem: $\int_{-R}^R + \int_{C_R} = 2\pi i \sum (\text{residues in upper half-plane})$.</li>
+<li>Show $\int_{C_R} \to 0$ as $R \to \infty$ via the ML inequality.</li>
+<li>Get $\int_{-\infty}^\infty f(x)\,dx = 2\pi i \sum (\text{residues in UHP})$.</li>
+</ol>
+
+<h2>20.2 Detailed example: $\int_0^\infty \dfrac{dx}{x^6 + 1}$</h2>
+<div class="example">
+<details open><summary>Full solution</summary>
+<div class="proof">
+<b>Step 1.</b> $f(z) = 1/(z^6+1)$. Singularities: $z^6 = -1$, so $z_k = e^{i(2k+1)\pi/6}$ for $k = 0, \ldots, 5$. Three are in the upper half plane: $z_0 = e^{i\pi/6}$, $z_1 = e^{i\pi/2} = i$, $z_2 = e^{i 5\pi/6}$.<br>
+<b>Step 2.</b> Each is a simple pole. Use $p/q'$ formula: $\operatorname{Res} = 1/(6 z_k^5)$.<br>
+Since $z_k^6 = -1$, $z_k^5 = -1/z_k$. So $\operatorname{Res} = -z_k/6$.<br>
+<b>Step 3.</b> Sum: $-(z_0 + z_1 + z_2)/6$.<br>
+$z_0 + z_2 = 2\cos(\pi/6) \cdot e^{i\pi/2} = i\sqrt 3$ (using sum-to-product, or just imag parts: $\sin(\pi/6) + \sin(5\pi/6) = 1$, real parts cancel).<br>
+Actually let me recompute: $z_0 = \cos(\pi/6) + i\sin(\pi/6) = \tfrac{\sqrt 3}{2} + \tfrac{i}{2}$. $z_2 = \cos(5\pi/6) + i\sin(5\pi/6) = -\tfrac{\sqrt 3}{2} + \tfrac{i}{2}$. Sum: $i$. Plus $z_1 = i$. Total $= 2i$.<br>
+So sum of residues $= -2i/6 = -i/3$.<br>
+<b>Step 4.</b> $\int_{-R}^R + \int_{C_R} = 2\pi i \cdot (-i/3) = 2\pi/3$.<br>
+<b>Step 5.</b> On $C_R$: $|f| \leq 1/(R^6 - 1)$, length $\pi R$. So $|\int_{C_R}| \leq \pi R/(R^6 - 1) \to 0$.<br>
+<b>Step 6.</b> $\text{PV}\int_{-\infty}^\infty \dfrac{dx}{x^6+1} = 2\pi/3$. Since integrand is even, $\int_0^\infty = \pi/3$. ✓
+</div></details>
+</div>
+
+<h2>20.3 Why $\int_{C_R} \to 0$</h2>
+<p>For a rational function $f = P/Q$ with $\deg Q \geq \deg P + 2$, on $|z| = R$ large: $|f(z)| \leq M/R^2$ approximately. Length of $C_R$ is $\pi R$. So $|\int_{C_R}| \leq \pi R \cdot M/R^2 = \pi M/R \to 0$.</p>
+
+<div class="warning">
+The degree gap of <b>at least 2</b> is what makes this work. With gap of just 1, you'd need Jordan's lemma (next module).
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 21: TRIG INTEGRALS & JORDAN ============== -->
+<section class="module" id="mod-21">
+<h1>Module 21 — Real Integrals with $\sin/\cos$ &amp; Jordan's Lemma</h1>
+
+<h2>21.1 The trick: replace $\cos ax, \sin ax$ with $e^{iaz}$</h2>
+<div class="warning">
+<b>Don't</b> use $\cos z$ or $\sin z$ in your contour integral! They're unbounded on the upper half plane.<br>
+Instead, use $e^{iaz}$: on the upper half plane ($y \geq 0$, $a > 0$),
+$$|e^{iaz}| = |e^{ia(x+iy)}| = e^{-ay} \leq 1.$$
+Bounded! Then take real or imaginary part of the answer.
+</div>
+
+<h2>21.2 Worked example</h2>
+<div class="example">
+<b>Compute $\int_0^\infty \dfrac{\cos 2x}{(x^2 + 4)^2}\, dx$.</b>
+<details open><summary>Full solution</summary>
+<div class="proof">
+<b>Step 1.</b> $f(z) = \dfrac{e^{i 2z}}{(z^2+4)^2}$. The desired integral is $\tfrac{1}{2}\operatorname{Re}\,\text{PV}\int_{-\infty}^\infty f(x)\,dx$ (using evenness).<br>
+<b>Step 2.</b> Singularities: $z = \pm 2i$. Only $z = 2i$ in UHP. It's a pole of order 2.<br>
+<b>Step 3.</b> $\varphi(z) = (z-2i)^2 f(z) = e^{i2z}/(z+2i)^2$. Take derivative:
+$$\varphi'(z) = \frac{2i(z+2i)^2 e^{i2z} - e^{i2z}\cdot 2(z+2i)}{(z+2i)^4} = e^{i2z}\frac{2i(z+2i) - 2}{(z+2i)^3}.$$
+At $z = 2i$: $\varphi'(2i) = e^{-4}\cdot \dfrac{2i(4i) - 2}{(4i)^3} = e^{-4}\cdot\dfrac{-8 - 2}{-64i} = \dfrac{-10 e^{-4}}{-64 i} = \dfrac{10 e^{-4}}{64 i} = \dfrac{5 e^{-4}}{32 i}$.<br>
+$\operatorname{Res} = \varphi'(2i) = \dfrac{5 e^{-4}}{32 i} = -\dfrac{5i e^{-4}}{32}$.<br>
+<b>Step 4.</b> $\int_{-R}^R + \int_{C_R} = 2\pi i \cdot (-5i e^{-4}/32) = \dfrac{10\pi e^{-4}}{32} = \dfrac{5\pi e^{-4}}{16}$.<br>
+<b>Step 5.</b> On $C_R$: $|f| \leq 1 \cdot 1/(R^2-4)^2$. Times length $\pi R$: $\to 0$.<br>
+<b>Step 6.</b> $\text{PV}\int_{-\infty}^\infty f(x)\,dx = 5\pi e^{-4}/16$. Take real part (it's already real): $5\pi e^{-4}/16$.<br>
+By evenness: $\int_0^\infty \cos 2x/(x^2+4)^2\, dx = 5\pi/(32 e^4)$.
+</div></details>
+</div>
+
+<h2>21.3 Jordan's lemma</h2>
+<p>When the degree gap isn't enough for the basic ML estimate, but you have an $e^{iaz}$ factor:</p>
+<div class="thm">
+Suppose $g(z)$ is analytic on the upper half plane outside some disk, and $\max_{C_R} |g(z)| = M_R \to 0$ as $R \to \infty$. Then for any $a > 0$:
+$$\int_{C_R} g(z)\, e^{iaz}\, dz \to 0.$$
+</div>
+
+<details><summary>Proof using a clever bound</summary>
+<div class="proof">
+$|e^{iaz}| = e^{-ay} = e^{-aR\sin\theta}$ on $C_R$. Using <b>Jordan's inequality</b> $\sin\theta \geq 2\theta/\pi$ for $\theta \in [0, \pi/2]$:
+$$\int_{C_R} |g\, e^{iaz}|\,|dz| \leq M_R\, R \int_0^\pi e^{-aR\sin\theta}\,d\theta \leq M_R \cdot R \cdot \frac{\pi}{aR} = \frac{\pi M_R}{a} \to 0.$$
+</div></details>
+
+<h2>21.4 Example needing Jordan</h2>
+<div class="example">
+<b>$\int_0^\infty \dfrac{x \sin 2x}{x^2 + 3}\, dx = \dfrac{\pi}{2} e^{-2\sqrt 3}$.</b>
+<details><summary>Why we need Jordan</summary>
+<div class="proof">
+$f(z) = z e^{i 2z}/(z^2 + 3)$. The naive ML bound gives $|f| \leq R/(R^2 - 3)$, length $\pi R$, so bound $\sim \pi R^2/R^2 \not\to 0$.<br>
+But write $f(z) = g(z) e^{i 2z}$ with $g(z) = z/(z^2+3)$. On $C_R$: $|g| \leq R/(R^2 - 3) \to 0$. So Jordan's lemma applies. ✓
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 22: INDENTED PATHS ============== -->
+<section class="module" id="mod-22">
+<h1>Module 22 — Indented Paths &amp; Branch Cut Contours</h1>
+
+<h2>22.1 When there's a pole on the real axis</h2>
+<p>If $f$ has a simple pole at a real point $x_0$, you can't run your contour through it. <b>Indent</b> with a small semicircle.</p>
+
+<div class="thm">
+If $f$ has a simple pole at $z = x_0 \in \mathbb{R}$ with residue $r$, and $C_\rho$ is the small clockwise upper semicircle of radius $\rho$ around $x_0$, then
+$$\lim_{\rho \to 0^+} \int_{C_\rho} f(z)\,dz = -i\pi\, r.$$
+</div>
+<p>Half of $2\pi i$, with a sign flip because we go clockwise. (If you go counterclockwise instead, it's $+i\pi r$.)</p>
+
+<h2>22.2 The classic: Dirichlet integral</h2>
+<div class="example">
+<b>$\displaystyle\int_0^\infty \frac{\sin x}{x}\, dx = \frac{\pi}{2}$.</b>
+<details open><summary>Full solution</summary>
+<div class="proof">
+<b>Step 1.</b> $f(z) = e^{iz}/z$. Singularity at $z = 0$ — on the real axis!<br>
+<b>Step 2.</b> Use the indented contour: $[-R, -\rho]$, small semicircle $C_\rho$ around 0 (clockwise), $[\rho, R]$, large semicircle $C_R$.<br>
+<b>Step 3.</b> No singularities inside, so the closed-contour integral is $0$.<br>
+<b>Step 4.</b> By Jordan (applied to $g(z) = 1/z$, $|g| = 1/R$ on $C_R$): $\int_{C_R} \to 0$.<br>
+<b>Step 5.</b> Indented-pole result: $\operatorname{Res}_{z=0} (e^{iz}/z) = 1$. So $\int_{C_\rho} \to -i\pi$.<br>
+<b>Step 6.</b> $\int_{-R}^{-\rho} + \int_{\rho}^R + (\to 0) + (\to -i\pi) = 0$. So<br>
+$\text{PV}\int_{-\infty}^\infty \dfrac{e^{ix}}{x}\,dx = i\pi$.<br>
+Take imaginary part: $\text{PV}\int \dfrac{\sin x}{x}\,dx = \pi$. By evenness (of $\sin x/x$): $\int_0^\infty = \pi/2$. ✓
+</div></details>
+</div>
+
+<h2>22.3 Branch cut contours</h2>
+<p>For integrals like $\int_0^\infty x^{-a}/(x+1)\,dx$, the branch cut is along the positive real axis. Use a "keyhole" contour:</p>
+<ul>
+<li>Line just above positive real axis (outgoing): $z = x$, gives $x^{-a}$.</li>
+<li>Big circle $C_R$.</li>
+<li>Line just below positive real axis (returning): $z = xe^{2\pi i}$, gives $x^{-a} e^{-2\pi i a}$.</li>
+<li>Small circle $C_\rho$ around 0.</li>
+</ul>
+
+<div class="example">
+<b>$\displaystyle\int_0^\infty \frac{x^{-a}}{x + 1}\, dx = \frac{\pi}{\sin a\pi}$ for $0 < a < 1$.</b>
+<details open><summary>Full solution</summary>
+<div class="proof">
+$f(z) = z^{-a}/(z+1)$ with branch $\theta \in (0, 2\pi)$.<br>
+<b>Above real axis:</b> $z = x$, integrate $\int_\rho^R f(x)\,dx$.<br>
+<b>Below real axis:</b> $z = xe^{2\pi i}$, $z^{-a} = x^{-a} e^{-2\pi i a}$. Going right-to-left is opposite orientation. Integral becomes $-e^{-2\pi i a}\int_\rho^R f(x)\,dx$.<br>
+<b>Big circle:</b> $|f| \leq R^{-a}/(R-1)$, length $2\pi R$. Bound $\sim R^{1-a}/R \to 0$ since $a > 0$.<br>
+<b>Small circle:</b> $|f| \leq \rho^{-a}/(1-\rho)$, length $2\pi\rho$. Bound $\sim \rho^{1-a} \to 0$ since $a < 1$.<br>
+<b>Single pole inside:</b> $z = -1$, residue $= (-1)^{-a} = e^{-i\pi a}$ (using branch).<br>
+<b>Combine:</b> $(1 - e^{-2\pi i a})\int_0^\infty f(x)\,dx = 2\pi i \cdot e^{-i\pi a}$.<br>
+Multiply numerator and denominator by $e^{i\pi a}$:
+$$\int_0^\infty \frac{x^{-a}}{x+1}\,dx = \frac{2\pi i\, e^{-i\pi a}}{1 - e^{-2\pi i a}} = \frac{2\pi i}{e^{i\pi a} - e^{-i\pi a}} = \frac{\pi}{\sin a\pi}. \quad \blacksquare$$
+</div></details>
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="next()">Next →</button></div>
+</section>
+
+<!-- ============== MODULE 23: SUMMARY ============== -->
+<section class="module" id="mod-23">
+<h1>🎯 Final Summary &amp; Cheat Sheet</h1>
+
+<div class="intro">
+You made it! Here's a one-page mental map of everything in the course.
+</div>
+
+<h2>Core formulas — memorize these</h2>
+<div class="formula-box">
+<b>Euler:</b> $e^{i\theta} = \cos\theta + i\sin\theta$<br>
+<b>Modulus identity:</b> $z\bar z = |z|^2$<br>
+<b>CR equations:</b> $u_x = v_y$, $u_y = -v_x$<br>
+<b>Derivative formula:</b> $f' = u_x + iv_x$<br>
+<b>Cauchy integral formula:</b> $f^{(n)}(z_0) = \dfrac{n!}{2\pi i}\oint \dfrac{f(z)}{(z-z_0)^{n+1}}\,dz$<br>
+<b>Residue theorem:</b> $\oint_C f\,dz = 2\pi i \sum \operatorname{Res}$<br>
+<b>Simple-pole residue:</b> $\operatorname{Res} = \lim_{z \to z_0}(z-z_0)f(z)$<br>
+<b>Order-$m$ pole:</b> $\operatorname{Res} = \dfrac{1}{(m-1)!}\dfrac{d^{m-1}}{dz^{m-1}}\big[(z-z_0)^m f(z)\big]\Big|_{z_0}$<br>
+<b>$p/q$ at simple pole:</b> $\operatorname{Res}_{z_0} \dfrac{p}{q} = \dfrac{p(z_0)}{q'(z_0)}$<br>
+<b>ML inequality:</b> $\big|\int_C f\,dz\big| \leq M \cdot L$<br>
+<b>Jordan:</b> $|e^{iaz}| \leq 1$ on UHP for $a > 0$
+</div>
+
+<h2>The four big theorems</h2>
+<table>
+<tr><th>Theorem</th><th>Statement</th><th>Why it matters</th></tr>
+<tr><td>Cauchy–Goursat</td><td>$f$ analytic ⟹ $\oint_C f = 0$</td><td>Foundation of all integral theorems</td></tr>
+<tr><td>Cauchy integral formula</td><td>Value inside = integral on boundary</td><td>⟹ analytic = $C^\infty$</td></tr>
+<tr><td>Liouville</td><td>Bounded entire ⟹ constant</td><td>FTA, no nontrivial bounded entire functions</td></tr>
+<tr><td>Residue theorem</td><td>$\oint_C f = 2\pi i \sum \operatorname{Res}$</td><td>Computes hard real integrals</td></tr>
+</table>
+
+<h2>Standard real-integral strategies</h2>
+<table>
+<tr><th>Type</th><th>Contour</th><th>How to kill big arc</th></tr>
+<tr><td>$\int \frac{P(x)}{Q(x)}dx$ with $\deg Q \geq \deg P + 2$</td><td>Real line + UHP semicircle</td><td>ML inequality</td></tr>
+<tr><td>$\int \frac{P(x)\cos ax}{Q(x)}dx$ etc.</td><td>Same; use $e^{iaz}$ instead of $\cos ax$</td><td>ML or Jordan</td></tr>
+<tr><td>Pole on real axis (e.g., $\int \sin x/x$)</td><td>Indented semicircle around the pole</td><td>$\int_{C_\rho} \to -i\pi \cdot \operatorname{Res}$</td></tr>
+<tr><td>$\int_0^\infty x^a R(x)\,dx$</td><td>Keyhole around positive real axis (branch cut)</td><td>Above-axis − $e^{2\pi ia}$·below-axis</td></tr>
+</table>
+
+<h2>The "complex >> real" reasons</h2>
+<ul>
+<li><b>Analytic ⟹ infinitely differentiable.</b> No analog in real analysis.</li>
+<li><b>Liouville:</b> bounded entire ⟹ constant. No analog.</li>
+<li><b>Identity theorem:</b> agreement on tiny set ⟹ agreement everywhere. No analog.</li>
+<li><b>FTA:</b> every poly factors completely. No real analog.</li>
+<li><b>Maximum modulus:</b> $|f|$ attains max on boundary only.</li>
+<li><b>Hard real integrals become easy</b> via residues.</li>
+</ul>
+
+<h2>What to know cold for the final</h2>
+<ol>
+<li>Compute $z^n, \sqrt[k]{z}$ in polar form.</li>
+<li>Use CR to test whether $f$ is analytic; find $f'$.</li>
+<li>Find branches of $\log$ and $z^c$; know where they're analytic.</li>
+<li>Compute contour integrals directly when needed.</li>
+<li>Identify singularities (removable / pole of order $m$ / essential).</li>
+<li>Compute residues by all three methods (definition, simple-pole formula, $p/q'$, order-$m$).</li>
+<li>Apply Cauchy integral formula and its derivative version.</li>
+<li>Solve real integrals by all four contour strategies above.</li>
+<li>State Cauchy–Goursat, residue theorem, Liouville, FTA, max modulus.</li>
+</ol>
+
+<div class="intro">
+<b>You've got this.</b> Complex analysis is so beautifully self-consistent that, once you internalize CR + Cauchy's theorem + residues, everything else just falls out. Good luck!
+</div>
+
+<div class="nav-buttons"><button onclick="prev()">← Prev</button><button onclick="goto(0)">🏠 Home</button></div>
+</section>
+
+</main>
+</div>
+
+<script>
+let current = 0;
+const total = 24;
+
+function goto(i) {
+  if (i < 0 || i >= total) return;
+  document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+  document.getElementById('mod-' + i).classList.add('active');
+  current = i;
+  document.getElementById('progressBar').style.width = ((i / (total - 1)) * 100) + '%';
+  // Mark sidebar
+  document.querySelectorAll('#module-list li').forEach((li, idx) => {
+    if (idx <= i) li.classList.add('completed');
+    else li.classList.remove('completed');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function next() { goto(current + 1); }
+function prev() { goto(current - 1); }
+
+document.querySelectorAll('#module-list li').forEach(li => {
+  li.addEventListener('click', () => goto(parseInt(li.dataset.mod)));
+});
+
+// Initial state
+goto(0);
+</script>
+
+</body>
+</html>
