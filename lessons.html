@@ -2623,7 +2623,7 @@ function advanceLesson() {
 }
 
 function goToLesson(i) {
-  speechSynthesis.cancel();
+  stopPlayback();
   lessonIdx = i;
   phase = 'teach';
   phaseSceneIdx = 0;
@@ -2740,6 +2740,7 @@ function highlightByWordIndex(idx) {
 // ============== AUDIO PLAYBACK ==============
 let currentAudioEl = null;
 let currentTimingInterval = null;
+let _speakRequestId = 0;  // monotonic; lets us cancel stale async speakCurrent calls
 
 function getCurrentSceneId() {
   if (phase === 'teach') return `L${lessonIdx}_T${phaseSceneIdx}`;
@@ -2832,12 +2833,23 @@ function speak(text) {
 }
 
 async function speakCurrent() {
+  // Increment request ID — any in-flight prior speakCurrent will see its
+  // ID is no longer current and bail before starting playback.
+  const myReqId = ++_speakRequestId;
   const scene = getCurrentScene();
   if (!scene) return;
   stopPlayback();
   const sceneId = getCurrentSceneId();
   const timing = await tryLoadSceneAudio(sceneId);
-  const onEnd = () => { if (isPlaying) nextScene(); };
+  // If a newer speakCurrent superseded us during the await, abort.
+  if (myReqId !== _speakRequestId) return;
+  // Defensive: kill anything that might've started while we awaited.
+  stopPlayback();
+  const onEnd = () => {
+    // Only auto-advance if this onEnd belongs to the current request.
+    if (myReqId !== _speakRequestId) return;
+    if (isPlaying) nextScene();
+  };
   if (timing) {
     playWithAudio(sceneId, timing, onEnd);
   } else {
@@ -2865,6 +2877,7 @@ function togglePlay() {
 }
 
 function nextScene() {
+  stopPlayback();
   const lesson = LESSONS[lessonIdx];
   if (phase === 'teach') {
     if (phaseSceneIdx < lesson.scenes.length - 1) { phaseSceneIdx++; updateUI(); if (isPlaying) speakCurrent(); }
@@ -2880,6 +2893,7 @@ function nextScene() {
 }
 
 function prevScene() {
+  stopPlayback();
   if (phase === 'teach') {
     if (phaseSceneIdx > 0) { phaseSceneIdx--; updateUI(); if (isPlaying) speakCurrent(); }
     else if (lessonIdx > 0) { lessonIdx--; phase = 'teach'; phaseSceneIdx = LESSONS[lessonIdx].scenes.length - 1; buildLessonList(); updateUI(); if (isPlaying) speakCurrent(); }
