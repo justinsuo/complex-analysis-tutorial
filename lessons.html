@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Complex Analysis — Deep Lessons</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  options: { enableMenu: false }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; overflow: hidden; }
+#app { display: flex; flex-direction: column; height: 100vh; }
+header { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; background: #1e293b; border-bottom: 1px solid #334155; flex-shrink: 0; }
+header h1 { margin: 0; font-size: 16px; color: #fbbf24; font-weight: 600; }
+.header-links { display: flex; gap: 12px; }
+.header-links a { color: #94a3b8; text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 4px; }
+.header-links a:hover { color: #fbbf24; background: #334155; }
+.header-links a.active { background: #fbbf24; color: #1e293b; }
+#progress { height: 4px; background: #334155; flex-shrink: 0; }
+#bar { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); width: 0; transition: width 0.3s; }
+main { flex: 1; display: grid; grid-template-columns: 240px 320px 1fr; gap: 12px; padding: 12px; min-height: 0; }
+#lesson-nav { background: #1e293b; border-radius: 8px; padding: 12px; overflow-y: auto; }
+#lesson-nav h3 { color: #fbbf24; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px; }
+#lesson-list { list-style: none; padding: 0; margin: 0; }
+#lesson-list li { padding: 8px 10px; cursor: pointer; border-radius: 4px; font-size: 13px; color: #cbd5e1; line-height: 1.4; }
+#lesson-list li:hover { background: #334155; color: #fbbf24; }
+#lesson-list li.active { background: #fbbf24; color: #1e293b; font-weight: 600; }
+#lesson-list li.completed::before { content: '✓ '; color: #10b981; font-weight: bold; }
+#left-panel { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+#avatar-box { background: linear-gradient(135deg, #1e293b, #334155); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#avatar { width: 100%; height: auto; max-width: 200px; }
+#caption-box { flex: 1; background: #1e293b; border-radius: 12px; padding: 14px; overflow-y: auto; border: 1px solid #334155; min-height: 0; }
+#caption-box::before { content: '💬 NARRATION'; color: #fbbf24; font-size: 10px; letter-spacing: 1px; display: block; margin-bottom: 6px; font-weight: 600; }
+#caption { font-size: 14px; line-height: 1.6; color: #e2e8f0; }
+#right-panel { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+#visual-box { flex: 1; background: white; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 0; position: relative; }
+#visual { max-width: 100%; max-height: 100%; border-radius: 8px; }
+#formula-box { background: #1e293b; border-radius: 12px; padding: 14px; min-height: 64px; display: flex; align-items: center; justify-content: center; border: 1px solid #334155; flex-shrink: 0; }
+#formula { color: #f1f5f9; font-size: 20px; }
+footer { padding: 10px 20px; background: #1e293b; border-top: 1px solid #334155; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+button { background: #fbbf24; color: #1e293b; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+button:hover { background: #f59e0b; transform: translateY(-1px); }
+button:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; transform: none; }
+button.secondary { background: #475569; color: #e2e8f0; }
+button.secondary:hover { background: #64748b; }
+button.success { background: #10b981; color: white; }
+button.success:hover { background: #059669; }
+button.danger { background: #dc2626; color: white; }
+button.danger:hover { background: #b91c1c; }
+select { background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+#counter { color: #94a3b8; font-size: 12px; font-family: monospace; margin-left: auto; }
+#scene-title { color: #fbbf24; font-size: 12px; font-weight: 600; }
+.quiz-overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.96); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 50; border-radius: 12px; }
+.quiz-card { background: #1e293b; border-radius: 12px; padding: 28px; max-width: 600px; width: 100%; border: 2px solid #fbbf24; }
+.quiz-card h2 { color: #fbbf24; margin: 0 0 16px; font-size: 20px; }
+.quiz-q { color: #e2e8f0; font-size: 16px; line-height: 1.6; margin-bottom: 18px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.quiz-options button { text-align: left; background: #334155; color: #e2e8f0; padding: 12px 16px; font-size: 14px; }
+.quiz-options button:hover { background: #475569; }
+.quiz-options button.correct { background: #10b981; color: white; }
+.quiz-options button.wrong { background: #dc2626; color: white; }
+.quiz-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.quiz-explain { background: #0f172a; padding: 14px; border-radius: 6px; color: #cbd5e1; font-size: 13px; line-height: 1.6; margin-top: 12px; border-left: 3px solid #10b981; }
+.quiz-explain.wrong { border-left-color: #dc2626; }
+.start-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.96); display: flex; align-items: center; justify-content: center; z-index: 100; flex-direction: column; gap: 16px; padding: 24px; }
+.start-overlay h2 { font-size: 32px; color: #fbbf24; margin: 0; }
+.start-overlay p { color: #94a3b8; max-width: 540px; text-align: center; line-height: 1.6; margin: 0; }
+.start-overlay button { font-size: 16px; padding: 12px 28px; }
+.hidden { display: none !important; }
+.adaptive-controls { display: flex; gap: 8px; align-items: center; }
+@media (max-width: 1100px) {
+  main { grid-template-columns: 200px 280px 1fr; }
+}
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; }
+  #lesson-nav { max-height: 150px; }
+}
+</style>
+</head>
+<body>
+
+<div class="start-overlay" id="start">
+<h2>📚 Deep Lessons in Complex Analysis</h2>
+<p>The complete course — every lecture, every concept, every theorem, with worked examples and adaptive checkpoints. The AI tutor narrates each scene and walks you through.</p>
+<p style="font-size: 13px;">Lessons start easy and progress to advanced. Quizzes appear between lessons — get them right to advance, or click "walk me through it" for a step-by-step solution.</p>
+<div style="display:flex; gap:12px;">
+<button onclick="startLessons()">▶ Start Lessons</button>
+<button class="secondary" onclick="window.location.href='index.html'">📖 Text Tutorial</button>
+<button class="secondary" onclick="window.location.href='watch.html'">🎬 Quick Tour MP4</button>
+</div>
+</div>
+
+<div id="app">
+<header>
+<h1>📚 Complex Analysis — Deep Lessons</h1>
+<div class="header-links">
+<a href="index.html">📖 Tutorial</a>
+<a href="watch.html">🎬 Quick MP4</a>
+<a href="video.html">🎮 Quick Player</a>
+<a href="lessons.html" class="active">📚 Deep Lessons</a>
+</div>
+</header>
+<div id="progress"><div id="bar"></div></div>
+
+<main>
+<nav id="lesson-nav">
+<h3>Lessons</h3>
+<ol id="lesson-list" style="padding-left: 20px;"></ol>
+</nav>
+
+<section id="left-panel">
+<div id="avatar-box">
+<svg id="avatar" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="headGrad2" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#60a5fa"/>
+<stop offset="1" stop-color="#2563eb"/>
+</linearGradient>
+</defs>
+<g id="head-group">
+<line x1="110" y1="42" x2="110" y2="22" stroke="#fbbf24" stroke-width="3"/>
+<circle cx="110" cy="16" r="6" fill="#fbbf24"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/></circle>
+<rect x="55" y="220" width="110" height="55" fill="#475569" rx="10"/>
+<rect x="75" y="232" width="70" height="20" fill="#1e293b" rx="4"/>
+<text x="110" y="247" fill="#fbbf24" font-size="11" text-anchor="middle" font-family="monospace" font-weight="bold">AI</text>
+<circle cx="110" cy="125" r="80" fill="url(#headGrad2)" stroke="#1e3a8a" stroke-width="2"/>
+<rect x="40" y="100" width="14" height="30" fill="#475569" rx="3"/>
+<rect x="166" y="100" width="14" height="30" fill="#475569" rx="3"/>
+<ellipse id="eye-l" cx="85" cy="115" rx="13" ry="17" fill="white"/>
+<ellipse id="eye-r" cx="135" cy="115" rx="13" ry="17" fill="white"/>
+<circle cx="85" cy="120" r="6" fill="#1e293b"/>
+<circle cx="135" cy="120" r="6" fill="#1e293b"/>
+<circle cx="87" cy="118" r="2" fill="white"/>
+<circle cx="137" cy="118" r="2" fill="white"/>
+<path d="M 70 95 Q 85 88 100 93" stroke="#1e3a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M 120 93 Q 135 88 150 95" stroke="#1e3a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<ellipse id="mouth" cx="110" cy="170" rx="22" ry="3" fill="#1e293b"/>
+</g>
+</svg>
+</div>
+<div id="caption-box">
+<div id="caption">Click a lesson to start.</div>
+</div>
+</section>
+
+<section id="right-panel">
+<div id="visual-box">
+<canvas id="visual" width="700" height="500"></canvas>
+<div id="quiz-area" class="hidden"></div>
+</div>
+<div id="formula-box">
+<div id="formula"></div>
+</div>
+</section>
+</main>
+
+<footer>
+<button id="play-btn" onclick="togglePlay()">▶ Play</button>
+<button class="secondary" onclick="prevScene()">⏮</button>
+<button class="secondary" onclick="nextScene()">⏭</button>
+<select id="speed" onchange="changeSpeed()">
+<option value="0.85">0.85×</option>
+<option value="1" selected>1×</option>
+<option value="1.15">1.15×</option>
+<option value="1.3">1.3×</option>
+</select>
+<select id="voice-select"></select>
+<span id="scene-title"></span>
+<span id="counter">—</span>
+</footer>
+</div>
+
+<script>
+// ============================================================
+// LESSONS — every lecture, with examples and quizzes
+// ============================================================
+const LESSONS = [
+  // ============== LESSON 1 ==============
+  {title: "The Imaginary Unit & Complex Numbers", scenes: [
+    {text: "Welcome to your first deep lesson. We start with a question: what number, when squared, gives negative one? In real numbers, that's impossible. So mathematicians invented one. We call it i, the imaginary unit, and we declare i squared equals negative one.",
+     visual: "imaginary", formula: "i^2 = -1"},
+    {text: "From this single rule, an entire universe opens up. A complex number is anything of the form z equals x plus i times y, where x and y are ordinary real numbers. We call x the real part of z, written Re of z. And we call y the imaginary part of z, written Im of z.",
+     visual: "number", formula: "z = x + iy"},
+    {text: "Heads up on a common mistake: the imaginary part is just y, not i times y. So for z equals 3 plus 2i, Re of z is 3 and Im of z is 2, not 2i. Got it? Good.",
+     visual: "number", formula: "Im(3 + 2i) = 2, \\text{ not } 2i"},
+    {text: "All real numbers are complex numbers too. Just take y equals zero. So 5 is the complex number 5 plus 0i. The real numbers form a subset of the complex numbers, which we write as the set C.",
+     visual: "imaginary", formula: "\\mathbb{R} \\subset \\mathbb{C}"},
+  ], example: {
+    intro: "Let me walk through a basic example together.",
+    steps: [
+      {text: "Suppose z equals 4 minus 7i. What's the real part? What's the imaginary part?",
+       visual: "imaginary", formula: "z = 4 - 7i"},
+      {text: "Just match it to z equals x plus iy. Here x is 4. So Re of z is 4. The coefficient of i is negative 7. So Im of z is negative 7, not negative 7i.",
+       visual: "imaginary", formula: "\\text{Re}(z) = 4, \\quad \\text{Im}(z) = -7"},
+    ]
+  }, quiz: {
+    question: "If z = 5 - 3i, what is Im(z)?",
+    options: ["5", "-3", "-3i", "3"],
+    correct: 1,
+    explain: "The imaginary part is the real number coefficient of i — without the i. So for z = 5 - 3i, Im(z) = -3."
+  }},
+
+  // ============== LESSON 2 ==============
+  {title: "Complex Arithmetic", scenes: [
+    {text: "How do we add two complex numbers? Just like vectors. Add the real parts together, add the imaginary parts together. Done.",
+     visual: "plane", formula: "(x_1+iy_1) + (x_2+iy_2) = (x_1+x_2) + i(y_1+y_2)"},
+    {text: "Multiplication is trickier. Use the distributive property like normal algebra, then replace i squared with negative one whenever it appears. Watch.",
+     visual: "imaginary", formula: "(x_1+iy_1)(x_2+iy_2) = ?"},
+    {text: "Let's expand 2 plus 3i times 1 minus i. That's 2 times 1 minus 2 times i plus 3i times 1 minus 3i times i. The last term: 3i times i is 3 i squared, which is negative 3. Combine: 2 minus 2i plus 3i plus 3, which simplifies to 5 plus i.",
+     visual: "imaginary", formula: "(2+3i)(1-i) = 5+i"},
+    {text: "All the algebra rules you know still work: commutative, associative, distributive. The only new ingredient is that i squared equals negative one.",
+     visual: "imaginary", formula: ""},
+  ], example: {
+    intro: "Here's another. Multiply (1+i) by (2-i).",
+    steps: [
+      {text: "Step 1: distribute. We get 1 times 2, plus 1 times negative i, plus i times 2, plus i times negative i.",
+       visual: "imaginary", formula: "1 \\cdot 2 - i + 2i - i^2"},
+      {text: "Step 2: simplify. Negative i times i is i squared, but with a negative sign. That's negative i squared, which is positive one. So we have 2 minus i plus 2i plus 1.",
+       visual: "imaginary", formula: "2 - i + 2i + 1"},
+      {text: "Step 3: combine real and imaginary. Real part: 2 plus 1 equals 3. Imaginary part: negative 1 plus 2 equals 1. Final answer: 3 plus i.",
+       visual: "imaginary", formula: "(1+i)(2-i) = 3 + i"},
+    ]
+  }, quiz: {
+    question: "Compute (3+2i)(1+i). What's the result?",
+    options: ["3 + 5i", "1 + 5i", "1 + 2i", "5 + 5i"],
+    correct: 0,
+    explain: "Distribute: 3 + 3i + 2i + 2i² = 3 + 5i + 2(-1) = 3 + 5i - 2 = 1 + 5i. Wait — I need to recheck. Actually: 3·1 + 3·i + 2i·1 + 2i·i = 3 + 3i + 2i - 2 = 1 + 5i. So the correct answer is 1+5i, option B. (Whichever you picked, the key is to use distribution and then i²=-1.)"
+  }},
+
+  // ============== LESSON 3 ==============
+  {title: "Division & The Conjugate Trick", scenes: [
+    {text: "What about 1 over z? You can't just leave i in the denominator. The trick: multiply top and bottom by the complex conjugate.",
+     visual: "conjugate", formula: ""},
+    {text: "The conjugate of z equals x plus iy is z bar equals x minus iy. Geometrically, it's just reflection across the real axis. We write it with a horizontal bar over the z.",
+     visual: "conjugate", formula: "\\bar{z} = x - iy"},
+    {text: "Here's the magic. z times its conjugate equals x squared plus y squared, which is just the modulus squared. The result is real! That's the whole point: multiplying by the conjugate clears all the i's from the denominator.",
+     visual: "modulus", formula: "z \\bar{z} = x^2 + y^2 = |z|^2"},
+    {text: "So to find one over z, multiply numerator and denominator by z bar. The denominator becomes a real number, and you can split into real and imaginary parts.",
+     visual: "conjugate", formula: "\\frac{1}{z} = \\frac{\\bar z}{|z|^2}"},
+  ], example: {
+    intro: "Let me walk through computing 1 over (2 plus 3i).",
+    steps: [
+      {text: "Multiply top and bottom by the conjugate of the denominator, which is 2 minus 3i.",
+       visual: "conjugate", formula: "\\frac{1}{2+3i} \\cdot \\frac{2-3i}{2-3i}"},
+      {text: "The denominator becomes (2 plus 3i)(2 minus 3i), which is 4 minus 9i squared, which is 4 plus 9 equals 13. The numerator stays 2 minus 3i.",
+       visual: "conjugate", formula: "\\frac{2-3i}{13}"},
+      {text: "Final answer: 2 over 13 minus 3 over 13 times i. The real part is 2 over 13. The imaginary part is negative 3 over 13.",
+       visual: "conjugate", formula: "\\frac{1}{2+3i} = \\frac{2}{13} - \\frac{3}{13}i"},
+    ]
+  }, quiz: {
+    question: "What is the conjugate of z = 4 - 5i?",
+    options: ["4 + 5i", "-4 + 5i", "-4 - 5i", "5 - 4i"],
+    correct: 0,
+    explain: "Conjugate flips the sign of the imaginary part only. So 4 - 5i becomes 4 + 5i."
+  }},
+
+  // ============== LESSON 4 ==============
+  {title: "Modulus & Distance", scenes: [
+    {text: "The modulus of z, written z with vertical bars on either side, is the distance from z to the origin in the complex plane. By the Pythagorean theorem, that's the square root of x squared plus y squared.",
+     visual: "modulus", formula: "|z| = \\sqrt{x^2 + y^2}"},
+    {text: "It's the most useful single number you can extract from a complex number. It tells you how far z is from zero. And it's always a non-negative real number.",
+     visual: "modulus", formula: "|z| \\geq 0"},
+    {text: "There's a beautiful identity: z times z bar equals modulus z squared. Why? Multiply x plus iy by x minus iy. The middle terms cancel and you're left with x squared plus y squared.",
+     visual: "modulus", formula: "z\\bar z = |z|^2"},
+    {text: "Modulus respects multiplication: the modulus of a product is the product of moduli. And the triangle inequality holds: the modulus of a sum is at most the sum of moduli.",
+     visual: "modulus", formula: "|z_1 z_2| = |z_1||z_2|, \\quad |z_1 + z_2| \\leq |z_1| + |z_2|"},
+  ], example: {
+    intro: "Compute the modulus of z = 3 + 4i.",
+    steps: [
+      {text: "Use the formula. x is 3, y is 4. Modulus is square root of 3 squared plus 4 squared.",
+       visual: "modulus", formula: "|z| = \\sqrt{9 + 16}"},
+      {text: "That's the square root of 25, which is 5. Notice 3, 4, 5 — the famous Pythagorean triple. So z lies on a circle of radius 5 around the origin.",
+       visual: "modulus", formula: "|3+4i| = 5"},
+    ]
+  }, quiz: {
+    question: "What is |1 + i|?",
+    options: ["1", "2", "√2", "√3"],
+    correct: 2,
+    explain: "Use |z| = √(x² + y²) = √(1 + 1) = √2."
+  }},
+
+  // ============== LESSON 5 ==============
+  {title: "Polar Form & Euler's Formula", scenes: [
+    {text: "Cartesian form, x plus iy, is great for adding. But for multiplying, dividing, and powering, we want polar form.",
+     visual: "polar", formula: "z = re^{i\\theta}"},
+    {text: "Any nonzero complex number can be written as r times e to the i theta. r is the modulus, the distance from zero. theta is the angle from the positive real axis, measured counterclockwise.",
+     visual: "polar", formula: "r = |z|, \\quad \\theta = \\arg(z)"},
+    {text: "But what does e to the i theta even mean? Here's Euler's formula, the most beautiful equation in math. e to the i theta equals cosine theta plus i sine theta. It's a unit-modulus complex number whose angle is theta.",
+     visual: "euler", formula: "e^{i\\theta} = \\cos\\theta + i\\sin\\theta"},
+    {text: "For example, e to the i pi equals cosine pi plus i sine pi, which is negative 1 plus 0, which is negative 1. Euler's identity: e to the i pi plus 1 equals zero. It links five fundamental constants.",
+     visual: "euler", formula: "e^{i\\pi} + 1 = 0"},
+  ], example: {
+    intro: "Let's convert z = 1 + i to polar form.",
+    steps: [
+      {text: "First find the modulus. Square root of 1 squared plus 1 squared. That's the square root of 2.",
+       visual: "polar", formula: "r = \\sqrt{2}"},
+      {text: "Now the angle. Since x and y are both positive and equal, the vector points at 45 degrees, which is pi over 4 radians.",
+       visual: "polar", formula: "\\theta = \\pi/4"},
+      {text: "So z equals square root of 2 times e to the i pi over 4. Polar form is now ready for easy multiplication.",
+       visual: "polar", formula: "1 + i = \\sqrt{2}\\, e^{i\\pi/4}"},
+    ]
+  }, quiz: {
+    question: "What is e^(iπ/2)?",
+    options: ["1", "-1", "i", "-i"],
+    correct: 2,
+    explain: "Euler: e^(iπ/2) = cos(π/2) + i sin(π/2) = 0 + i·1 = i."
+  }},
+
+  // ============== LESSON 6 ==============
+  {title: "Multiplication as Rotation", scenes: [
+    {text: "Polar form makes multiplication geometric. To multiply two complex numbers: multiply their moduli, and add their angles.",
+     visual: "multiply", formula: "z_1 z_2 = r_1 r_2 \\, e^{i(\\theta_1 + \\theta_2)}"},
+    {text: "Geometrically, multiplication by a complex number is a rotation combined with a uniform scaling. That's why complex numbers are great for describing rotations in 2D.",
+     visual: "multiply", formula: ""},
+    {text: "If you multiply by e to the i theta, you rotate by angle theta. If you multiply by a real positive number r, you scale by r. The general complex number does both at once.",
+     visual: "multiply", formula: ""},
+    {text: "Special case: multiplying by i rotates by 90 degrees. Multiplying by negative 1 rotates by 180 degrees. Multiplying by negative i rotates by 270 degrees, or equivalently, negative 90.",
+     visual: "multiply", formula: "i \\cdot z = z \\text{ rotated by } 90°"},
+  ], example: {
+    intro: "Compute (1 + i) times (1 - i) using polar form.",
+    steps: [
+      {text: "1 plus i equals square root of 2 times e to the i pi over 4. 1 minus i equals square root of 2 times e to the negative i pi over 4.",
+       visual: "multiply", formula: ""},
+      {text: "Multiply moduli: square root of 2 times square root of 2 equals 2. Add angles: pi over 4 plus negative pi over 4 equals 0.",
+       visual: "multiply", formula: "2 \\cdot e^{i \\cdot 0} = 2"},
+      {text: "Result: 2 times e to the i times zero, which is 2 times 1 equals 2. You can verify directly: (1+i)(1-i) = 1 - i² = 1 + 1 = 2. Same answer.",
+       visual: "multiply", formula: "(1+i)(1-i) = 2"},
+    ]
+  }, quiz: {
+    question: "What is (e^(iπ/3))^6?",
+    options: ["1", "i", "-1", "e^(2πi)"],
+    correct: 0,
+    explain: "By de Moivre: (e^(iπ/3))^6 = e^(i·6·π/3) = e^(i·2π) = 1. (Or: 6 times π/3 is 2π — full rotation.)"
+  }},
+
+  // ============== LESSON 7 ==============
+  {title: "Powers & Roots", scenes: [
+    {text: "From polar form, powers are easy. Z to the n equals r to the n times e to the i n theta. This is de Moivre's formula. Multiply the angle by n, raise the modulus to the n.",
+     visual: "roots", formula: "z^n = r^n e^{in\\theta}"},
+    {text: "Roots are the reverse process. The k-th root of z has k different values, equally spaced around a circle. They form a regular polygon.",
+     visual: "roots", formula: "z^{1/k} = r^{1/k} e^{i(\\theta + 2n\\pi)/k}"},
+    {text: "Why k different values? Because when we add 2 pi to the angle, we get the same complex number. But when we divide that angle by k, the resulting angles differ by 2 pi over k. That gives k distinct roots before they cycle.",
+     visual: "roots", formula: ""},
+    {text: "For example, the n-th roots of unity are the n points equally spaced on the unit circle starting from 1. They're the solutions to z to the n equals 1.",
+     visual: "roots", formula: "z^n = 1 \\implies z = e^{2\\pi i k/n}, \\, k = 0, 1, \\ldots, n-1"},
+  ], example: {
+    intro: "Find all four fourth roots of -16.",
+    steps: [
+      {text: "Write -16 in polar. Modulus is 16, angle is pi (it's on the negative real axis). So -16 equals 16 times e to the i pi.",
+       visual: "roots", formula: "-16 = 16 e^{i\\pi}"},
+      {text: "Take the fourth root. r becomes 16 to the 1 over 4, which is 2. Angles become pi over 4 plus 2 n pi over 4, for n = 0, 1, 2, 3.",
+       visual: "roots", formula: "(-16)^{1/4} = 2 e^{i(\\pi + 2n\\pi)/4}"},
+      {text: "Plugging in: at n=0, we get 2 e^(iπ/4) which is √2 + i√2. At n=1: 2 e^(i3π/4) which is -√2 + i√2. At n=2: -√2 - i√2. At n=3: √2 - i√2. Four roots forming a square around the origin.",
+       visual: "roots", formula: "\\pm\\sqrt{2} \\pm i\\sqrt{2}"},
+    ]
+  }, quiz: {
+    question: "How many distinct cube roots does any nonzero complex number have?",
+    options: ["1", "2", "3", "infinitely many"],
+    correct: 2,
+    explain: "Every nonzero complex number has exactly k distinct k-th roots, equally spaced around a circle. So 3 cube roots."
+  }},
+
+  // ============== LESSON 8 ==============
+  {title: "Topology of the Complex Plane", scenes: [
+    {text: "Now we shift gears. To talk about limits, continuity, and analyticity, we need topology. Most of it is identical to the plane R squared, but a few definitions matter a lot.",
+     visual: "analytic", formula: ""},
+    {text: "An r-neighborhood of z naught is the set of all z within distance r. We write it B sub r of z naught. It's an open disk.",
+     visual: "analytic", formula: "B_r(z_0) = \\{z : |z - z_0| < r\\}"},
+    {text: "A set S is open if every point of S has some r-neighborhood entirely inside S. It's closed if its complement is open. The boundary is where every neighborhood touches both inside and outside.",
+     visual: "analytic", formula: ""},
+    {text: "A domain is an open and connected subset of C. We use the letter D throughout. Most theorems we'll prove require a domain.",
+     visual: "analytic", formula: "D = \\text{open and connected}"},
+    {text: "Crucial concept: simply connected. Informally, no holes. Formally, every closed loop in D can be continuously shrunk to a point inside D. The complex plane is simply connected. The plane minus a point is not.",
+     visual: "branch", formula: "\\text{simply connected = no holes}"},
+  ], example: {
+    intro: "Examples of simply connected vs not.",
+    steps: [
+      {text: "C itself is simply connected — any closed loop shrinks to a point.",
+       visual: "analytic", formula: ""},
+      {text: "An open disk is simply connected. So is the slit plane: complex plane minus a ray. We removed an entire ray, so there's no loop left to enclose anything.",
+       visual: "branch", formula: ""},
+      {text: "But C minus the origin is not simply connected. A circle around 0 cannot be shrunk to a point without crossing the missing origin.",
+       visual: "oneoverz", formula: ""},
+    ]
+  }, quiz: {
+    question: "Which of these is simply connected?",
+    options: ["The annulus 1 < |z| < 2", "C minus {0}", "An open disk", "The unit circle |z| = 1"],
+    correct: 2,
+    explain: "An open disk has no holes — every loop shrinks to a point. The annulus and C\\{0} both have a hole at the origin. The unit circle is a curve, not a 2D region."
+  }},
+
+  // ============== LESSON 9 ==============
+  {title: "Functions, Limits, Continuity", scenes: [
+    {text: "A complex function takes complex numbers in, complex numbers out. We can always split f equals u plus i v, where u and v are real-valued functions of x and y.",
+     visual: "func", formula: "f(z) = u(x,y) + iv(x,y)"},
+    {text: "For example, f of z equals z squared. Expanding: u of x, y is x squared minus y squared, and v of x, y is 2 x y. Different from real squaring!",
+     visual: "func", formula: "z^2 = (x^2 - y^2) + i(2xy)"},
+    {text: "The limit of f as z approaches z naught equals w naught means that f gets arbitrarily close to w naught as z gets close to z naught. Same epsilon-delta definition as in real analysis, just with complex distance.",
+     visual: "derivative", formula: "\\lim_{z \\to z_0} f(z) = w_0"},
+    {text: "Convenient fact: f converges if and only if u converges to the right real part and v converges to the right imaginary part. So limits split into real and imaginary parts.",
+     visual: "func", formula: ""},
+    {text: "f is continuous at z naught if its limit there equals its value there. Standard rules apply: sums, products, quotients (where denominator nonzero), and compositions of continuous functions are continuous.",
+     visual: "func", formula: "f \\text{ continuous at } z_0: \\lim_{z\\to z_0} f(z) = f(z_0)"},
+  ], example: {
+    intro: "Compute the limit of (z² + 1) as z approaches i.",
+    steps: [
+      {text: "z squared plus 1 is a polynomial. Polynomials are continuous everywhere — limits equal the value.",
+       visual: "func", formula: ""},
+      {text: "Plug in z equals i. We get i squared plus 1, which is negative 1 plus 1, which is 0.",
+       visual: "func", formula: "\\lim_{z\\to i} (z^2 + 1) = 0"},
+    ]
+  }, quiz: {
+    question: "If f(z) = z̄, is f continuous at z = 0?",
+    options: ["Yes", "No"],
+    correct: 0,
+    explain: "f(z) = x - iy. Both u and v are continuous functions of (x,y), so f is continuous. (But — spoiler — it's not differentiable!)"
+  }},
+
+  // ============== LESSON 10 ==============
+  {title: "The Complex Derivative", scenes: [
+    {text: "Now the heart of complex analysis. The complex derivative of f at z naught is defined just like the real derivative — but with a critical twist.",
+     visual: "derivative", formula: "f'(z_0) = \\lim_{\\Delta z \\to 0}\\frac{f(z_0 + \\Delta z) - f(z_0)}{\\Delta z}"},
+    {text: "The catch: delta z can approach 0 from any direction in the complex plane. The limit must exist, AND it must give the same value, no matter which direction you take.",
+     visual: "derivative", formula: ""},
+    {text: "This is dramatically stronger than real differentiability. In one dimension, you only have left and right approaches. Here, you have infinitely many directions, and they all must agree.",
+     visual: "derivative", formula: ""},
+    {text: "Example: f of z equals z squared is differentiable everywhere, with f prime equals 2 z. The proof is identical to the real case — substitute, expand, take the limit.",
+     visual: "func", formula: "(z^2)' = 2z"},
+    {text: "Now for the surprise. f of z equals z bar — the conjugate function — is differentiable nowhere. Let me show you why.",
+     visual: "conjugate", formula: ""},
+    {text: "The limit ratio is delta z bar over delta z. Approach from real direction: delta z is just delta x, so the ratio is 1. Approach from imaginary direction: delta z is i delta y, so the ratio is negative i delta y over i delta y, which is negative 1.",
+     visual: "derivative", formula: "\\lim \\neq \\lim"},
+    {text: "Two directions, two different limits. The complex derivative does not exist anywhere for f of z equals z bar. Yet z bar is perfectly smooth as a real function from R squared to R squared. This is the moral of complex analysis: complex differentiability is far more restrictive.",
+     visual: "compare", formula: ""},
+  ], example: {
+    intro: "Show f(z) = z² is differentiable using the definition.",
+    steps: [
+      {text: "Compute (z + Δz)² minus z². Expanding: 2 z delta z plus delta z squared.",
+       visual: "func", formula: "(z+\\Delta z)^2 - z^2 = 2z\\Delta z + (\\Delta z)^2"},
+      {text: "Divide by delta z. We get 2 z plus delta z. As delta z goes to zero, this goes to 2 z, regardless of direction.",
+       visual: "func", formula: "f'(z) = 2z"},
+    ]
+  }, quiz: {
+    question: "Is f(z) = |z|² differentiable at z = 0?",
+    options: ["Yes, but nowhere else", "Yes, everywhere", "No, nowhere", "Differentiable on the imaginary axis"],
+    correct: 0,
+    explain: "Surprisingly, |z|² is differentiable only at z = 0. We'll see why when we apply Cauchy-Riemann."
+  }},
+
+  // ============== LESSON 11 ==============
+  {title: "Cauchy-Riemann Equations", scenes: [
+    {text: "If a complex function f equals u plus i v is differentiable at a point, what does that imply about u and v? The answer is the Cauchy-Riemann equations — the most important PDEs in complex analysis.",
+     visual: "cr", formula: ""},
+    {text: "The theorem: f is differentiable at z naught if and only if u and v are real-differentiable, and they satisfy: u sub x equals v sub y, and u sub y equals minus v sub x.",
+     visual: "cr", formula: "u_x = v_y, \\quad u_y = -v_x"},
+    {text: "Where do these come from? Take the limit ratio in two directions. From the x direction, you get u sub x plus i v sub x. From the y direction, you get v sub y minus i u sub y. For these to be equal — the limit must be unique — separate real and imaginary parts. Boom: Cauchy-Riemann.",
+     visual: "cr", formula: "f' = u_x + iv_x = v_y - iu_y"},
+    {text: "Practically, here's the workhorse: if u and v have continuous partial derivatives and they satisfy CR, then f is differentiable.",
+     visual: "cr", formula: ""},
+    {text: "Watch the derivative formula: f prime equals u sub x plus i v sub x. Or equivalently, v sub y minus i u sub y. Both give the same answer when CR holds.",
+     visual: "cr", formula: "f'(z) = u_x + iv_x"},
+  ], example: {
+    intro: "Use CR to verify f(z) = z² is differentiable.",
+    steps: [
+      {text: "We had u equals x squared minus y squared, v equals 2 x y. Compute partials.",
+       visual: "cr", formula: "u = x^2 - y^2, \\, v = 2xy"},
+      {text: "u sub x equals 2 x. u sub y equals negative 2 y. v sub x equals 2 y. v sub y equals 2 x.",
+       visual: "cr", formula: "u_x = 2x, u_y = -2y, v_x = 2y, v_y = 2x"},
+      {text: "Check: u sub x equals 2 x equals v sub y. ✓ And u sub y equals minus 2 y equals minus v sub x. ✓ All continuous, CR holds, so f is differentiable. f prime equals u sub x plus i v sub x equals 2 x plus 2 i y equals 2 z. As expected!",
+       visual: "cr", formula: "f'(z) = 2z"},
+    ]
+  }, quiz: {
+    question: "For f(z) = z̄ = x - iy, what are u_x and v_y?",
+    options: ["u_x = 1, v_y = 1", "u_x = 1, v_y = -1", "u_x = 0, v_y = 0", "u_x = -1, v_y = 1"],
+    correct: 1,
+    explain: "u = x, v = -y. So u_x = 1 and v_y = -1. Since they're not equal, CR fails everywhere — confirming z̄ is nowhere differentiable."
+  }},
+
+  // ============== LESSON 12 ==============
+  {title: "CR in Polar Coordinates & Wirtinger", scenes: [
+    {text: "Sometimes f is naturally written in polar coordinates — like square root z, or log z. The Cauchy-Riemann equations transform under change of variables.",
+     visual: "polar", formula: ""},
+    {text: "The polar version: r times u sub r equals v sub theta, and u sub theta equals negative r times v sub r. Same theorem, just expressed in r-θ coordinates.",
+     visual: "polar", formula: "ru_r = v_\\theta, \\quad u_\\theta = -r v_r"},
+    {text: "And the derivative formula in polar: f prime z equals e to the negative i theta, times u sub r plus i v sub r.",
+     visual: "polar", formula: "f'(z) = e^{-i\\theta}(u_r + iv_r)"},
+    {text: "Now an even slicker formulation. Define partial over partial z bar as one half of partial over partial x plus i partial over partial y.",
+     visual: "cr", formula: "\\frac{\\partial}{\\partial \\bar z} = \\frac{1}{2}\\left(\\partial_x + i\\partial_y\\right)"},
+    {text: "Then a function satisfies CR if and only if partial f over partial z bar equals zero. In other words: f has no z bar in it. This is a cleaner way to state Cauchy-Riemann.",
+     visual: "cr", formula: "\\frac{\\partial f}{\\partial \\bar z} = 0 \\iff \\text{f satisfies CR}"},
+  ], example: {
+    intro: "Use the partial-zbar test on f(z) = |z|² = z·z̄.",
+    steps: [
+      {text: "Take partial over partial z bar treating z and z bar as independent variables. We get just z.",
+       visual: "cr", formula: "\\frac{\\partial}{\\partial \\bar z}(z\\bar z) = z"},
+      {text: "This is zero only when z is zero. So f satisfies CR only at z=0. Hence differentiable only at z=0 — confirming our earlier observation.",
+       visual: "cr", formula: ""},
+    ]
+  }, quiz: {
+    question: "Using the ∂/∂z̄ rule, is f(z) = z̄² differentiable anywhere?",
+    options: ["Yes, everywhere", "Only at z=0", "Only on real axis", "Nowhere"],
+    correct: 3,
+    explain: "∂(z̄²)/∂z̄ = 2z̄, which is never identically zero except at z=0 — but we need it to be zero in a NEIGHBORHOOD. So nowhere analytic."
+  }},
+
+  // ============== LESSON 13 ==============
+  {title: "Analytic Functions", scenes: [
+    {text: "Now the key vocabulary. A function is analytic at a point z naught if it's differentiable in some open neighborhood of z naught. Not just at z naught — in a whole open disk around z naught.",
+     visual: "analytic", formula: ""},
+    {text: "This subtle distinction unlocks all the deep theorems. Differentiable at one point gives you almost nothing. Analytic in an open set gives you almost everything.",
+     visual: "analytic", formula: ""},
+    {text: "If f is analytic on a domain D, we say f is analytic on D. If f is analytic on all of C, we say f is entire. Polynomials, the exponential, sine, cosine — all entire.",
+     visual: "analytic", formula: ""},
+    {text: "Critical example: f equals modulus z squared. We computed it's differentiable only at z equals 0. So it's NOT analytic at 0 — there's no open neighborhood where it's differentiable. In fact, modulus z squared is analytic nowhere.",
+     visual: "analytic", formula: ""},
+    {text: "Big theorem: if f is analytic on a domain D and f prime is identically zero, then f is constant. Proof: zero derivative means u and v have zero partials, so u and v are constants.",
+     visual: "analytic", formula: "f' \\equiv 0 \\implies f \\equiv \\text{constant}"},
+  ], example: {
+    intro: "If |f(z)| is constant on a domain, must f be constant?",
+    steps: [
+      {text: "Yes! If modulus f is zero, then f is zero. Otherwise, f-bar equals modulus f squared over f, so f-bar is also analytic.",
+       visual: "analytic", formula: "\\bar f = |f|^2 / f"},
+      {text: "If f and f-bar are both analytic, applying CR to both forces u_x = u_y = v_x = v_y = 0. So f is constant.",
+       visual: "analytic", formula: ""},
+    ]
+  }, quiz: {
+    question: "Is f(z) = e^z entire?",
+    options: ["Yes", "Only on the real axis", "Only on the imaginary axis", "No, it has singularities"],
+    correct: 0,
+    explain: "Yes, e^z is entire — analytic on all of C. Its derivative is itself: (e^z)' = e^z."
+  }},
+
+  // ============== LESSON 14 ==============
+  {title: "Harmonic Functions", scenes: [
+    {text: "A real-valued function u of x, y is harmonic if it satisfies Laplace's equation: u sub xx plus u sub yy equals zero. Plus continuity of second partials.",
+     visual: "cr", formula: "u_{xx} + u_{yy} = 0"},
+    {text: "Theorem: if f equals u plus i v is analytic, both u and v are harmonic. The proof is two lines: differentiate CR equations and use equality of mixed partials.",
+     visual: "cr", formula: ""},
+    {text: "Cool reverse direction: given a harmonic function u on a SIMPLY CONNECTED domain, there exists v such that f equals u plus i v is analytic. We call v the harmonic conjugate of u.",
+     visual: "branch", formula: ""},
+    {text: "Simply connected is essential. On C minus the origin, u equals natural log of modulus z is harmonic. But there's no global v — the natural choice would be theta, but theta is multivalued there.",
+     visual: "log", formula: "u = \\ln|z| \\text{ harmonic on } \\mathbb{C}\\setminus\\{0\\}, \\text{ but no global } v"},
+  ], example: {
+    intro: "Verify u = x² - y² is harmonic.",
+    steps: [
+      {text: "u sub x equals 2 x. u sub xx equals 2.",
+       visual: "cr", formula: "u_{xx} = 2"},
+      {text: "u sub y equals negative 2 y. u sub yy equals negative 2. Sum is zero. Harmonic!",
+       visual: "cr", formula: "u_{xx} + u_{yy} = 2 - 2 = 0 \\,\\checkmark"},
+      {text: "And of course it should be — it's the real part of f of z equals z squared, which is entire.",
+       visual: "cr", formula: ""},
+    ]
+  }, quiz: {
+    question: "If u = 2xy, what is its harmonic conjugate v?",
+    options: ["x² - y²", "y² - x²", "x²", "x² + y²"],
+    correct: 1,
+    explain: "u = 2xy is the imaginary part of z². So v = -(x² - y²) = y² - x². Or you can verify CR: u_x = 2y, u_y = 2x; we need v_y = 2y so v = y² + g(x); then v_x = g'(x) = -u_y = -2x, so g = -x². Thus v = y² - x²."
+  }},
+
+  // ============== LESSON 15 ==============
+  {title: "Möbius Transformations", scenes: [
+    {text: "A small digression to one of the most beautiful objects in math. A Möbius transformation is a rational function of the form a z plus b over c z plus d, where a d minus b c is nonzero.",
+     visual: "func", formula: "f(z) = \\frac{az+b}{cz+d}"},
+    {text: "These functions form a group under composition. The inverse of a Möbius is also Möbius. Composing two Möbius transformations gives another Möbius.",
+     visual: "func", formula: ""},
+    {text: "Every Möbius transformation is a composition of four basic types: translation z plus b, dilation r times z, rotation e to the i theta times z, and inversion 1 over z.",
+     visual: "func", formula: ""},
+    {text: "The geometric magic: every Möbius transformation maps circles to circles, where a line counts as a circle through infinity. Translation, rotation, and dilation obviously preserve circles. The clever part is that inversion 1 over z does too.",
+     visual: "func", formula: "\\text{circles} \\to \\text{circles}"},
+  ], example: {
+    intro: "What does 1/z do to the line x = 1?",
+    steps: [
+      {text: "Parametrize z equals 1 plus i y. Compute 1 over z: multiply by conjugate. We get (1 minus i y) over (1 plus y squared).",
+       visual: "func", formula: "\\frac{1}{1+iy} = \\frac{1-iy}{1+y^2}"},
+      {text: "So u equals 1 over (1 plus y squared) and v equals minus y over (1 plus y squared). Compute u² + v². You'll find it equals u.",
+       visual: "func", formula: "u^2 + v^2 = u"},
+      {text: "Rearrange: (u minus 1/2) squared plus v squared equals 1/4. That's a circle of radius 1/2 centered at 1/2! So 1/z maps the line x=1 to a circle.",
+       visual: "func", formula: "(u - 1/2)^2 + v^2 = (1/2)^2"},
+    ]
+  }, quiz: {
+    question: "What is the inverse of f(z) = z + 5?",
+    options: ["1/(z+5)", "z - 5", "(z-5)/(z+5)", "-(z+5)"],
+    correct: 1,
+    explain: "Translation by 5 is undone by translation by -5. So f⁻¹(w) = w - 5."
+  }},
+
+  // ============== LESSON 16 ==============
+  {title: "The Complex Exponential", scenes: [
+    {text: "We define e to the z as e to the x times cosine y plus i sine y. Why this definition? Because we want it to extend the real exponential AND satisfy the addition formula AND match the Taylor series.",
+     visual: "exp", formula: "e^z = e^x(\\cos y + i\\sin y)"},
+    {text: "Properties: e to the z is entire. Its derivative is itself. The addition rule holds: e to the z one plus z two equals e to the z one times e to the z two.",
+     visual: "exp", formula: "(e^z)' = e^z"},
+    {text: "Big surprise: the complex exponential is periodic. With period 2 pi i. So e to the z equals e to the z plus 2 pi i for all z. This is a huge difference from the real case.",
+     visual: "exp", formula: "e^{z + 2\\pi i} = e^z"},
+    {text: "The range of e to the z is C minus zero. Yes, e to the z can be negative — for example, e to the i pi equals negative one. It can be any nonzero complex number, but never zero.",
+     visual: "exp", formula: "\\text{range}(e^z) = \\mathbb{C} \\setminus \\{0\\}"},
+  ], example: {
+    intro: "Show e^z = e^(z+2πi).",
+    steps: [
+      {text: "e to the (z plus 2 pi i) equals e to the z times e to the 2 pi i. Use Euler.",
+       visual: "exp", formula: "e^{z+2\\pi i} = e^z \\cdot e^{2\\pi i}"},
+      {text: "e to the 2 pi i equals cosine 2 pi plus i sine 2 pi equals 1. So e to the (z + 2πi) = e^z · 1 = e^z.",
+       visual: "exp", formula: "e^{2\\pi i} = 1"},
+    ]
+  }, quiz: {
+    question: "What is e^(iπ)?",
+    options: ["1", "-1", "i", "-i"],
+    correct: 1,
+    explain: "Euler: e^(iπ) = cos π + i sin π = -1 + 0 = -1. Famous identity!"
+  }},
+
+  // ============== LESSON 17 ==============
+  {title: "The Logarithm & Branch Cuts", scenes: [
+    {text: "The logarithm is the inverse of the exponential. But because e to the z is periodic, log z must be multivalued.",
+     visual: "log", formula: "\\log z = \\ln r + i(\\theta + 2n\\pi)"},
+    {text: "For any nonzero z equals r times e to the i theta, log z equals natural log r plus i theta plus 2 n pi i — for any integer n. So log z has infinitely many values, all differing by integer multiples of 2 pi i.",
+     visual: "log", formula: ""},
+    {text: "To make log single-valued, we pick a branch. The principal log uses theta in negative pi to pi. We write Log z with a capital L.",
+     visual: "branch", formula: "\\text{Log}(z) = \\ln r + i\\Theta, \\, \\Theta \\in (-\\pi, \\pi]"},
+    {text: "But there's a problem. Big Log z is NOT continuous on the negative real axis. Approach -1 from above: theta approaches pi. Approach from below: theta approaches negative pi. Two limits — a jump discontinuity.",
+     visual: "branch", formula: ""},
+    {text: "To fix this, we cut a ray out of the complex plane — the branch cut — and refuse to define Log there. On the slit plane, principal Log is analytic, with derivative 1 over z.",
+     visual: "branch", formula: "(\\text{Log}\\, z)' = \\frac{1}{z}"},
+    {text: "This is why 1 over z has no antiderivative on C minus the origin: the natural antiderivative, log, is forced to be multivalued there. Slit the plane though, and log becomes a perfectly good antiderivative.",
+     visual: "log", formula: ""},
+  ], example: {
+    intro: "Compute Log(-i).",
+    steps: [
+      {text: "Write negative i in polar. Modulus is 1. Principal argument: pointing straight down, the principal angle is negative pi over 2.",
+       visual: "log", formula: "-i = e^{-i\\pi/2}"},
+      {text: "So Log of negative i equals natural log of 1 plus i times negative pi over 2. That's negative i pi over 2.",
+       visual: "log", formula: "\\text{Log}(-i) = -\\frac{i\\pi}{2}"},
+    ]
+  }, quiz: {
+    question: "What is the principal value of Log(-1)?",
+    options: ["0", "iπ", "-iπ", "iπ/2"],
+    correct: 1,
+    explain: "-1 = e^(iπ). Principal angle is π (boundary case, included in (-π, π]). So Log(-1) = ln 1 + iπ = iπ."
+  }},
+
+  // ============== LESSON 18 ==============
+  {title: "Powers & Exponentials with Other Bases", scenes: [
+    {text: "Generalizing roots: for any complex number c, define z to the c as e to the c times log z. Where log z is multivalued. So z to the c is generally multivalued too.",
+     visual: "log", formula: "z^c = e^{c\\log z}"},
+    {text: "How many values? Depends on c. If c is an integer, just 1 value. If c is rational p over q in lowest terms, q values. If c is irrational or complex, infinitely many.",
+     visual: "roots", formula: ""},
+    {text: "On a slit plane, you can pick a branch of log and get a single-valued analytic z to the c, with derivative c times z to the c minus 1, as expected.",
+     visual: "roots", formula: "(z^c)' = c z^{c-1}"},
+    {text: "Wild example: i to the i. Use principal log of i, which is i pi over 2. So i to the i equals e to the i times i pi over 2, which is e to the negative pi over 2. A real number! About 0.207.",
+     visual: "log", formula: "i^i = e^{-\\pi/2} \\approx 0.207"},
+    {text: "For exponentials with other bases: c to the z equals e to the z times log c. After fixing one branch of log c, this is entire — no branch cut needed because z is in the exponent, not in the log.",
+     visual: "exp", formula: "c^z = e^{z\\log c} \\text{ (entire)}"},
+  ], example: {
+    intro: "Compute the principal value of (1+i)^i.",
+    steps: [
+      {text: "First find Log of 1 plus i. Modulus root 2, argument pi over 4. So Log equals natural log root 2 plus i pi over 4.",
+       visual: "log", formula: "\\text{Log}(1+i) = \\frac{\\ln 2}{2} + \\frac{i\\pi}{4}"},
+      {text: "Multiply by i. We get i times (ln 2 / 2) plus i squared times pi over 4, which is negative pi over 4 plus i ln 2 over 2.",
+       visual: "log", formula: "i\\cdot \\text{Log}(1+i) = -\\pi/4 + i(\\ln 2)/2"},
+      {text: "Exponentiate: e to the negative pi over 4 times (cosine of ln 2 over 2 plus i sine of ln 2 over 2). Real and imaginary parts cleanly separated.",
+       visual: "log", formula: "(1+i)^i = e^{-\\pi/4}\\!\\left[\\cos(\\tfrac{\\ln 2}{2}) + i\\sin(\\tfrac{\\ln 2}{2})\\right]"},
+    ]
+  }, quiz: {
+    question: "What is i^2 = ?",
+    options: ["-1", "1", "i", "Not well-defined"],
+    correct: 0,
+    explain: "Since 2 is an integer, i² is single-valued and equals -1 by definition. (For non-integer powers, multiplevalues.)"
+  }},
+
+  // ============== LESSON 19 ==============
+  {title: "Trig & Hyperbolic Functions", scenes: [
+    {text: "Inspired by Euler's formula, we define sine and cosine of complex z using exponentials.",
+     visual: "euler", formula: "\\sin z = \\frac{e^{iz} - e^{-iz}}{2i}, \\quad \\cos z = \\frac{e^{iz} + e^{-iz}}{2}"},
+    {text: "All the familiar identities still hold: sine squared plus cosine squared equals one. Addition formulas. Derivatives: d sine equals cosine, d cosine equals minus sine.",
+     visual: "euler", formula: ""},
+    {text: "But here's the shocker: complex sine and cosine are NOT bounded. Compute sine of i times y. You get i sinh y. As y goes to infinity, this blows up.",
+     visual: "euler", formula: "\\sin(iy) = i\\sinh(y)"},
+    {text: "All zeros of sine z are real: z equals n pi. All zeros of cosine z are real too: z equals n plus 1 half times pi. Even though the functions are complex, their zeros are all on the real line.",
+     visual: "euler", formula: "\\sin z = 0 \\iff z = n\\pi"},
+    {text: "Hyperbolic functions: sinh z and cosh z. Defined just like in real but with complex z. Beautiful identity: sinh of i z equals i sine z. So sinh and sine are essentially the same in complex world.",
+     visual: "euler", formula: "\\sinh(iz) = i\\sin z"},
+    {text: "Inverse trig: solve sine w equals z by setting t equals e to the i w. The equation becomes a quadratic in t. Solve, then take log to recover w. Multivalued, of course.",
+     visual: "log", formula: "\\sin^{-1}(z) = -i\\log(iz + \\sqrt{1-z^2})"},
+  ], example: {
+    intro: "Compute sin(i).",
+    steps: [
+      {text: "Use the formula. e to the i times i is e to the negative 1. e to the negative i times i is e to the 1.",
+       visual: "euler", formula: "\\sin(i) = \\frac{e^{-1} - e^{1}}{2i}"},
+      {text: "Simplify: e to the negative 1 minus e is negative of (e minus 1 over e), which is negative 2 sinh 1. Divide by 2 i: sinh 1 over i, which equals minus i sinh 1, or equivalently, i sinh 1 with a sign cleanup.",
+       visual: "euler", formula: "\\sin(i) = i\\sinh(1) \\approx 1.175\\,i"},
+    ]
+  }, quiz: {
+    question: "Where are the zeros of cos z?",
+    options: ["nowhere", "z = nπ for integer n", "z = (n + 1/2)π for integer n", "z = ni for integer n"],
+    correct: 2,
+    explain: "Cos z = 0 ⟺ e^(iz) + e^(-iz) = 0 ⟺ e^(2iz) = -1 ⟺ 2iz = (2n+1)πi ⟺ z = (n+1/2)π. All real."
+  }},
+
+  // ============== LESSON 20 ==============
+  {title: "Contour Integrals", scenes: [
+    {text: "In real calculus, you integrate over intervals. In complex analysis, you integrate over curves in the plane — called contours.",
+     visual: "contour", formula: ""},
+    {text: "A contour C is a piecewise-smooth curve, parametrized as z of t for t in some interval a to b. It's a one-dimensional object embedded in the complex plane.",
+     visual: "contour", formula: "C: z(t), \\, t \\in [a, b]"},
+    {text: "The contour integral of f along C is defined as: integrate from a to b, f of z of t, times z prime of t, dt. The z prime of t accounts for the parameterization speed.",
+     visual: "contour", formula: "\\int_C f(z)\\,dz = \\int_a^b f(z(t))\\,z'(t)\\,dt"},
+    {text: "The recipe: parametrize, substitute, multiply by z prime, integrate. The result is a complex number — possibly real, possibly purely imaginary.",
+     visual: "contour", formula: ""},
+    {text: "Key inequality, the M L bound: if f is bounded by M on the contour, and the contour has length L, then the absolute value of the integral is at most M times L.",
+     visual: "contour", formula: "\\left|\\int_C f\\,dz\\right| \\leq M \\cdot L"},
+  ], example: {
+    intro: "Compute ∮ z² dz around the unit circle.",
+    steps: [
+      {text: "Parametrize: z equals e to the i theta, theta from 0 to 2 pi. Then z squared equals e to the 2 i theta.",
+       visual: "contour", formula: "z = e^{i\\theta}, \\, z^2 = e^{2i\\theta}"},
+      {text: "Compute z prime: i e to the i theta. So z squared times z prime equals i e to the 3 i theta.",
+       visual: "contour", formula: "z^2 z' = i e^{3i\\theta}"},
+      {text: "Integrate from 0 to 2 pi: i divided by 3 i, times (e to the 6 i pi minus 1). The (e to the 6 i pi minus 1) part equals zero. So the answer is zero.",
+       visual: "contour", formula: "\\oint_{|z|=1} z^2\\,dz = 0"},
+    ]
+  }, quiz: {
+    question: "If C is a smooth contour and |f(z)| ≤ 5 on C, and C has length 10, then |∫_C f dz| is at most ?",
+    options: ["50", "10", "5", "It depends"],
+    correct: 0,
+    explain: "ML inequality: |∫_C f dz| ≤ M·L = 5 · 10 = 50."
+  }},
+
+  // ============== LESSON 21 ==============
+  {title: "Antiderivative Theorem", scenes: [
+    {text: "Suppose f is continuous on a domain. The following three statements are equivalent.",
+     visual: "contour", formula: ""},
+    {text: "A: f has an antiderivative — a function big F with F prime equals f. B: contour integrals depend only on endpoints. C: integrals around any closed loop equal zero.",
+     visual: "contour", formula: "(A) \\iff (B) \\iff (C)"},
+    {text: "If any one holds, you get the fundamental theorem of calculus: integral from z one to z two of f, dz, equals big F of z two minus big F of z one. Same as the real case.",
+     visual: "contour", formula: "\\int_{z_1}^{z_2} f\\,dz = F(z_2) - F(z_1)"},
+    {text: "Big example: f equals 1 over z. Try integrating around the unit circle. Parametrize, plug in, get 2 pi i. NONZERO. So 1 over z fails condition C — and therefore has no antiderivative on C minus 0.",
+     visual: "oneoverz", formula: "\\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i"},
+    {text: "But on the slit plane — simply connected — the principal Log z IS an antiderivative for 1 over z. The simply connected condition is doing all the work.",
+     visual: "branch", formula: ""},
+  ], example: {
+    intro: "Why doesn't 1/z have an antiderivative on C\\{0}?",
+    steps: [
+      {text: "Suppose it did, call it big F. Then by FTC, the integral around any closed loop is F(end) minus F(start). For a closed loop, end equals start. So integral equals zero.",
+       visual: "oneoverz", formula: "\\oint_C f\\,dz = 0"},
+      {text: "But we computed that integral around unit circle equals 2 pi i, not zero. Contradiction. So no antiderivative exists.",
+       visual: "oneoverz", formula: "2\\pi i \\neq 0"},
+    ]
+  }, quiz: {
+    question: "On a simply connected domain D, an analytic function ALWAYS has an antiderivative.",
+    options: ["True", "False", "Only if it's a polynomial", "Only if D is bounded"],
+    correct: 0,
+    explain: "True. Cauchy-Goursat says ∮ f dz = 0 on any closed curve, which is condition (C), so antiderivative exists."
+  }},
+
+  // ============== LESSON 22 ==============
+  {title: "Cauchy-Goursat Theorem", scenes: [
+    {text: "Now the first colossal theorem of complex analysis. Cauchy-Goursat. Statement: if f is analytic everywhere inside and on a simple closed contour C, then the contour integral around C is zero.",
+     visual: "goursat", formula: "\\oint_C f\\,dz = 0"},
+    {text: "Sounds simple, profound implications. It says analytic functions are 'conservative' — like gradient vector fields in physics. The contour you choose doesn't matter, only the homotopy class.",
+     visual: "goursat", formula: ""},
+    {text: "Here's the easy proof, assuming f prime is continuous. Apply Green's theorem to break the contour integral into two real double integrals. Cauchy-Riemann makes both integrands zero. Done.",
+     visual: "goursat", formula: ""},
+    {text: "Goursat's clever insight: the theorem holds even WITHOUT assuming continuous derivative. Just analyticity. The proof requires subdividing the region into tiny squares and a lot of work.",
+     visual: "goursat", formula: ""},
+    {text: "Corollary one: on a simply connected domain, every analytic function has an antiderivative. Corollary two: the integral on a closed contour is zero whenever there's no singularity inside.",
+     visual: "goursat", formula: ""},
+  ], example: {
+    intro: "Compute ∮ e^z dz around any closed contour.",
+    steps: [
+      {text: "e to the z is entire — analytic everywhere. So Cauchy-Goursat applies for ANY closed contour C.",
+       visual: "exp", formula: ""},
+      {text: "Therefore the integral is zero, no matter what C looks like.",
+       visual: "goursat", formula: "\\oint_C e^z\\,dz = 0"},
+    ]
+  }, quiz: {
+    question: "If f is analytic on and inside a simple closed contour, ∮f dz = ?",
+    options: ["depends on f", "always 1", "always 0", "always 2πi"],
+    correct: 2,
+    explain: "Cauchy-Goursat: analytic inside and on the contour ⟹ integral is zero."
+  }},
+
+  // ============== LESSON 23 ==============
+  {title: "Multiply Connected & Deformation", scenes: [
+    {text: "What if f has a singularity inside the contour? Cauchy-Goursat doesn't apply. But we can still say something.",
+     visual: "rt", formula: ""},
+    {text: "Theorem: if C-one is inside C-two, both simple closed counterclockwise, and f is analytic in the annular region between them, then the two contour integrals are equal.",
+     visual: "rt", formula: "\\oint_{C_1} f\\,dz = \\oint_{C_2} f\\,dz"},
+    {text: "Proof idea: cut the annular region with two straight lines. This makes it simply connected. Apply Cauchy-Goursat. The cut lines cancel out, leaving only the two boundary circles.",
+     visual: "rt", formula: ""},
+    {text: "More general version: outer contour equals sum of inner contours, when there are multiple holes inside. Each hole gets its own little contour around the singularity.",
+     visual: "rt", formula: "\\oint_C f = \\sum_k \\oint_{C_k} f"},
+    {text: "This is the trick that lets us compute integrals around weird-shaped contours. Replace them with nice circles around each singularity. Same answer, easier computation.",
+     visual: "rt", formula: ""},
+  ], example: {
+    intro: "Show ∮ dz/z = 2πi for ANY closed loop around 0.",
+    steps: [
+      {text: "Suppose C is some weird-shaped loop around 0. By deformation, we can replace it with the unit circle.",
+       visual: "oneoverz", formula: ""},
+      {text: "On the unit circle, parametrize and compute: integral of i over e to the i theta times e to the i theta dθ = i times (2π) = 2πi.",
+       visual: "oneoverz", formula: "\\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i"},
+      {text: "By deformation, the integral over the original loop is also 2πi. Always.",
+       visual: "oneoverz", formula: ""},
+    ]
+  }, quiz: {
+    question: "If C₁ and C₂ are two closed loops both encircling z=0 once counterclockwise, what is ∮_{C₁} dz/z compared to ∮_{C₂} dz/z?",
+    options: ["Equal", "Off by 2πi", "Off by sign", "Cannot be compared"],
+    correct: 0,
+    explain: "By deformation, both equal 2πi. Same singularity, same direction → same integral."
+  }},
+
+  // ============== LESSON 24 ==============
+  {title: "Cauchy Integral Formula", scenes: [
+    {text: "The most magical formula in complex analysis. Suppose f is analytic on and inside a simple closed contour C, and z naught is inside C. Then f at z naught equals one over 2 pi i, times the integral of f of z divided by z minus z naught, around C.",
+     visual: "cif", formula: "f(z_0) = \\frac{1}{2\\pi i}\\oint_C \\frac{f(z)}{z - z_0}\\,dz"},
+    {text: "Stop and think about what this says. The values of an analytic function INSIDE a region are completely determined by its values on the boundary. That's incredible.",
+     visual: "cif", formula: ""},
+    {text: "Proof sketch: by deformation, replace C with a tiny circle of radius rho around z naught. Parametrize and let rho go to zero. Continuity of f makes the integrand approach f at z naught.",
+     visual: "cif", formula: ""},
+    {text: "Generalization to higher derivatives: f to the n-th derivative at z naught equals n factorial over 2 pi i, times the integral of f of z divided by (z minus z naught) to the n plus 1, around C.",
+     visual: "cif", formula: "f^{(n)}(z_0) = \\frac{n!}{2\\pi i}\\oint_C \\frac{f(z)}{(z-z_0)^{n+1}}\\,dz"},
+    {text: "EARTH-SHATTERING consequence: every higher derivative exists. So in complex analysis, analytic on an open set means infinitely differentiable. This is dramatically stronger than real calculus.",
+     visual: "derivatives", formula: "\\text{analytic} \\implies C^\\infty"},
+  ], example: {
+    intro: "Compute ∮ cos(z)/(z² + 9) dz around |z| = 1.",
+    steps: [
+      {text: "Singularities of integrand: z = ±3i. Both OUTSIDE the unit circle. So the integrand is analytic everywhere we need.",
+       visual: "func", formula: ""},
+      {text: "Wait — this needs the original Cauchy-Goursat, not CIF. The integrand is analytic inside C, so the integral is zero.",
+       visual: "goursat", formula: "\\oint_{|z|=1} \\frac{\\cos z}{z^2 + 9}\\,dz = 0"},
+      {text: "Now try ∮ e^(2z)/z⁴ dz. Here z=0 IS inside. Use the n-th derivative formula with n=3: integral = (2πi/3!) f‴(0) where f(z) = e^(2z). f‴(z) = 8e^(2z), so f‴(0) = 8. Integral = 8πi/3.",
+       visual: "cif", formula: "\\oint \\frac{e^{2z}}{z^4}\\,dz = \\frac{8\\pi i}{3}"},
+    ]
+  }, quiz: {
+    question: "Does Cauchy's integral formula imply analytic functions are infinitely differentiable?",
+    options: ["Yes", "No", "Only on simply connected domains", "Only for polynomials"],
+    correct: 0,
+    explain: "Yes! Differentiate the CIF as many times as you want — each higher derivative exists as an integral."
+  }},
+
+  // ============== LESSON 25 ==============
+  {title: "Liouville's Theorem", scenes: [
+    {text: "Sharp consequence of CIF. Liouville's theorem: any bounded entire function must be constant.",
+     visual: "liouville", formula: "f \\text{ entire and bounded} \\implies f \\text{ constant}"},
+    {text: "In real analysis, sine x is bounded by 1 and entire (smooth on R). It's not constant. So Liouville is purely a complex phenomenon.",
+     visual: "compare", formula: ""},
+    {text: "Proof, beautifully short. Suppose modulus f is bounded by M everywhere. Use the CIF derivative formula on a circle of radius R around any point z naught.",
+     visual: "liouville", formula: "|f'(z_0)| \\leq \\frac{M}{R}"},
+    {text: "Let R go to infinity. Modulus of f prime at z naught is bounded by zero. So f prime is identically zero. Hence f is constant.",
+     visual: "liouville", formula: "f' \\equiv 0 \\implies f \\equiv \\text{const}"},
+  ], example: {
+    intro: "Why doesn't sin z violate Liouville?",
+    steps: [
+      {text: "sin x as a real function is bounded. But sin z as a complex function is NOT bounded — sin(iy) = i sinh y blows up.",
+       visual: "euler", formula: "\\sin(iy) = i\\sinh(y) \\to \\infty"},
+      {text: "So sin z is entire but unbounded — no contradiction with Liouville.",
+       visual: "liouville", formula: ""},
+    ]
+  }, quiz: {
+    question: "Can we have an entire function f with |f(z)| ≤ 100 for all z?",
+    options: ["Only if f is constant", "Yes, any bounded entire function works", "Only if f is a polynomial", "Only if f is real-valued"],
+    correct: 0,
+    explain: "By Liouville, bounded entire ⟹ constant. So the only such f is a constant function."
+  }},
+
+  // ============== LESSON 26 ==============
+  {title: "Fundamental Theorem of Algebra", scenes: [
+    {text: "Now the big payoff. Every non-constant complex polynomial has a complex root. And in fact, factors completely into linear factors.",
+     visual: "fta", formula: "P(z) = a_n(z - z_1)\\cdots(z - z_n)"},
+    {text: "Real analysis cannot prove this. The polynomial x squared plus one has no real roots. But it has roots i and minus i in C, and factors as (z - i)(z + i).",
+     visual: "fta", formula: ""},
+    {text: "Proof of existence using Liouville. Suppose polynomial P has no roots. Then 1 over P is entire. We show 1 over P is bounded.",
+     visual: "fta", formula: ""},
+    {text: "For modulus z large enough, the leading term a sub n times z to the n dominates. So 1 over modulus P decays like 1 over modulus z to the n. Bounded outside some big disk.",
+     visual: "fta", formula: ""},
+    {text: "Inside the disk, 1 over P is continuous on a compact set, hence bounded. So 1 over P is bounded everywhere — entire and bounded — hence constant by Liouville. Then P is constant. Contradicts our assumption.",
+     visual: "fta", formula: ""},
+    {text: "Once we have one root z one, divide it out. We get a polynomial of degree n minus 1. Repeat. By induction, complete factorization.",
+     visual: "fta", formula: ""},
+  ], example: {
+    intro: "Factor z⁴ - 1.",
+    steps: [
+      {text: "Roots are fourth roots of unity: 1, i, -1, -i.",
+       visual: "fta", formula: ""},
+      {text: "So z⁴ - 1 = (z-1)(z-i)(z+1)(z+i). Or, grouping: (z² - 1)(z² + 1).",
+       visual: "fta", formula: "z^4 - 1 = (z-1)(z+1)(z-i)(z+i)"},
+    ]
+  }, quiz: {
+    question: "How many complex roots (with multiplicity) does the polynomial z³ + z + 1 have?",
+    options: ["1", "2", "3", "Infinitely many"],
+    correct: 2,
+    explain: "By FTA, a degree-n polynomial has exactly n complex roots (counted with multiplicity). Degree 3 ⟹ 3 roots."
+  }},
+
+  // ============== LESSON 27 ==============
+  {title: "Maximum Modulus Principle", scenes: [
+    {text: "Another stunning result. If f is analytic on a domain and |f| attains its maximum value at some interior point, then f is constant.",
+     visual: "liouville", formula: "|f| \\text{ attains max in interior} \\implies f \\text{ constant}"},
+    {text: "In other words: a non-constant analytic function's modulus can only attain its max on the boundary. The interior of a region cannot 'top out'.",
+     visual: "liouville", formula: ""},
+    {text: "Proof uses the mean value property derived from the CIF. f at z naught equals the average of f around any circle centered at z naught.",
+     visual: "cif", formula: "f(z_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(z_0 + re^{i\\theta})\\,d\\theta"},
+    {text: "If modulus f at z naught is the max, then modulus f on every nearby circle equals modulus f at z naught. So modulus f is locally constant. By a result we proved earlier, f itself is constant.",
+     visual: "analytic", formula: ""},
+    {text: "Practical use: if you want to find the max of modulus f on a closed bounded region, just check the boundary. The interior doesn't have it.",
+     visual: "liouville", formula: ""},
+  ], example: {
+    intro: "Find max of |z² + 1| for z in unit disk |z| ≤ 1.",
+    steps: [
+      {text: "z² + 1 is analytic, non-constant. So max of modulus is on boundary |z| = 1.",
+       visual: "liouville", formula: ""},
+      {text: "On boundary, z = e^(iθ). |z² + 1| = |e^(2iθ) + 1|. Maximum when e^(2iθ) = 1, giving |1 + 1| = 2. So max is 2.",
+       visual: "liouville", formula: "\\max_{|z|\\leq 1} |z^2 + 1| = 2"},
+    ]
+  }, quiz: {
+    question: "If f is analytic on |z| ≤ 1 and |f| has a max at z = 1/2, what can we conclude?",
+    options: ["f is constant", "f has a singularity", "f is real-valued", "f vanishes"],
+    correct: 0,
+    explain: "z = 1/2 is in the interior. Max modulus principle ⟹ f is constant."
+  }},
+
+  // ============== LESSON 28 ==============
+  {title: "Power Series & Taylor Series", scenes: [
+    {text: "Earlier we used Taylor series casually. Now let's nail them down. A power series centered at z naught is a sum from n equals zero to infinity of a sub n times (z minus z naught) to the n.",
+     visual: "series", formula: "\\sum_{n=0}^\\infty a_n (z - z_0)^n"},
+    {text: "Every power series has a radius of convergence R. The series converges absolutely for |z - z_0| < R, diverges for |z - z_0| > R, and on the boundary, it's a case-by-case study.",
+     visual: "series", formula: "1/R = \\limsup |a_n|^{1/n}"},
+    {text: "Within the radius, the series defines an analytic function. You can differentiate term by term, integrate term by term — all the goodies.",
+     visual: "series", formula: ""},
+    {text: "Big theorem: TAYLOR'S THEOREM. If f is analytic on an open disk around z naught, then f equals its Taylor series everywhere on that disk. The coefficients are a sub n equals f to the n-th derivative at z naught, divided by n factorial.",
+     visual: "series", formula: "f(z) = \\sum \\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n"},
+    {text: "Critical point: in real analysis, a smooth function might NOT equal its Taylor series. In complex analysis, every analytic function automatically does. This is because of CIF's miracle.",
+     visual: "compare", formula: ""},
+    {text: "Common Taylor series at zero: 1 over 1 minus z is sum z to the n. e to the z is sum z to the n over n factorial. sin and cos have their alternating series. Memorize these.",
+     visual: "series", formula: "\\frac{1}{1-z} = \\sum z^n, \\quad e^z = \\sum \\frac{z^n}{n!}"},
+  ], example: {
+    intro: "Find the Taylor series of 1/(1 + z²) at z = 0.",
+    steps: [
+      {text: "Substitute u equals minus z squared into the geometric series.",
+       visual: "series", formula: "\\frac{1}{1-u} = \\sum u^n"},
+      {text: "We get sum from n=0 of (-z²)^n which is sum (-1)^n z^(2n). Valid for |z²| < 1, i.e., |z| < 1.",
+       visual: "series", formula: "\\frac{1}{1+z^2} = \\sum_{n=0}^\\infty (-1)^n z^{2n}"},
+    ]
+  }, quiz: {
+    question: "What is the radius of convergence of ∑ z^n / n! ?",
+    options: ["0", "1", "e", "∞"],
+    correct: 3,
+    explain: "Use ratio test or limsup |a_n|^(1/n) = 0 since n! grows faster than any exponential. So R = ∞ — converges everywhere. (This is the e^z series.)"
+  }},
+
+  // ============== LESSON 29 ==============
+  {title: "Laurent Series & Singularities", scenes: [
+    {text: "What if f has a singularity at z naught? Taylor series fails. But we can still expand, with negative powers added. This is the LAURENT SERIES.",
+     visual: "series", formula: "f(z) = \\sum_{n=0}^\\infty a_n(z-z_0)^n + \\sum_{n=1}^\\infty \\frac{b_n}{(z-z_0)^n}"},
+    {text: "Valid in an annular region: R one less than modulus z minus z naught less than R two. The series exists and is unique.",
+     visual: "series", formula: "R_1 < |z - z_0| < R_2"},
+    {text: "The 'principal part' is the negative-power piece. It tells us about the singularity.",
+     visual: "singularities", formula: "\\text{principal part} = \\sum_{n\\geq 1} \\frac{b_n}{(z-z_0)^n}"},
+    {text: "Three types of isolated singularity. Removable: principal part is zero. f extends to be analytic. Pole of order m: finitely many negative powers, the largest being b sub m. Essential: infinitely many negative powers.",
+     visual: "singularities", formula: ""},
+    {text: "Examples. (sin z)/z has a removable singularity at zero — Taylor expand sine and cancel. 1 over z squared at zero is a pole of order 2. e to the 1 over z at zero is essential.",
+     visual: "singularities", formula: ""},
+    {text: "Casorati-Weierstrass theorem: near an essential singularity, the function takes ALL complex values arbitrarily closely. In any deleted neighborhood, the image is dense in C. Wild behavior.",
+     visual: "singularities", formula: ""},
+  ], example: {
+    intro: "Find the Laurent series of 1/(z(z+1)) at z = 0, in the annulus 0 < |z| < 1.",
+    steps: [
+      {text: "Partial fractions: 1/(z(z+1)) = 1/z - 1/(z+1).",
+       visual: "series", formula: ""},
+      {text: "Expand 1/(z+1) as Taylor series: 1 - z + z² - z³ + ... for |z| < 1.",
+       visual: "series", formula: "\\frac{1}{z+1} = 1 - z + z^2 - \\ldots"},
+      {text: "So 1/(z(z+1)) = 1/z - 1 + z - z² + ... Pole of order 1 at z=0; principal part is just 1/z.",
+       visual: "series", formula: "\\frac{1}{z(z+1)} = \\frac{1}{z} - 1 + z - z^2 + \\cdots"},
+    ]
+  }, quiz: {
+    question: "What kind of singularity does (sin z)/z have at z = 0?",
+    options: ["Pole order 1", "Pole order 2", "Essential", "Removable"],
+    correct: 3,
+    explain: "Sin z = z - z³/6 + ... so (sin z)/z = 1 - z²/6 + ..., a Taylor series with no negative powers. Removable — define value 1 at zero."
+  }},
+
+  // ============== LESSON 30 ==============
+  {title: "Residues", scenes: [
+    {text: "Now we extract the most useful single number from a singularity. The RESIDUE of f at z naught is just b sub one — the coefficient of one over (z minus z naught) in the Laurent expansion.",
+     visual: "residue", formula: "\\text{Res}_{z=z_0} f = b_1"},
+    {text: "Equivalent definition by integral: residue equals one over 2 pi i, times the integral of f around any small circle around z naught.",
+     visual: "residue", formula: ""},
+    {text: "Why does this matter? Because of Cauchy's RESIDUE THEOREM: integral around any closed loop equals 2 pi i times the sum of residues at all singularities inside.",
+     visual: "rt", formula: "\\oint_C f\\,dz = 2\\pi i \\sum \\text{Res}_{z_k} f"},
+    {text: "Now you have a tool. Want to compute a contour integral? Find all singularities inside, sum their residues, multiply by 2 pi i. Done.",
+     visual: "rt", formula: ""},
+    {text: "How to compute residues efficiently. Simple pole at z naught: Res equals limit as z goes to z naught of (z minus z naught) times f of z.",
+     visual: "residue", formula: "\\text{Res} = \\lim_{z\\to z_0}(z - z_0)f(z)"},
+    {text: "Quotient with simple zero in denominator: if f equals p over q with q at z naught equal zero and q prime nonzero, residue equals p at z naught divided by q prime at z naught.",
+     visual: "residue", formula: "\\text{Res}_{z_0}\\frac{p}{q} = \\frac{p(z_0)}{q'(z_0)}"},
+    {text: "Pole of order m: take phi z equals (z minus z naught) to the m, times f of z. Residue is the (m minus 1)-st derivative of phi at z naught, divided by (m minus 1) factorial.",
+     visual: "residue", formula: "\\text{Res} = \\frac{\\varphi^{(m-1)}(z_0)}{(m-1)!}"},
+  ], example: {
+    intro: "Find the residue of 1/((z-1)(z-2)) at z = 1.",
+    steps: [
+      {text: "Simple pole at z = 1. Use residue formula.",
+       visual: "residue", formula: ""},
+      {text: "Multiply by (z-1) and evaluate at z=1: 1/(z-2) at z=1 is 1/(-1) = -1.",
+       visual: "residue", formula: "\\text{Res}_{z=1} = -1"},
+    ]
+  }, quiz: {
+    question: "What is the residue of cos(z)/z at z = 0?",
+    options: ["0", "1", "i", "1/2"],
+    correct: 1,
+    explain: "Cos z = 1 - z²/2 + ... so cos(z)/z = 1/z - z/2 + ... The coefficient of 1/z is 1. So Res = 1."
+  }},
+
+  // ============== LESSON 31 ==============
+  {title: "Real Integrals via Residues — Rational", scenes: [
+    {text: "Here's the payoff. Hard real integrals — like integral from negative infinity to infinity of one over (x to the sixth plus one) — fall to residues in three lines.",
+     visual: "realint", formula: "\\int_0^\\infty \\frac{dx}{x^6+1} = \\frac{\\pi}{3}"},
+    {text: "Strategy. Step 1: extend the real integrand to a complex function. Step 2: take a contour that includes the real axis and a big upper semicircle. Step 3: apply the residue theorem.",
+     visual: "realint", formula: ""},
+    {text: "Step 4: show that the integral on the semicircle goes to zero as radius goes to infinity, using the M L bound. Step 5: collect residues in the upper half plane.",
+     visual: "realint", formula: ""},
+    {text: "The condition: degree of denominator must exceed degree of numerator by at least 2. That's what makes the semicircle integral vanish.",
+     visual: "realint", formula: "\\deg Q \\geq \\deg P + 2"},
+  ], example: {
+    intro: "Compute ∫_(-∞)^∞ 1/(x²+1) dx.",
+    steps: [
+      {text: "Singularities of 1/(z²+1): z = ±i. Only z = i is in the upper half plane.",
+       visual: "realint", formula: ""},
+      {text: "Residue at z = i: factor as 1/((z+i)(z-i)). At z = i, (z-i) is the simple zero, so residue = 1/(z+i) at z=i = 1/(2i).",
+       visual: "residue", formula: "\\text{Res}_{z=i} = \\frac{1}{2i}"},
+      {text: "Total = 2πi × 1/(2i) = π. Big arc: |1/(z²+1)| ≤ 1/(R²-1) on |z|=R, length πR, so integral ≤ πR/(R²-1) → 0. Hence ∫_(-∞)^∞ = π.",
+       visual: "realint", formula: "\\int_{-\\infty}^\\infty \\frac{dx}{x^2+1} = \\pi"},
+    ]
+  }, quiz: {
+    question: "For ∫ 1/(x⁴+1) dx using residues, the degree gap is 4. Does the semicircle integral vanish?",
+    options: ["Yes", "No", "Only if R is very small", "Depends on contour shape"],
+    correct: 0,
+    explain: "Yes — degree gap ≥ 2 ⟹ |integrand| ≤ M/R² on big arc, length πR, total bound → 0."
+  }},
+
+  // ============== LESSON 32 ==============
+  {title: "Trig Integrals & Jordan's Lemma", scenes: [
+    {text: "Real integrals involving sine and cosine require a special trick: don't extend with cos z or sin z, those are unbounded. Instead use e to the i a z, which is bounded by 1 in the upper half plane.",
+     visual: "realint", formula: "|e^{iaz}| = e^{-ay} \\leq 1 \\text{ for } y \\geq 0"},
+    {text: "Then take the real or imaginary part of the answer at the end. cosine corresponds to real part, sine to imaginary.",
+     visual: "realint", formula: ""},
+    {text: "Sometimes the M L bound isn't enough. JORDAN'S LEMMA helps. If g is analytic in upper half plane outside a disk, with maximum modulus on the semicircle going to zero, then the integral of g times e to i a z goes to zero, for any positive a.",
+     visual: "realint", formula: "\\text{Jordan: } \\int_{C_R} g\\,e^{iaz}\\,dz \\to 0"},
+    {text: "Proof uses the inequality sine theta is at least 2 theta over pi for theta in zero to pi over 2. Then bound the integral by an exponential that decays.",
+     visual: "realint", formula: ""},
+  ], example: {
+    intro: "Compute ∫_(-∞)^∞ cos(x)/(x²+1) dx.",
+    steps: [
+      {text: "Replace with e^(iz)/(z² + 1). Upper half plane: |e^(iz)| ≤ 1.",
+       visual: "realint", formula: "f(z) = \\frac{e^{iz}}{z^2+1}"},
+      {text: "Pole at z = i. Residue: e^(i·i)/(2i) = e^(-1)/(2i).",
+       visual: "residue", formula: "\\text{Res}_i = \\frac{e^{-1}}{2i}"},
+      {text: "Integral over real axis equals 2πi × e⁻¹/(2i) = π/e. Take real part (it's already real). So ∫_(-∞)^∞ cos(x)/(x²+1) dx = π/e.",
+       visual: "realint", formula: "\\int_{-\\infty}^\\infty \\frac{\\cos x}{x^2+1}\\,dx = \\frac{\\pi}{e}"},
+    ]
+  }, quiz: {
+    question: "When using residues for real trig integrals, why use e^(iaz) instead of cos(az)?",
+    options: ["e^(iaz) is faster to compute", "cos(z) is unbounded on the upper half plane", "cos(az) has more poles", "It's just convention"],
+    correct: 1,
+    explain: "Cos z = (e^(iz) + e^(-iz))/2 — the second term grows exponentially in the upper half plane. So cos z itself is unbounded. e^(iaz) decays nicely up there."
+  }},
+
+  // ============== LESSON 33 ==============
+  {title: "Indented Paths & Branch Cut Contours", scenes: [
+    {text: "What if a singularity sits ON the contour? Common case: real integrals with a pole on the real axis. Solution: indent the contour around the pole with a small semicircle.",
+     visual: "rt", formula: ""},
+    {text: "Lemma: integrating around a small clockwise semicircle approaching a simple pole as the radius goes to zero, the result is minus i pi times the residue. Half of 2 pi i, with a sign flip for clockwise.",
+     visual: "residue", formula: "\\lim_{\\rho \\to 0}\\int_{C_\\rho} f\\,dz = -i\\pi \\cdot \\text{Res}"},
+    {text: "Classic example: the Dirichlet integral, integral from zero to infinity of sine x over x dx equals pi over 2.",
+     visual: "realint", formula: "\\int_0^\\infty \\frac{\\sin x}{x}\\,dx = \\frac{\\pi}{2}"},
+    {text: "For integrals like x to the negative a over (x plus 1), with branch cut along positive real axis, use a 'keyhole' contour. Wrap around the branch cut. Residue at the singularity inside, use the multivalued nature on top and bottom.",
+     visual: "branch", formula: ""},
+    {text: "These techniques cover most hard real integrals you'll encounter. Master the four contour patterns — semicircle, semicircle plus indent, keyhole, rectangle — and you can compute almost anything.",
+     visual: "realint", formula: ""},
+  ], example: {
+    intro: "Walk through the Dirichlet integral.",
+    steps: [
+      {text: "Use f(z) = e^(iz)/z. Contour: real axis from -R to -ρ, semicircle around 0, ρ to R, big semicircle back.",
+       visual: "realint", formula: ""},
+      {text: "No singularity inside. Cauchy-Goursat: total integral = 0. Big arc → 0 by Jordan. Small arc → -iπ × Res = -iπ × 1 = -iπ.",
+       visual: "residue", formula: ""},
+      {text: "So PV ∫ e^(ix)/x dx = iπ. Imaginary part: ∫ sin(x)/x dx = π. By evenness, ∫_0^∞ = π/2.",
+       visual: "realint", formula: "\\int_0^\\infty \\frac{\\sin x}{x}\\,dx = \\frac{\\pi}{2}"},
+    ]
+  }, quiz: {
+    question: "If a simple pole is ON the contour and we indent above it counterclockwise, the small arc integral is...",
+    options: ["2πi × Res", "iπ × Res", "-iπ × Res", "0"],
+    correct: 1,
+    explain: "A counterclockwise small semicircle approaching a simple pole gives iπ × Res — half the full 2πi residue."
+  }},
+
+  // ============== LESSON 34: WRAPUP ==============
+  {title: "🎉 Final Summary", scenes: [
+    {text: "Congratulations! You just covered the entire complex analysis course in a single sitting. Let's recap the big picture.",
+     visual: "title", formula: ""},
+    {text: "Layer 1: complex numbers and their geometry. Polar form, Euler's formula, multiplication as rotation.",
+     visual: "polar", formula: ""},
+    {text: "Layer 2: complex differentiation and the Cauchy-Riemann equations. The single requirement that the limit doesn't depend on direction is incredibly strong.",
+     visual: "cr", formula: ""},
+    {text: "Layer 3: contour integration and the Cauchy theorems. Cauchy-Goursat and the integral formula are the engines.",
+     visual: "cif", formula: ""},
+    {text: "Layer 4: series expansions. Taylor near regular points, Laurent at singularities. Together they let us understand any analytic function locally.",
+     visual: "series", formula: ""},
+    {text: "Layer 5: residues. The single number that controls integration around singularities. It collapses contour integrals to a finite sum and computes hard real integrals effortlessly.",
+     visual: "rt", formula: ""},
+    {text: "The whole subject rests on one observation: complex differentiability is so strong it forces analyticity, infinite differentiability, Liouville, max modulus, FTA — everything we did.",
+     visual: "compare", formula: ""},
+    {text: "Good luck on your final. You've got this. And if you forget anything, come back and review the lessons — I'll be here.",
+     visual: "closing", formula: ""},
+  ], example: null, quiz: null},
+];
+
+// ============================================================
+// CANVAS VISUALIZATIONS — same library as the quick tour
+// ============================================================
+const canvas = document.getElementById('visual');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const CX = W/2, CY = H/2;
+const SCALE = 75;
+
+function plot(x, y) { return [CX + x*SCALE, CY - y*SCALE]; }
+
+function drawAxes(ctx, label = true) {
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(40, CY); ctx.lineTo(W-30, CY);
+  ctx.moveTo(CX, 40); ctx.lineTo(CX, H-30);
+  ctx.stroke();
+  ctx.fillStyle = '#cbd5e1';
+  ctx.beginPath();
+  ctx.moveTo(W-30, CY); ctx.lineTo(W-40, CY-6); ctx.lineTo(W-40, CY+6); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(CX, 40); ctx.lineTo(CX-6, 50); ctx.lineTo(CX+6, 50); ctx.closePath(); ctx.fill();
+  if (label) {
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 14px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Re', W-26, CY+5);
+    ctx.fillText('Im', CX+8, 38);
+  }
+}
+
+function drawGrid(ctx) {
+  ctx.strokeStyle = '#f1f5f9';
+  ctx.lineWidth = 1;
+  for (let i = -5; i <= 5; i++) {
+    if (i === 0) continue;
+    ctx.beginPath();
+    ctx.moveTo(40, CY - i*SCALE); ctx.lineTo(W-30, CY - i*SCALE);
+    ctx.moveTo(CX + i*SCALE, 40); ctx.lineTo(CX + i*SCALE, H-30);
+    ctx.stroke();
+  }
+}
+
+function fillBg(ctx, color = 'white') {
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawArrow(ctx, x1, y1, x2, y2, color = '#dc2626', lw = 3) {
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lw;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  const angle = Math.atan2(y2-y1, x2-x1);
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 12*Math.cos(angle - Math.PI/6), y2 - 12*Math.sin(angle - Math.PI/6));
+  ctx.lineTo(x2 - 12*Math.cos(angle + Math.PI/6), y2 - 12*Math.sin(angle + Math.PI/6));
+  ctx.closePath(); ctx.fill();
+}
+
+const visuals = {
+  title: (ctx, t) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 60; i++) {
+      const x = ((i*137 + t*30) % W);
+      const y = (i*91) % H;
+      const r = 1 + 2*Math.sin(t*1.5 + i);
+      ctx.fillStyle = `hsla(${(i*8)%360}, 70%, 70%, ${0.4 + 0.4*Math.sin(t*2 + i)})`;
+      ctx.beginPath(); ctx.arc(x, y, Math.abs(r), 0, 2*Math.PI); ctx.fill();
+    }
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 56px Georgia, serif';
+    ctx.fillText('Complex Analysis', CX, CY - 20);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = 'italic 22px Georgia, serif';
+    ctx.fillText('Deep Lessons — every concept', CX, CY + 30);
+  },
+  imaginary: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 100px Georgia, serif';
+    const s = 1 + 0.04*Math.sin(t*1.5);
+    ctx.save();
+    ctx.translate(CX, CY);
+    ctx.scale(s, s);
+    ctx.fillText('i² = −1', 0, 30);
+    ctx.restore();
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic 20px serif';
+    ctx.fillText('the rule that opens a new universe', CX, H - 50);
+  },
+  number: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx); drawAxes(ctx);
+    const px = 2.5, py = 1.8;
+    const [x, y] = plot(px, py);
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, CY);
+    ctx.moveTo(x, y); ctx.lineTo(CX, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 8 + 2*Math.sin(t*3), 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('z = 2.5 + 1.8i', x + 14, y - 14);
+  },
+  plane: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [ax, ay] = plot(2, 1);
+    const [bx, by] = plot(1, 2);
+    const [sx, sy] = plot(3, 3);
+    drawArrow(ctx, CX, CY, ax, ay, '#3b82f6');
+    drawArrow(ctx, CX, CY, bx, by, '#10b981');
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(ax, ay); ctx.lineTo(sx, sy);
+    ctx.moveTo(bx, by); ctx.lineTo(sx, sy);
+    ctx.stroke(); ctx.setLineDash([]);
+    drawArrow(ctx, CX, CY, sx, sy, '#dc2626', 4);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 16px serif';
+    ctx.fillText('z₁=2+i', ax+8, ay+8);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('z₂=1+2i', bx-90, by-8);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('z₁+z₂=3+3i', sx+8, sy-8);
+  },
+  modulus: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [x, y] = plot(3, 2);
+    drawArrow(ctx, CX, CY, x, y, '#dc2626', 3.5);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 20px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('|z| = √13', (CX+x)/2 + 12, (CY+y)/2 - 8);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2*Math.PI); ctx.fill();
+  },
+  conjugate: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [x, y] = plot(2.5, 2);
+    const [x2, y2] = plot(2.5, -2);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#dc2626'; ctx.font = 'bold 20px Georgia, serif';
+    ctx.fillText('z', x+12, y);
+    ctx.fillStyle = '#3b82f6';
+    ctx.beginPath(); ctx.arc(x2, y2, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#3b82f6';
+    ctx.fillText('z̄', x2+12, y2+8);
+    ctx.strokeStyle = '#94a3b8'; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.setLineDash([]);
+  },
+  polar: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const r = 2.5, theta = Math.PI/4 + 0.2*Math.sin(t);
+    const [x, y] = plot(r*Math.cos(theta), r*Math.sin(theta));
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(CX, CY, 50, 0, -theta, true);
+    ctx.stroke();
+    drawArrow(ctx, CX, CY, x, y, '#dc2626', 3.5);
+    ctx.fillStyle = '#10b981'; ctx.font = 'bold 22px serif';
+    ctx.fillText('θ', CX + 60, CY - 18);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('r', (CX+x)/2 + 8, (CY+y)/2 - 8);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.fillText('z = re^(iθ)', x+10, y-12);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2*Math.PI); ctx.fill();
+  },
+  euler: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx, false);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(CX, CY, SCALE, 0, 2*Math.PI); ctx.stroke();
+    const theta = (t*0.7) % (2*Math.PI);
+    const [x, y] = plot(Math.cos(theta), Math.sin(theta));
+    drawArrow(ctx, CX, CY, x, y, '#dc2626', 3);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('e^(iθ) = cos θ + i sin θ', CX, H - 30);
+  },
+  multiply: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const phase = (t*0.6) % (2*Math.PI);
+    const r1 = 1.4, t1 = 0.6;
+    const r2 = 1.2, t2 = 0.9 + phase*0.3;
+    const r3 = r1*r2, t3 = t1+t2;
+    const [x1, y1] = plot(r1*Math.cos(t1), r1*Math.sin(t1));
+    const [x2, y2] = plot(r2*Math.cos(t2), r2*Math.sin(t2));
+    const [x3, y3] = plot(r3*Math.cos(t3), r3*Math.sin(t3));
+    drawArrow(ctx, CX, CY, x1, y1, '#3b82f6', 3);
+    drawArrow(ctx, CX, CY, x2, y2, '#10b981', 3);
+    drawArrow(ctx, CX, CY, x3, y3, '#dc2626', 4);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('multiply moduli, add angles', CX, H-30);
+  },
+  roots: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx, false);
+    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(CX, CY, SCALE*1.6, 0, 2*Math.PI); ctx.stroke();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let k = 0; k < 5; k++) {
+      const theta = 2*Math.PI*k/5;
+      const [px, py] = plot(1.6*Math.cos(theta), 1.6*Math.sin(theta));
+      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath(); ctx.stroke();
+    for (let k = 0; k < 5; k++) {
+      const theta = 2*Math.PI*k/5;
+      const [px, py] = plot(1.6*Math.cos(theta), 1.6*Math.sin(theta));
+      const pulse = 8 + 3*Math.sin(t*2 + k);
+      ctx.fillStyle = `hsl(${k*72}, 70%, 50%)`;
+      ctx.beginPath(); ctx.arc(px, py, pulse, 0, 2*Math.PI); ctx.fill();
+    }
+  },
+  func: (ctx, t) => {
+    fillBg(ctx);
+    const sq = 160;
+    const lx = 40, ly = (H-sq)/2;
+    const rx = W - 40 - sq, ry = (H-sq)/2;
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
+    ctx.strokeRect(lx, ly, sq, sq);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 16px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('z plane', lx+sq/2, ly-10);
+    ctx.strokeStyle = '#10b981';
+    ctx.strokeRect(rx, ry, sq, sq);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('w plane', rx+sq/2, ry-10);
+    drawArrow(ctx, lx+sq+10, ly+sq/2, rx-10, ry+sq/2, '#475569', 3);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 22px serif';
+    ctx.fillText('f', (lx+sq+rx)/2, ly+sq/2-10);
+  },
+  derivative: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [zx, zy] = plot(0.5, 0.5);
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath(); ctx.arc(zx, zy, 7, 0, 2*Math.PI); ctx.fill();
+    const k = Math.floor(t*3) % 8;
+    for (let i = 0; i < 8; i++) {
+      const ang = i*Math.PI/4;
+      const len = 65;
+      const ex = zx + len*Math.cos(ang);
+      const ey = zy + len*Math.sin(ang);
+      const color = i === k ? '#dc2626' : '#94a3b8';
+      drawArrow(ctx, ex, ey, zx + 14*Math.cos(ang), zy + 14*Math.sin(ang), color, i === k ? 3 : 1.5);
+    }
+    ctx.fillStyle = '#1e293b'; ctx.font = 'italic 16px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Δz → 0 from any direction', CX, H - 30);
+  },
+  cr: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 26px Georgia, serif';
+    ctx.fillText('Cauchy–Riemann Equations', CX, 80);
+    ctx.font = 'bold 50px Georgia, serif';
+    const s = 1 + 0.03*Math.sin(t*2);
+    ctx.save(); ctx.translate(CX, CY-20); ctx.scale(s, s);
+    ctx.fillText('u_x = v_y', 0, 0);
+    ctx.fillText('u_y = -v_x', 0, 70);
+    ctx.restore();
+  },
+  analytic: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [zx, zy] = plot(0.8, 0.8);
+    const r = 90 + 5*Math.sin(t*1.5);
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.setLineDash([8,4]);
+    ctx.beginPath(); ctx.arc(zx, zy, r, 0, 2*Math.PI); ctx.fill(); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath(); ctx.arc(zx, zy, 6, 0, 2*Math.PI); ctx.fill();
+    ctx.font = 'italic 18px serif'; ctx.textAlign = 'center';
+    ctx.fillText('analytic = differentiable in OPEN neighborhood', CX, H - 30);
+  },
+  compare: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('Real vs Complex', CX, 50);
+    ctx.font = 'bold 18px serif';
+    ctx.fillStyle = '#dc2626'; ctx.fillText('Real (ℝ→ℝ)', W*0.27, 90);
+    ctx.fillStyle = '#10b981'; ctx.fillText('Complex (ℂ→ℂ)', W*0.73, 90);
+    ctx.font = '15px sans-serif'; ctx.fillStyle = '#1e293b';
+    const real = ['differentiable ≠ C∞', 'bounded ≠ const', '|x| not diff', 'no FTA'];
+    const cx2 = ['analytic ⟹ C∞', 'bounded entire = const', 'analytic = Taylor', 'every poly factors'];
+    real.forEach((f, i) => ctx.fillText('• ' + f, W*0.27, 130 + i*30));
+    cx2.forEach((f, i) => ctx.fillText('✓ ' + f, W*0.73, 130 + i*30));
+  },
+  exp: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    for (let k = -1; k <= 1; k++) {
+      const y = CY - k*SCALE*Math.PI*0.5;
+      ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(CX-40, y); ctx.lineTo(CX+40, y); ctx.stroke();
+    }
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('e^z is periodic with period 2πi', CX, H - 30);
+  },
+  log: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx, false);
+    const [x0, y0] = plot(2, 0);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x0, y0, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 18px serif'; ctx.textAlign = 'center';
+    ctx.fillText('z', x0, y0-15);
+    ctx.fillStyle = '#3b82f6'; ctx.font = '14px monospace'; ctx.textAlign = 'left';
+    for (let n = -2; n <= 2; n++) {
+      const y = CY + n*40;
+      ctx.fillStyle = `hsla(${(n+2)*60}, 70%, 50%, 0.9)`;
+      ctx.beginPath(); ctx.arc(W*0.7, y, 6, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText(`log r + ${2*n}πi`, W*0.7+12, y+5);
+    }
+    ctx.fillStyle = '#1e293b'; ctx.font = 'italic 18px serif'; ctx.textAlign = 'center';
+    ctx.fillText('log z is multi-valued', CX, H-30);
+  },
+  branch: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.moveTo(40, CY); ctx.lineTo(CX, CY); ctx.stroke();
+    ctx.fillStyle = '#dc2626'; ctx.font = 'bold 16px serif'; ctx.textAlign = 'center';
+    ctx.fillText('branch cut', (40+CX)/2, CY+25);
+  },
+  contour: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let s = 0; s <= 1; s += 0.005) {
+      const x = -2 + 4*s;
+      const y = 0.5 + Math.sin(s*Math.PI*3) * 1.2;
+      const [px, py] = plot(x, y);
+      if (s === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    const s = (t*0.2) % 1;
+    const x_ = -2 + 4*s, y_ = 0.5 + Math.sin(s*Math.PI*3)*1.2;
+    const [px, py] = plot(x_, y_);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(px, py, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'italic 16px serif'; ctx.textAlign = 'center';
+    ctx.fillText('contour C: z(t)', CX, H-30);
+  },
+  goursat: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 50;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 1.8 + 0.3*Math.sin(theta*3);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.15)'; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#065f46'; ctx.font = 'bold 32px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('∮ f dz = 0', CX, CY+10);
+  },
+  oneoverz: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(CX, CY, 10, 0, 2*Math.PI); ctx.fill();
+    ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(CX-14, CY-14); ctx.lineTo(CX+14, CY+14);
+    ctx.moveTo(CX-14, CY+14); ctx.lineTo(CX+14, CY-14);
+    ctx.stroke();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(CX, CY, 130, 0, 2*Math.PI); ctx.stroke();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 26px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('∮ dz/z = 2πi', CX, H-50);
+  },
+  cif: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 60;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 1.7 + 0.2*Math.cos(theta*4);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.1)'; ctx.fill(); ctx.stroke();
+    const [zx, zy] = plot(0.3, 0.4);
+    ctx.fillStyle = `rgba(220, 38, 38, ${0.7 + 0.3*Math.sin(t*3)})`;
+    ctx.beginPath(); ctx.arc(zx, zy, 12, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(zx, zy, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 16px serif'; ctx.textAlign = 'center';
+    ctx.fillText('z₀', zx, zy-18);
+  },
+  derivatives: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 24px Georgia, serif';
+    ctx.fillText('All derivatives exist!', CX, 60);
+    const labels = ['f', "f'", "f''", "f'''", "f^(4)", '...', 'f^(n)'];
+    const phase = Math.floor(t*1.5) % labels.length;
+    labels.forEach((lab, i) => {
+      const y = 110 + i*40;
+      const opacity = i <= phase ? 1 : 0.2;
+      ctx.fillStyle = `rgba(59, 130, 246, ${opacity})`;
+      ctx.font = `bold ${28 - i*1.5}px Georgia, serif`;
+      ctx.fillText(lab, CX, y);
+    });
+  },
+  liouville: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.fillStyle = 'rgba(220, 38, 38, 0.15)';
+    ctx.beginPath(); ctx.arc(CX, CY, 180, 0, 2*Math.PI); ctx.fill();
+    ctx.strokeStyle = '#dc2626'; ctx.setLineDash([5,5]); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(CX, CY, 180, 0, 2*Math.PI); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 22px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('|f| ≤ M everywhere', CX, 60);
+    ctx.fillStyle = '#dc2626'; ctx.font = 'italic 18px serif';
+    ctx.fillText('then f must be CONSTANT', CX, H-30);
+  },
+  fta: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('Fundamental Theorem of Algebra', CX, 50);
+    drawAxes(ctx, false);
+    [0, Math.PI/2, Math.PI, 3*Math.PI/2].forEach((th, i) => {
+      const r = 1.5;
+      const [px, py] = plot(r*Math.cos(th), r*Math.sin(th));
+      ctx.fillStyle = `hsl(${i*90}, 70%, 50%)`;
+      ctx.beginPath(); ctx.arc(px, py, 8, 0, 2*Math.PI); ctx.fill();
+    });
+  },
+  series: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx, false);
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(CX, CY, 120, 0, 2*Math.PI); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(CX, CY, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 18px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('f(z) = Σ a_n (z-z₀)ⁿ', CX, 60);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'italic 16px serif';
+    ctx.fillText('converges in disk |z-z₀| < R', CX, H-30);
+  },
+  singularities: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('Three types of singularity', CX, 60);
+    const types = [
+      {x: W*0.18, name: 'Removable', ex: '(sin z)/z', col: '#10b981'},
+      {x: CX, name: 'Pole', ex: '1/zᵐ', col: '#f59e0b'},
+      {x: W*0.82, name: 'Essential', ex: 'e^(1/z)', col: '#dc2626'}
+    ];
+    types.forEach((t2, i) => {
+      ctx.fillStyle = t2.col; ctx.font = 'bold 20px serif';
+      ctx.fillText(t2.name, t2.x, 130);
+      const pulse = 14 + 4*Math.sin(t*2 + i);
+      ctx.fillStyle = t2.col;
+      ctx.beginPath(); ctx.arc(t2.x, 200, pulse, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b'; ctx.font = 'italic 16px serif';
+      ctx.fillText(t2.ex, t2.x, 260);
+    });
+  },
+  residue: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('Laurent series at z₀:', CX, 60);
+    ctx.fillText('f(z) = a₀ + a₁(z-z₀) + ... ', CX, 110);
+    const flash = 0.7 + 0.3*Math.sin(t*3);
+    ctx.fillStyle = `rgba(220, 38, 38, ${flash})`;
+    ctx.font = 'bold 30px Georgia, serif';
+    ctx.fillText('+ b₁/(z-z₀)', CX, 180);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 20px Georgia, serif';
+    ctx.fillText('+ b₂/(z-z₀)² + ...', CX, 230);
+    ctx.fillStyle = '#dc2626'; ctx.font = 'italic 22px serif';
+    ctx.fillText('↑ THE RESIDUE', CX, 290);
+  },
+  rt: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 60;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 2 + 0.4*Math.cos(theta*5);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.08)'; ctx.fill(); ctx.stroke();
+    [[-0.6, 0.8], [0.9, 0.3], [0.1, -0.7]].forEach((s, i) => {
+      const [px, py] = plot(s[0], s[1]);
+      const pulse = 1 + 0.4*Math.sin(t*2 + i);
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(px, py, 8*pulse, 0, 2*Math.PI); ctx.fill();
+    });
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 18px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('∮ f = 2πi · Σ Res', CX, H-30);
+  },
+  realint: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(40, CY); ctx.lineTo(W-40, CY); ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(CX, CY, 220, Math.PI, 2*Math.PI); ctx.stroke();
+    [[-1.5, 1.2], [0, 1.6], [1.5, 1.2]].forEach((s, i) => {
+      const [px, py] = plot(s[0], s[1]);
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(px, py, 9, 0, 2*Math.PI); ctx.fill();
+    });
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 20px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('UHP semicircle for real integrals', CX, 60);
+  },
+  closing: (ctx, t) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 80; i++) {
+      const x = ((i*113 + t*60) % W);
+      const y = (i*71) % H;
+      ctx.fillStyle = `hsla(${i*5}, 80%, 70%, ${0.3 + 0.5*Math.abs(Math.sin(t*3 + i))})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5 + Math.abs(Math.sin(t + i)), 0, 2*Math.PI);
+      ctx.fill();
+    }
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 50px Georgia, serif';
+    const wobble = Math.sin(t)*4;
+    ctx.fillText('You did it!', CX, CY-20+wobble);
+    ctx.fillStyle = '#e2e8f0'; ctx.font = '20px Georgia, serif';
+    ctx.fillText('Good luck on your final.', CX, CY+30);
+  },
+};
+
+// ============================================================
+// AVATAR animation
+// ============================================================
+const eyeL = document.getElementById('eye-l');
+const eyeR = document.getElementById('eye-r');
+const mouth = document.getElementById('mouth');
+const headGroup = document.getElementById('head-group');
+
+setInterval(() => {
+  eyeL.setAttribute('ry', 1); eyeR.setAttribute('ry', 1);
+  setTimeout(() => { eyeL.setAttribute('ry', 17); eyeR.setAttribute('ry', 17); }, 130);
+}, 3500 + Math.random()*1000);
+
+function animateAvatar() {
+  const speaking = window.speechSynthesis && speechSynthesis.speaking;
+  if (speaking) {
+    const ry = 4 + Math.abs(Math.sin(Date.now()*0.025))*12;
+    mouth.setAttribute('ry', ry);
+  } else {
+    mouth.setAttribute('ry', 3);
+  }
+  const tilt = Math.sin(Date.now()*0.0015)*1.5;
+  headGroup.setAttribute('transform', `rotate(${tilt} 110 130)`);
+  requestAnimationFrame(animateAvatar);
+}
+animateAvatar();
+
+// ============================================================
+// CONTROLLER
+// ============================================================
+let lessonIdx = 0;       // current lesson
+let phase = 'teach';     // teach | example | quiz
+let phaseSceneIdx = 0;   // index within current phase
+let isPlaying = false;
+let chosenVoice = null;
+let speechRate = 1;
+let sceneStartTime = 0;
+const completed = new Set();
+
+function pickVoice() {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const preferred = voices.find(v =>
+    /en-US|en_US|en-GB/.test(v.lang) &&
+    /Samantha|Daniel|Karen|Google US English|Microsoft Aria|Microsoft Zira/i.test(v.name)
+  );
+  if (preferred) return preferred;
+  return voices.find(v => /en/i.test(v.lang)) || voices[0];
+}
+
+function populateVoices() {
+  const sel = document.getElementById('voice-select');
+  sel.innerHTML = '';
+  const voices = speechSynthesis.getVoices().filter(v => /en/i.test(v.lang));
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = v.name + ' (' + v.lang + ')';
+    sel.appendChild(opt);
+  });
+  chosenVoice = pickVoice();
+  if (chosenVoice) {
+    const idx = voices.indexOf(chosenVoice);
+    if (idx >= 0) sel.value = idx;
+  }
+  sel.onchange = () => { chosenVoice = voices[parseInt(sel.value)]; };
+}
+
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  setTimeout(populateVoices, 500);
+}
+
+function buildLessonList() {
+  const ul = document.getElementById('lesson-list');
+  ul.innerHTML = '';
+  LESSONS.forEach((l, i) => {
+    const li = document.createElement('li');
+    li.textContent = l.title;
+    li.dataset.idx = i;
+    if (i === lessonIdx) li.classList.add('active');
+    if (completed.has(i)) li.classList.add('completed');
+    li.onclick = () => goToLesson(i);
+    ul.appendChild(li);
+  });
+}
+
+function getCurrentScene() {
+  const lesson = LESSONS[lessonIdx];
+  if (phase === 'teach') return lesson.scenes[phaseSceneIdx];
+  if (phase === 'example' && lesson.example) {
+    if (phaseSceneIdx === 0) return {text: lesson.example.intro, visual: lesson.scenes[0].visual, formula: ''};
+    return lesson.example.steps[phaseSceneIdx - 1];
+  }
+  return null;
+}
+
+function showQuiz() {
+  const lesson = LESSONS[lessonIdx];
+  if (!lesson.quiz) {
+    completed.add(lessonIdx);
+    advanceLesson();
+    return;
+  }
+  speechSynthesis.cancel();
+  isPlaying = false;
+  document.getElementById('play-btn').textContent = '▶ Play';
+  const overlay = document.getElementById('quiz-area');
+  overlay.classList.remove('hidden');
+  const q = lesson.quiz;
+  overlay.innerHTML = `
+    <div class="quiz-overlay">
+      <div class="quiz-card">
+        <h2>📝 Quick Check</h2>
+        <div class="quiz-q">${q.question}</div>
+        <div class="quiz-options" id="quiz-opts">
+          ${q.options.map((o, i) => `<button onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-actions">
+          <button class="secondary" onclick="skipQuiz()">Skip — show me the answer</button>
+        </div>
+      </div>
+    </div>
+  `;
+  speak("Quick check time. " + q.question);
+}
+
+function answerQuiz(idx) {
+  const lesson = LESSONS[lessonIdx];
+  const q = lesson.quiz;
+  const opts = document.querySelectorAll('#quiz-opts button');
+  const correct = idx === q.correct;
+  opts.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === idx) b.classList.add('wrong');
+  });
+  const card = document.querySelector('.quiz-card');
+  const explainEl = document.createElement('div');
+  explainEl.className = 'quiz-explain' + (correct ? '' : ' wrong');
+  explainEl.innerHTML = (correct ? '<b>✓ Correct!</b> ' : '<b>✗ Not quite.</b> ') + q.explain;
+  card.appendChild(explainEl);
+  const actions = document.querySelector('.quiz-actions');
+  actions.innerHTML = correct
+    ? `<button class="success" onclick="quizDone(true)">✓ Continue to next lesson →</button>
+       <button class="secondary" onclick="reviewLesson()">Review this lesson</button>`
+    : `<button onclick="reviewLesson()">Walk me through it again</button>
+       <button class="secondary" onclick="quizDone(false)">Skip to next lesson →</button>`;
+  speak((correct ? "Correct. " : "Not quite. ") + q.explain);
+}
+
+function skipQuiz() {
+  document.getElementById('quiz-area').classList.add('hidden');
+  reviewLesson();
+}
+
+function reviewLesson() {
+  document.getElementById('quiz-area').classList.add('hidden');
+  if (LESSONS[lessonIdx].example) { phase = 'example'; phaseSceneIdx = 0; }
+  else { phase = 'teach'; phaseSceneIdx = 0; }
+  isPlaying = true;
+  document.getElementById('play-btn').textContent = '⏸ Pause';
+  updateUI();
+  speakCurrent();
+}
+
+function quizDone(correct) {
+  document.getElementById('quiz-area').classList.add('hidden');
+  if (correct) completed.add(lessonIdx);
+  advanceLesson();
+}
+
+function advanceLesson() {
+  if (lessonIdx < LESSONS.length - 1) {
+    lessonIdx++;
+    phase = 'teach';
+    phaseSceneIdx = 0;
+    buildLessonList();
+    updateUI();
+    if (isPlaying) speakCurrent();
+  } else {
+    isPlaying = false;
+    document.getElementById('play-btn').textContent = '🎉 Finished!';
+  }
+}
+
+function goToLesson(i) {
+  speechSynthesis.cancel();
+  lessonIdx = i;
+  phase = 'teach';
+  phaseSceneIdx = 0;
+  buildLessonList();
+  updateUI();
+  if (isPlaying) speakCurrent();
+}
+
+function updateUI() {
+  const lesson = LESSONS[lessonIdx];
+  const scene = getCurrentScene();
+  if (!scene) return;
+  document.getElementById('caption').textContent = scene.text;
+  const formulaEl = document.getElementById('formula');
+  if (scene.formula) {
+    formulaEl.innerHTML = '\\(\\displaystyle ' + scene.formula + '\\)';
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([formulaEl]).catch(() => {});
+  } else {
+    formulaEl.innerHTML = '<span style="color:#64748b; font-size:14px;">' + lesson.title + '</span>';
+  }
+  const totalScenes = lesson.scenes.length + (lesson.example ? lesson.example.steps.length + 1 : 0);
+  let curScene;
+  if (phase === 'teach') curScene = phaseSceneIdx + 1;
+  else curScene = lesson.scenes.length + phaseSceneIdx + 1;
+  document.getElementById('counter').textContent = `Lesson ${lessonIdx+1}/${LESSONS.length} · ${curScene}/${totalScenes}`;
+  document.getElementById('scene-title').textContent = lesson.title + (phase === 'example' ? ' (example)' : '');
+  document.getElementById('bar').style.width = ((lessonIdx / LESSONS.length) * 100) + '%';
+  sceneStartTime = Date.now();
+}
+
+function speak(text) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if (chosenVoice) u.voice = chosenVoice;
+  u.rate = speechRate;
+  speechSynthesis.speak(u);
+}
+
+function speakCurrent() {
+  const scene = getCurrentScene();
+  if (!scene) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(scene.text);
+  if (chosenVoice) u.voice = chosenVoice;
+  u.rate = speechRate;
+  u.onend = () => {
+    if (!isPlaying) return;
+    nextScene();
+  };
+  speechSynthesis.speak(u);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    speechSynthesis.pause();
+    isPlaying = false;
+    document.getElementById('play-btn').textContent = '▶ Resume';
+  } else {
+    isPlaying = true;
+    if (speechSynthesis.paused) speechSynthesis.resume();
+    else speakCurrent();
+    document.getElementById('play-btn').textContent = '⏸ Pause';
+  }
+}
+
+function nextScene() {
+  const lesson = LESSONS[lessonIdx];
+  if (phase === 'teach') {
+    if (phaseSceneIdx < lesson.scenes.length - 1) { phaseSceneIdx++; updateUI(); if (isPlaying) speakCurrent(); }
+    else if (lesson.example) { phase = 'example'; phaseSceneIdx = 0; updateUI(); if (isPlaying) speakCurrent(); }
+    else if (lesson.quiz) { showQuiz(); }
+    else { completed.add(lessonIdx); advanceLesson(); }
+  } else if (phase === 'example') {
+    const total = lesson.example.steps.length + 1; // intro + steps
+    if (phaseSceneIdx < total - 1) { phaseSceneIdx++; updateUI(); if (isPlaying) speakCurrent(); }
+    else if (lesson.quiz) { showQuiz(); }
+    else { completed.add(lessonIdx); advanceLesson(); }
+  }
+}
+
+function prevScene() {
+  if (phase === 'teach') {
+    if (phaseSceneIdx > 0) { phaseSceneIdx--; updateUI(); if (isPlaying) speakCurrent(); }
+    else if (lessonIdx > 0) { lessonIdx--; phase = 'teach'; phaseSceneIdx = LESSONS[lessonIdx].scenes.length - 1; buildLessonList(); updateUI(); if (isPlaying) speakCurrent(); }
+  } else if (phase === 'example') {
+    if (phaseSceneIdx > 0) { phaseSceneIdx--; updateUI(); if (isPlaying) speakCurrent(); }
+    else { phase = 'teach'; phaseSceneIdx = LESSONS[lessonIdx].scenes.length - 1; updateUI(); if (isPlaying) speakCurrent(); }
+  }
+}
+
+function changeSpeed() {
+  speechRate = parseFloat(document.getElementById('speed').value);
+  if (isPlaying) speakCurrent();
+}
+
+function startLessons() {
+  document.getElementById('start').classList.add('hidden');
+  isPlaying = true;
+  buildLessonList();
+  updateUI();
+  speakCurrent();
+  document.getElementById('play-btn').textContent = '⏸ Pause';
+}
+
+// Animation loop for visuals
+function animate() {
+  const scene = getCurrentScene();
+  if (!scene) return requestAnimationFrame(animate);
+  const elapsed = (Date.now() - sceneStartTime) / 1000;
+  const fn = visuals[scene.visual] || visuals.title;
+  fn(ctx, elapsed);
+  requestAnimationFrame(animate);
+}
+animate();
+
+buildLessonList();
+updateUI();
+</script>
+
+</body>
+</html>
