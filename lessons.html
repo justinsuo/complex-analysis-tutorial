@@ -640,10 +640,12 @@ const LESSONS = [
   ], example: {
     intro: "Show e^z = e^(z+2πi).",
     steps: [
-      {text: "e to the (z plus 2 pi i) equals e to the z times e to the 2 pi i. Use Euler.",
-       visual: "exp", formula: "e^{z+2\\pi i} = e^z \\cdot e^{2\\pi i}"},
-      {text: "e to the 2 pi i equals cosine 2 pi plus i sine 2 pi equals 1. So e to the (z + 2πi) = e^z · 1 = e^z.",
-       visual: "exp", formula: "e^{2\\pi i} = 1"},
+      {text: "We want to show e to the z equals e to the (z plus 2 pi i). Use the addition rule. e to the (z plus 2 pi i) splits as e to the z times e to the 2 pi i.",
+       visual: "walkthrough", formula: "e^{z+2\\pi i} = e^z \\cdot e^{2\\pi i}",
+       mathLines: ["Show: e^z = e^(z+2πi)", "addition rule:", "e^(z + 2πi) = e^z · e^(2πi)"]},
+      {text: "Now apply Euler's formula to the second factor. e to the 2 pi i equals cosine 2 pi plus i sine 2 pi, which equals 1 plus 0 equals 1. So we get e to the z times 1, which equals e to the z. Periodic with period 2 pi i.",
+       visual: "walkthrough", formula: "e^{2\\pi i} = 1",
+       mathLines: ["e^(2πi) = cos(2π) + i sin(2π)", "= 1 + 0 = 1", "so  e^(z + 2πi) = e^z · 1 = e^z  ✓", "period: 2πi"]},
     ]
   }, quiz: {
     question: "What is e^(iπ)?",
@@ -669,10 +671,12 @@ const LESSONS = [
   ], example: {
     intro: "Compute Log(-i).",
     steps: [
-      {text: "Write negative i in polar. Modulus is 1. Principal argument: pointing straight down, the principal angle is negative pi over 2.",
-       visual: "log", formula: "-i = e^{-i\\pi/2}"},
-      {text: "So Log of negative i equals natural log of 1 plus i times negative pi over 2. That's negative i pi over 2.",
-       visual: "log", formula: "\\text{Log}(-i) = -\\frac{i\\pi}{2}"},
+      {text: "Compute principal Log of negative i. First write negative i in polar form. Modulus is 1. The point is straight down on the imaginary axis, so the principal argument is negative pi over 2.",
+       visual: "walkthrough", formula: "-i = e^{-i\\pi/2}",
+       mathLines: ["compute Log(−i)", "|−i| = 1,   r = 1", "−i is straight down: arg = −π/2", "−i = 1 · e^(−iπ/2)"]},
+      {text: "Now apply the formula: Log z equals natural log r plus i theta. Here r is 1, so natural log r is zero. Theta is negative pi over 2. Final answer: negative i pi over 2.",
+       visual: "walkthrough", formula: "\\text{Log}(-i) = -\\frac{i\\pi}{2}",
+       mathLines: ["Log z = ln r + iθ", "ln 1 = 0", "Log(−i) = 0 + i(−π/2)", "Log(−i) = −iπ/2  ✓"]},
     ]
   }, quiz: {
     question: "What is the principal value of Log(-1)?",
@@ -696,12 +700,15 @@ const LESSONS = [
   ], example: {
     intro: "Compute the principal value of (1+i)^i.",
     steps: [
-      {text: "First find Log of 1 plus i. Modulus root 2, argument pi over 4. So Log equals natural log root 2 plus i pi over 4.",
-       visual: "log", formula: "\\text{Log}(1+i) = \\frac{\\ln 2}{2} + \\frac{i\\pi}{4}"},
-      {text: "Multiply by i. We get i times (ln 2 / 2) plus i squared times pi over 4, which is negative pi over 4 plus i ln 2 over 2.",
-       visual: "log", formula: "i\\cdot \\text{Log}(1+i) = -\\pi/4 + i(\\ln 2)/2"},
-      {text: "Exponentiate: e to the negative pi over 4 times (cosine of ln 2 over 2 plus i sine of ln 2 over 2). Real and imaginary parts cleanly separated.",
-       visual: "log", formula: "(1+i)^i = e^{-\\pi/4}\\!\\left[\\cos(\\tfrac{\\ln 2}{2}) + i\\sin(\\tfrac{\\ln 2}{2})\\right]"},
+      {text: "Compute the principal value of (1 plus i) to the i. The formula is e to the i times Log of (1 plus i). First find Log of 1 plus i. Modulus is square root of 2, argument is pi over 4. So Log equals natural log root 2 plus i pi over 4. Note natural log of root 2 is half of natural log 2.",
+       visual: "walkthrough", formula: "\\text{Log}(1+i) = \\frac{\\ln 2}{2} + \\frac{i\\pi}{4}",
+       mathLines: ["(1+i)^i = e^(i · Log(1+i))", "|1+i| = √2,  arg = π/4", "Log(1+i) = ln(√2) + i(π/4)", "= (ln 2)/2 + i(π/4)"]},
+      {text: "Now multiply by i. We get i times (ln 2 over 2) plus i squared times pi over 4. Since i squared is negative one, the second term flips sign. Result: negative pi over 4 plus i ln 2 over 2.",
+       visual: "walkthrough", formula: "i\\cdot \\text{Log}(1+i) = -\\pi/4 + i(\\ln 2)/2",
+       mathLines: ["i · Log(1+i)", "= i · [(ln 2)/2 + i(π/4)]", "= i(ln 2)/2 + i²(π/4)", "= −π/4 + i(ln 2)/2"]},
+      {text: "Finally exponentiate. e to the (negative pi over 4 plus i ln 2 over 2) splits as e to the minus pi over 4, times e to the i (ln 2 over 2). Apply Euler.",
+       visual: "walkthrough", formula: "(1+i)^i = e^{-\\pi/4}[\\cos(\\tfrac{\\ln 2}{2}) + i\\sin(\\tfrac{\\ln 2}{2})]",
+       mathLines: ["(1+i)^i = e^(−π/4 + i(ln 2)/2)", "= e^(−π/4) · e^(i(ln 2)/2)", "= e^(−π/4) [cos((ln 2)/2) + i sin((ln 2)/2)]", "≈ 0.4288 + 0.1549 i"]},
     ]
   }, quiz: {
     question: "What is i^2 = ?",
@@ -727,10 +734,12 @@ const LESSONS = [
   ], example: {
     intro: "Compute sin(i).",
     steps: [
-      {text: "Use the formula. e to the i times i is e to the negative 1. e to the negative i times i is e to the 1.",
-       visual: "euler", formula: "\\sin(i) = \\frac{e^{-1} - e^{1}}{2i}"},
-      {text: "Simplify: e to the negative 1 minus e is negative of (e minus 1 over e), which is negative 2 sinh 1. Divide by 2 i: sinh 1 over i, which equals minus i sinh 1, or equivalently, i sinh 1 with a sign cleanup.",
-       visual: "euler", formula: "\\sin(i) = i\\sinh(1) \\approx 1.175\\,i"},
+      {text: "Compute sine of i. Use the definition. Sine z equals (e to the iz minus e to the negative iz) divided by 2i. Plug in z equals i. e to the i times i is e to the negative 1. e to the negative i times i is e to the 1.",
+       visual: "walkthrough", formula: "\\sin(i) = \\frac{e^{-1} - e^{1}}{2i}",
+       mathLines: ["sin(z) = (e^(iz) − e^(−iz))/(2i)", "z = i:  iz = −1,  −iz = 1", "sin(i) = (e^(−1) − e^1)/(2i)"]},
+      {text: "Simplify the numerator. e to the negative 1 minus e equals negative (e minus 1 over e), which is negative 2 sinh of 1. Divide by 2 i. The 2's cancel. We get negative sinh 1 over i, equals i sinh 1.",
+       visual: "walkthrough", formula: "\\sin(i) = i\\sinh(1) \\approx 1.175\\,i",
+       mathLines: ["= (e^(−1) − e^1)/(2i)", "= −2 sinh(1) / (2i)", "= − sinh(1) / i", "= i · sinh(1) ≈ 1.175 i  ✓"]},
     ]
   }, quiz: {
     question: "Where are the zeros of cos z?",
@@ -754,12 +763,15 @@ const LESSONS = [
   ], example: {
     intro: "Compute ∮ z² dz around the unit circle.",
     steps: [
-      {text: "Parametrize: z equals e to the i theta, theta from 0 to 2 pi. Then z squared equals e to the 2 i theta.",
-       visual: "contour", formula: "z = e^{i\\theta}, \\, z^2 = e^{2i\\theta}"},
-      {text: "Compute z prime: i e to the i theta. So z squared times z prime equals i e to the 3 i theta.",
-       visual: "contour", formula: "z^2 z' = i e^{3i\\theta}"},
-      {text: "Integrate from 0 to 2 pi: i divided by 3 i, times (e to the 6 i pi minus 1). The (e to the 6 i pi minus 1) part equals zero. So the answer is zero.",
-       visual: "contour", formula: "\\oint_{|z|=1} z^2\\,dz = 0"},
+      {text: "Compute the integral of z squared around the unit circle. Parametrize: z equals e to the i theta, theta from 0 to 2 pi. Then z squared equals e to the 2 i theta.",
+       visual: "walkthrough", formula: "z = e^{i\\theta}, \\, z^2 = e^{2i\\theta}",
+       mathLines: ["∮_(|z|=1) z² dz = ?", "parametrize:  z(θ) = e^(iθ),  0 ≤ θ ≤ 2π", "z² = e^(2iθ)"]},
+      {text: "Compute z prime. Differentiate e to the i theta with respect to theta: i e to the i theta. So z squared times z prime equals e to the 2 i theta times i e to the i theta, which is i e to the 3 i theta.",
+       visual: "walkthrough", formula: "z^2 z' = i e^{3i\\theta}",
+       mathLines: ["z'(θ) = i · e^(iθ)", "z² · z' = e^(2iθ) · i · e^(iθ)", "= i · e^(3iθ)"]},
+      {text: "Integrate from 0 to 2 pi. The antiderivative of i times e to the 3 i theta is i over 3 i, times e to the 3 i theta, which is one third e to the 3 i theta. Evaluate at 2 pi minus at 0: e to the 6 i pi minus 1, both are 1, so subtract gives zero.",
+       visual: "walkthrough", formula: "\\oint_{|z|=1} z^2\\,dz = 0",
+       mathLines: ["∫_0^(2π) i · e^(3iθ) dθ", "= (1/3) · e^(3iθ)  from 0 to 2π", "= (1/3)(e^(6iπ) − 1)", "= (1/3)(1 − 1) = 0  ✓"]},
     ]
   }, quiz: {
     question: "If C is a smooth contour and |f(z)| ≤ 5 on C, and C has length 10, then |∫_C f dz| is at most ?",
@@ -783,10 +795,12 @@ const LESSONS = [
   ], example: {
     intro: "Why doesn't 1/z have an antiderivative on C\\{0}?",
     steps: [
-      {text: "Suppose it did, call it big F. Then by FTC, the integral around any closed loop is F(end) minus F(start). For a closed loop, end equals start. So integral equals zero.",
-       visual: "oneoverz", formula: "\\oint_C f\\,dz = 0"},
-      {text: "But we computed that integral around unit circle equals 2 pi i, not zero. Contradiction. So no antiderivative exists.",
-       visual: "oneoverz", formula: "2\\pi i \\neq 0"},
+      {text: "Argue by contradiction. Suppose 1 over z had an antiderivative big F on C minus zero. Then by the fundamental theorem of calculus, the integral around any closed loop equals F at the end minus F at the start. For a closed loop, end equals start, so the integral must be zero.",
+       visual: "walkthrough", formula: "\\oint_C f\\,dz = F(\\text{end}) - F(\\text{start}) = 0",
+       mathLines: ["assume F' = 1/z on ℂ \\ {0}", "for closed loop C: end = start", "∮_C 1/z dz = F(end) − F(start)", "= 0   (must be zero)"]},
+      {text: "But we just computed the integral around the unit circle equals 2 pi i, which is not zero. Contradiction! So 1 over z has no antiderivative on C minus zero. The hole at zero is the problem.",
+       visual: "walkthrough", formula: "\\oint_{|z|=1}\\frac{dz}{z} = 2\\pi i \\neq 0",
+       mathLines: ["but ∮_(|z|=1) 1/z dz = 2πi", "2πi ≠ 0 — contradiction!", "∴ no antiderivative on ℂ \\ {0}", "(domain not simply connected — has hole at 0)"]},
     ]
   }, quiz: {
     question: "On a simply connected domain D, an analytic function ALWAYS has an antiderivative.",
@@ -810,10 +824,12 @@ const LESSONS = [
   ], example: {
     intro: "Compute ∮ e^z dz around any closed contour.",
     steps: [
-      {text: "e to the z is entire — analytic everywhere. So Cauchy-Goursat applies for ANY closed contour C.",
-       visual: "exp", formula: ""},
-      {text: "Therefore the integral is zero, no matter what C looks like.",
-       visual: "goursat", formula: "\\oint_C e^z\\,dz = 0"},
+      {text: "Compute the integral of e to the z around any closed contour. e to the z is an entire function — analytic on all of the complex plane. So Cauchy-Goursat applies for ANY closed contour C.",
+       visual: "walkthrough", formula: "e^z \\text{ entire}",
+       mathLines: ["∮_C e^z dz = ?", "is e^z analytic inside C?", "e^z is ENTIRE — analytic everywhere", "Cauchy-Goursat applies"]},
+      {text: "Therefore the integral is zero, no matter what C looks like — circle, square, weird shape, doesn't matter.",
+       visual: "walkthrough", formula: "\\oint_C e^z\\,dz = 0",
+       mathLines: ["e^z entire ⟹ no singularities", "Cauchy-Goursat:", "∮_C e^z dz = 0", "(for ANY closed contour C)  ✓"]},
     ]
   }, quiz: {
     question: "If f is analytic on and inside a simple closed contour, ∮f dz = ?",
@@ -837,12 +853,15 @@ const LESSONS = [
   ], example: {
     intro: "Show ∮ dz/z = 2πi for ANY closed loop around 0.",
     steps: [
-      {text: "Suppose C is some weird-shaped loop around 0. By deformation, we can replace it with the unit circle.",
-       visual: "oneoverz", formula: ""},
-      {text: "On the unit circle, parametrize and compute: integral of i over e to the i theta times e to the i theta dθ = i times (2π) = 2πi.",
-       visual: "oneoverz", formula: "\\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i"},
-      {text: "By deformation, the integral over the original loop is also 2πi. Always.",
-       visual: "oneoverz", formula: ""},
+      {text: "Suppose C is some weird-shaped loop around zero. We can't easily parametrize it. The trick: 1 over z is analytic everywhere except at z = 0. So between C and a small unit circle, 1 over z is analytic. By the deformation theorem, the two integrals are equal.",
+       visual: "walkthrough", formula: "\\oint_C \\frac{dz}{z} = \\oint_{|z|=1} \\frac{dz}{z}",
+       mathLines: ["weird loop C around 0", "1/z analytic between C and |z|=1", "by deformation:", "∮_C dz/z = ∮_(|z|=1) dz/z"]},
+      {text: "Now compute on the unit circle. z equals e to the i theta, dz equals i e to the i theta d theta. So 1 over z dz becomes (1 over e^iθ) times i e^iθ d theta — the e^iθ's cancel — equals i d theta.",
+       visual: "walkthrough", formula: "\\oint_{|z|=1} \\frac{dz}{z} = \\int_0^{2\\pi} i\\, d\\theta",
+       mathLines: ["on |z|=1: z = e^(iθ), dz = i·e^(iθ) dθ", "1/z · dz = (1/e^(iθ)) · i·e^(iθ) dθ", "= i dθ", "∫_0^(2π) i dθ = 2πi"]},
+      {text: "Integrate i d theta from 0 to 2 pi. We get 2 pi i. So by deformation, the integral over the original loop is also 2 pi i. The shape of the loop doesn't matter — only that it encloses 0 once counterclockwise.",
+       visual: "walkthrough", formula: "\\oint_C \\frac{dz}{z} = 2\\pi i",
+       mathLines: ["= 2πi", "and ∮_C dz/z = ∮_(|z|=1) dz/z (by deformation)", "∮_C dz/z = 2πi  ✓", "any loop around 0, same answer"]},
     ]
   }, quiz: {
     question: "If C₁ and C₂ are two closed loops both encircling z=0 once counterclockwise, what is ∮_{C₁} dz/z compared to ∮_{C₂} dz/z?",
@@ -866,12 +885,18 @@ const LESSONS = [
   ], example: {
     intro: "Compute ∮ cos(z)/(z² + 9) dz around |z| = 1.",
     steps: [
-      {text: "Singularities of integrand: z = ±3i. Both OUTSIDE the unit circle. So the integrand is analytic everywhere we need.",
-       visual: "func", formula: ""},
-      {text: "Wait — this needs the original Cauchy-Goursat, not CIF. The integrand is analytic inside C, so the integral is zero.",
-       visual: "goursat", formula: "\\oint_{|z|=1} \\frac{\\cos z}{z^2 + 9}\\,dz = 0"},
-      {text: "Now try ∮ e^(2z)/z⁴ dz. Here z=0 IS inside. Use the n-th derivative formula with n=3: integral = (2πi/3!) f‴(0) where f(z) = e^(2z). f‴(z) = 8e^(2z), so f‴(0) = 8. Integral = 8πi/3.",
-       visual: "cif", formula: "\\oint \\frac{e^{2z}}{z^4}\\,dz = \\frac{8\\pi i}{3}"},
+      {text: "First example: integral of cos z over z squared plus 9, around the unit circle. Singularities of the integrand are where z squared plus 9 equals zero, i.e., z equals plus or minus 3 i. Both are OUTSIDE the unit circle, so the integrand is analytic inside.",
+       visual: "walkthrough", formula: "\\frac{\\cos z}{z^2 + 9}, \\text{ poles at } \\pm 3i",
+       mathLines: ["∮_(|z|=1) cos(z)/(z² + 9) dz = ?", "denominator zero: z² + 9 = 0", "z = ±3i", "|±3i| = 3 > 1: outside unit circle"]},
+      {text: "Since the integrand is analytic inside the unit circle, Cauchy-Goursat applies — the integral is zero. No need for the integral formula here.",
+       visual: "walkthrough", formula: "\\oint_{|z|=1} \\frac{\\cos z}{z^2 + 9}\\,dz = 0",
+       mathLines: ["integrand analytic inside |z| ≤ 1", "Cauchy-Goursat:", "∮ cos(z)/(z² + 9) dz = 0  ✓"]},
+      {text: "Now a harder one: integral of e to the 2 z over z to the fourth, around the unit circle. Here z = 0 IS inside, and the denominator z to the fourth signals a pole of order 4. Use the n-th derivative version of CIF with n = 3.",
+       visual: "walkthrough", formula: "\\oint \\frac{e^{2z}}{z^4} dz = \\frac{2\\pi i}{3!} f^{(3)}(0)",
+       mathLines: ["∮ e^(2z) / z⁴ dz", "z⁴ = (z − 0)^(n+1) with n = 3", "CIF: integral = (2πi/n!) · f^(n)(z₀)", "= (2πi / 3!) · f‴(0)  where f(z) = e^(2z)"]},
+      {text: "Compute the third derivative of e to the 2z. Each derivative brings down a factor of 2. So f triple prime equals 8 e to the 2 z. At z = 0, that's 8. Plug in: integral equals 2 pi i over 6 times 8, equals 8 pi i over 3.",
+       visual: "walkthrough", formula: "\\oint \\frac{e^{2z}}{z^4}\\,dz = \\frac{8\\pi i}{3}",
+       mathLines: ["f(z) = e^(2z), f'(z) = 2e^(2z)", "f''(z) = 4e^(2z), f'''(z) = 8e^(2z)", "f'''(0) = 8", "integral = (2πi/6) · 8 = 8πi/3  ✓"]},
     ]
   }, quiz: {
     question: "Does Cauchy's integral formula imply analytic functions are infinitely differentiable?",
@@ -893,10 +918,12 @@ const LESSONS = [
   ], example: {
     intro: "Why doesn't sin z violate Liouville?",
     steps: [
-      {text: "sin x as a real function is bounded. But sin z as a complex function is NOT bounded — sin(iy) = i sinh y blows up.",
-       visual: "euler", formula: "\\sin(iy) = i\\sinh(y) \\to \\infty"},
-      {text: "So sin z is entire but unbounded — no contradiction with Liouville.",
-       visual: "liouville", formula: ""},
+      {text: "Sin x as a real function is bounded between negative 1 and 1. But sin z as a complex function is NOT bounded. To see this, evaluate sin at i times y for real y. Use the definition: sine i y equals (e to the negative y minus e to the y) over 2 i, which equals i times sinh y.",
+       visual: "walkthrough", formula: "\\sin(iy) = i\\sinh(y)",
+       mathLines: ["sin(z) = (e^(iz) − e^(−iz))/(2i)", "z = iy:  iz = −y,  −iz = y", "sin(iy) = (e^(−y) − e^(y))/(2i)", "= i · sinh(y)"]},
+      {text: "As y goes to infinity, sinh y goes to infinity. So sin i y has unbounded modulus. Sin z is entire but unbounded — exactly why it doesn't violate Liouville. Real-bounded does not mean complex-bounded.",
+       visual: "walkthrough", formula: "|\\sin(iy)| \\to \\infty",
+       mathLines: ["sin(iy) = i · sinh(y)", "|sin(iy)| = sinh(y) → ∞ as y → ∞", "sin z is entire but UNBOUNDED", "no contradiction with Liouville  ✓"]},
     ]
   }, quiz: {
     question: "Can we have an entire function f with |f(z)| ≤ 100 for all z?",
@@ -922,10 +949,12 @@ const LESSONS = [
   ], example: {
     intro: "Factor z⁴ - 1.",
     steps: [
-      {text: "Roots are fourth roots of unity: 1, i, -1, -i.",
-       visual: "fta", formula: ""},
-      {text: "So z⁴ - 1 = (z-1)(z-i)(z+1)(z+i). Or, grouping: (z² - 1)(z² + 1).",
-       visual: "fta", formula: "z^4 - 1 = (z-1)(z+1)(z-i)(z+i)"},
+      {text: "Factor z to the fourth minus 1. We need z to the fourth equals 1, so z is a fourth root of unity. The four roots are 1, i, negative 1, negative i — equally spaced around the unit circle.",
+       visual: "rootsLabeled", formula: "z^4 = 1 \\implies z \\in \\{1, i, -1, -i\\}",
+       mathLines: ["z⁴ − 1 = 0", "z⁴ = 1", "z = 4th roots of unity", "z = 1, i, −1, −i"], rootLabels: ['1', 'i', '−1', '−i'], rootCaption: 'fourth roots of unity'},
+      {text: "By the fundamental theorem of algebra, z to the fourth minus 1 factors completely as (z minus 1)(z minus i)(z plus 1)(z plus i). You can verify by grouping: pair (z minus 1)(z plus 1) and (z minus i)(z plus i) to get (z squared minus 1)(z squared plus 1) — exactly z to the fourth minus 1.",
+       visual: "walkthrough", formula: "z^4 - 1 = (z-1)(z+1)(z-i)(z+i)",
+       mathLines: ["z⁴ − 1 = (z − 1)(z − i)(z + 1)(z + i)", "verify by grouping:", "= (z − 1)(z + 1) · (z − i)(z + i)", "= (z² − 1)(z² + 1) = z⁴ − 1  ✓"]},
     ]
   }, quiz: {
     question: "How many complex roots (with multiplicity) does the polynomial z³ + z + 1 have?",
@@ -949,10 +978,15 @@ const LESSONS = [
   ], example: {
     intro: "Find max of |z² + 1| for z in unit disk |z| ≤ 1.",
     steps: [
-      {text: "z² + 1 is analytic, non-constant. So max of modulus is on boundary |z| = 1.",
-       visual: "liouville", formula: ""},
-      {text: "On boundary, z = e^(iθ). |z² + 1| = |e^(2iθ) + 1|. Maximum when e^(2iθ) = 1, giving |1 + 1| = 2. So max is 2.",
-       visual: "liouville", formula: "\\max_{|z|\\leq 1} |z^2 + 1| = 2"},
+      {text: "Find the max of modulus z squared plus 1 on the closed unit disk. Z squared plus 1 is analytic everywhere and clearly non-constant. By the maximum modulus principle, the max must be on the boundary, that is, on the unit circle.",
+       visual: "unitDiscMax", formula: "\\max \\text{ on } |z| \\leq 1 \\text{ is on boundary}",
+       mathLines: ["max |z² + 1| for |z| ≤ 1", "z² + 1 is analytic, non-constant", "by max modulus: max is on boundary", "look for max on |z| = 1"]},
+      {text: "Parametrize the boundary: z equals e to the i theta. Then z squared plus 1 equals e to the 2 i theta plus 1. The modulus is maximized when both terms point the same way — that's when e to the 2 i theta equals 1, i.e., theta equals 0 or pi.",
+       visual: "unitDiscMax", formula: "|z^2 + 1| = |e^{2i\\theta} + 1| \\leq 2",
+       mathLines: ["z = e^(iθ),  z² + 1 = e^(2iθ) + 1", "|e^(2iθ) + 1| ≤ |e^(2iθ)| + 1 = 2", "= when e^(2iθ) = 1", "θ = 0 (z = 1) gives |1 + 1| = 2"]},
+      {text: "So the maximum value is 2, attained at z equals plus or minus 1 on the unit circle.",
+       visual: "unitDiscMax", formula: "\\max_{|z|\\leq 1}|z^2 + 1| = 2",
+       mathLines: ["max attained at z = ±1", "|(±1)² + 1| = |1 + 1| = 2", "max |z² + 1| on |z| ≤ 1 is 2  ✓"]},
     ]
   }, quiz: {
     question: "If f is analytic on |z| ≤ 1 and |f| has a max at z = 1/2, what can we conclude?",
@@ -978,10 +1012,12 @@ const LESSONS = [
   ], example: {
     intro: "Find the Taylor series of 1/(1 + z²) at z = 0.",
     steps: [
-      {text: "Substitute u equals minus z squared into the geometric series.",
-       visual: "series", formula: "\\frac{1}{1-u} = \\sum u^n"},
-      {text: "We get sum from n=0 of (-z²)^n which is sum (-1)^n z^(2n). Valid for |z²| < 1, i.e., |z| < 1.",
-       visual: "series", formula: "\\frac{1}{1+z^2} = \\sum_{n=0}^\\infty (-1)^n z^{2n}"},
+      {text: "Find the Taylor series of 1 over (1 plus z squared). Recall the geometric series: 1 over (1 minus u) equals sum of u to the n. Substitute u equals negative z squared.",
+       visual: "walkthrough", formula: "\\frac{1}{1-u} = \\sum_{n=0}^\\infty u^n",
+       mathLines: ["1/(1 + z²) = 1/(1 − (−z²))", "use geometric:  1/(1 − u) = Σ u^n", "let u = −z²"]},
+      {text: "Plug in. We get sum of (negative z squared) to the n, which expands to sum of negative 1 to the n times z to the 2 n. Valid when modulus of negative z squared is less than 1, i.e., modulus z is less than 1.",
+       visual: "walkthrough", formula: "\\frac{1}{1+z^2} = \\sum_{n=0}^\\infty (-1)^n z^{2n}",
+       mathLines: ["1/(1 + z²) = Σ (−z²)^n", "= Σ (−1)^n · z^(2n)", "= 1 − z² + z⁴ − z⁶ + ...", "valid for |z| < 1  ✓"]},
     ]
   }, quiz: {
     question: "What is the radius of convergence of ∑ z^n / n! ?",
@@ -1007,12 +1043,15 @@ const LESSONS = [
   ], example: {
     intro: "Find the Laurent series of 1/(z(z+1)) at z = 0, in the annulus 0 < |z| < 1.",
     steps: [
-      {text: "Partial fractions: 1/(z(z+1)) = 1/z - 1/(z+1).",
-       visual: "series", formula: ""},
-      {text: "Expand 1/(z+1) as Taylor series: 1 - z + z² - z³ + ... for |z| < 1.",
-       visual: "series", formula: "\\frac{1}{z+1} = 1 - z + z^2 - \\ldots"},
-      {text: "So 1/(z(z+1)) = 1/z - 1 + z - z² + ... Pole of order 1 at z=0; principal part is just 1/z.",
-       visual: "series", formula: "\\frac{1}{z(z+1)} = \\frac{1}{z} - 1 + z - z^2 + \\cdots"},
+      {text: "Find the Laurent series of 1 over (z (z plus 1)) around z = 0. Singularities at 0 and at -1, so the annulus is 0 less than modulus z less than 1. Start with partial fractions: 1 over (z(z+1)) splits as 1 over z minus 1 over (z+1).",
+       visual: "walkthrough", formula: "\\frac{1}{z(z+1)} = \\frac{1}{z} - \\frac{1}{z+1}",
+       mathLines: ["want Laurent series in 0 < |z| < 1", "partial fractions:", "1/(z(z+1)) = 1/z − 1/(z+1)"]},
+      {text: "Expand 1 over (z plus 1) as a geometric Taylor series: 1 minus z plus z squared minus z cubed plus dot dot dot. Valid for modulus z less than 1.",
+       visual: "walkthrough", formula: "\\frac{1}{z+1} = 1 - z + z^2 - z^3 + \\cdots",
+       mathLines: ["1/(z + 1) = 1/(1 − (−z))", "= Σ (−z)^n  for |z| < 1", "= 1 − z + z² − z³ + ..."]},
+      {text: "Now combine. 1 over z minus that whole series gives 1 over z minus 1 plus z minus z squared plus dot dot dot. The principal part is just 1 over z. So z = 0 is a pole of order 1.",
+       visual: "walkthrough", formula: "\\frac{1}{z(z+1)} = \\frac{1}{z} - 1 + z - z^2 + \\cdots",
+       mathLines: ["1/(z(z+1)) = 1/z − (1 − z + z² − ...)", "= 1/z − 1 + z − z² + z³ − ...", "principal part: 1/z", "pole of order 1 at z = 0  ✓"]},
     ]
   }, quiz: {
     question: "What kind of singularity does (sin z)/z have at z = 0?",
@@ -1040,10 +1079,12 @@ const LESSONS = [
   ], example: {
     intro: "Find the residue of 1/((z-1)(z-2)) at z = 1.",
     steps: [
-      {text: "Simple pole at z = 1. Use residue formula.",
-       visual: "residue", formula: ""},
-      {text: "Multiply by (z-1) and evaluate at z=1: 1/(z-2) at z=1 is 1/(-1) = -1.",
-       visual: "residue", formula: "\\text{Res}_{z=1} = -1"},
+      {text: "Find the residue of 1 over ((z minus 1)(z minus 2)) at z = 1. The factor (z minus 1) is a simple zero in the denominator, so z = 1 is a simple pole. Use the simple pole formula: residue equals the limit as z approaches 1 of (z minus 1) times f(z).",
+       visual: "walkthrough", formula: "\\text{Res}_{z=1} = \\lim_{z\\to 1}(z-1)f(z)",
+       mathLines: ["f(z) = 1/[(z − 1)(z − 2)]", "z = 1: simple pole", "Res = lim_(z → 1) (z − 1) · f(z)"]},
+      {text: "Multiplying by (z minus 1) cancels that factor in the denominator, leaving 1 over (z minus 2). Evaluate at z = 1: 1 over (1 minus 2) equals negative 1.",
+       visual: "walkthrough", formula: "\\text{Res}_{z=1} = -1",
+       mathLines: ["(z − 1) · f(z) = 1/(z − 2)", "evaluate at z = 1:", "= 1/(1 − 2) = 1/(−1) = −1", "Res_(z=1) = −1  ✓"]},
     ]
   }, quiz: {
     question: "What is the residue of cos(z)/z at z = 0?",
@@ -1065,12 +1106,15 @@ const LESSONS = [
   ], example: {
     intro: "Compute ∫_(-∞)^∞ 1/(x²+1) dx.",
     steps: [
-      {text: "Singularities of 1/(z²+1): z = ±i. Only z = i is in the upper half plane.",
-       visual: "realint", formula: ""},
-      {text: "Residue at z = i: factor as 1/((z+i)(z-i)). At z = i, (z-i) is the simple zero, so residue = 1/(z+i) at z=i = 1/(2i).",
-       visual: "residue", formula: "\\text{Res}_{z=i} = \\frac{1}{2i}"},
-      {text: "Total = 2πi × 1/(2i) = π. Big arc: |1/(z²+1)| ≤ 1/(R²-1) on |z|=R, length πR, so integral ≤ πR/(R²-1) → 0. Hence ∫_(-∞)^∞ = π.",
-       visual: "realint", formula: "\\int_{-\\infty}^\\infty \\frac{dx}{x^2+1} = \\pi"},
+      {text: "Compute the integral from minus infinity to infinity of 1 over (x squared plus 1). Extend to f of z equals 1 over (z squared plus 1). Singularities where z squared plus 1 equals zero, so z equals plus or minus i. Only z = i is in the upper half plane.",
+       visual: "contour1overx2plus1", formula: "f(z) = \\frac{1}{z^2+1}, \\text{ pole at } i \\text{ in UHP}",
+       mathLines: ["∫_(−∞)^∞ dx/(x² + 1) = ?", "extend: f(z) = 1/(z² + 1)", "poles: z² + 1 = 0  ⟹  z = ±i", "only z = i is in UHP"]},
+      {text: "Compute the residue at z = i. Factor the denominator: z squared plus 1 equals (z minus i)(z plus i). The (z minus i) is the simple zero, so residue equals 1 over (z plus i) at z = i, which is 1 over 2 i.",
+       visual: "contour1overx2plus1", formula: "\\text{Res}_{z=i} = \\frac{1}{2i}",
+       mathLines: ["z² + 1 = (z − i)(z + i)", "Res_(z=i) = 1/(z + i)|_(z=i)", "= 1/(2i)"]},
+      {text: "Apply the residue theorem: integral around the closed contour equals 2 pi i times sum of residues, which is 2 pi i times 1 over 2 i, equals pi. Now check the big arc. On the semicircle of radius R, modulus of f is at most 1 over (R squared minus 1). Length of arc is pi R. So the arc integral is bounded by pi R over (R squared minus 1), which goes to zero as R goes to infinity. Done!",
+       visual: "contour1overx2plus1", formula: "\\int_{-\\infty}^\\infty \\frac{dx}{x^2+1} = \\pi",
+       mathLines: ["∮_C f dz = 2πi · Res_i = 2πi · (1/2i) = π", "big arc: |f| ≤ 1/(R² − 1), length πR", "arc integral ≤ πR/(R² − 1) → 0", "∫_(−∞)^∞ dx/(x² + 1) = π  ✓"]},
     ]
   }, quiz: {
     question: "For ∫ 1/(x⁴+1) dx using residues, the degree gap is 4. Does the semicircle integral vanish?",
@@ -1092,12 +1136,15 @@ const LESSONS = [
   ], example: {
     intro: "Compute ∫_(-∞)^∞ cos(x)/(x²+1) dx.",
     steps: [
-      {text: "Replace with e^(iz)/(z² + 1). Upper half plane: |e^(iz)| ≤ 1.",
-       visual: "realint", formula: "f(z) = \\frac{e^{iz}}{z^2+1}"},
-      {text: "Pole at z = i. Residue: e^(i·i)/(2i) = e^(-1)/(2i).",
-       visual: "residue", formula: "\\text{Res}_i = \\frac{e^{-1}}{2i}"},
-      {text: "Integral over real axis equals 2πi × e⁻¹/(2i) = π/e. Take real part (it's already real). So ∫_(-∞)^∞ cos(x)/(x²+1) dx = π/e.",
-       visual: "realint", formula: "\\int_{-\\infty}^\\infty \\frac{\\cos x}{x^2+1}\\,dx = \\frac{\\pi}{e}"},
+      {text: "Compute the integral of cos x over (x squared plus 1). Don't extend with cos z — it's unbounded in the UHP. Instead, use f of z equals e to the i z over (z squared plus 1). On the upper half plane, modulus of e to the i z is e to the minus y, which is at most 1.",
+       visual: "contour1overx2plus1", formula: "f(z) = \\frac{e^{iz}}{z^2+1}",
+       mathLines: ["∫_(−∞)^∞ cos(x)/(x²+1) dx = ?", "use f(z) = e^(iz)/(z² + 1)", "in UHP: |e^(iz)| = e^(−y) ≤ 1  ✓"]},
+      {text: "Same poles as before: z equals plus or minus i. Only z = i is in UHP. Compute the residue: numerator at z = i is e to the i times i, which is e to the minus 1. Denominator derivative: 2 z at z = i is 2 i. So residue equals e to the negative 1 over 2 i.",
+       visual: "contour1overx2plus1", formula: "\\text{Res}_i = \\frac{e^{-1}}{2i}",
+       mathLines: ["pole at z = i (in UHP)", "Res = e^(iz)/(2z) at z = i", "= e^(i·i)/(2i)", "= e^(−1)/(2i)"]},
+      {text: "Integral around the closed contour equals 2 pi i times the residue: 2 pi i times e to the negative 1 over 2 i, which simplifies to pi over e. Big arc vanishes by Jordan's lemma. So PV of the real integral equals pi over e.",
+       visual: "contour1overx2plus1", formula: "\\int_{-\\infty}^\\infty \\frac{\\cos x}{x^2+1}\\,dx = \\frac{\\pi}{e}",
+       mathLines: ["integral = 2πi · Res_i = 2πi · e^(−1)/(2i)", "= π/e", "big arc → 0 by Jordan", "take real part (it's real): ∫ cos(x)/(x²+1) dx = π/e  ✓"]},
     ]
   }, quiz: {
     question: "When using residues for real trig integrals, why use e^(iaz) instead of cos(az)?",
@@ -1121,12 +1168,15 @@ const LESSONS = [
   ], example: {
     intro: "Walk through the Dirichlet integral.",
     steps: [
-      {text: "Use f(z) = e^(iz)/z. Contour: real axis from -R to -ρ, semicircle around 0, ρ to R, big semicircle back.",
-       visual: "realint", formula: ""},
-      {text: "No singularity inside. Cauchy-Goursat: total integral = 0. Big arc → 0 by Jordan. Small arc → -iπ × Res = -iπ × 1 = -iπ.",
-       visual: "residue", formula: ""},
-      {text: "So PV ∫ e^(ix)/x dx = iπ. Imaginary part: ∫ sin(x)/x dx = π. By evenness, ∫_0^∞ = π/2.",
-       visual: "realint", formula: "\\int_0^\\infty \\frac{\\sin x}{x}\\,dx = \\frac{\\pi}{2}"},
+      {text: "Walk through the famous Dirichlet integral. Use f of z equals e to the i z over z. The pole is at zero — sitting right ON the real axis. Construct an indented contour: real axis from minus R to minus rho, a small semicircle going clockwise around 0, then rho to R, then a big upper semicircle back.",
+       visual: "dirichletContour", formula: "f(z) = \\frac{e^{iz}}{z}",
+       mathLines: ["∫_0^∞ sin(x)/x dx = ?", "use f(z) = e^(iz)/z", "pole at z = 0 (on real axis)", "indent contour: avoid the pole"]},
+      {text: "No singularity inside the indented contour, so by Cauchy-Goursat, the total integral is zero. Now collect terms. The big arc goes to zero by Jordan's lemma. The small clockwise indent contributes negative i pi times the residue. The residue at zero of e to the i z over z is just e to the i times zero equals 1.",
+       visual: "dirichletContour", formula: "0 = \\text{PV}\\int + 0 + (-i\\pi \\cdot 1)",
+       mathLines: ["closed contour: 0 = ∫_(real) + ∫_(big arc) + ∫_(small)", "big arc → 0 (Jordan)", "small arc → −iπ · Res = −iπ · 1 = −iπ", "so PV ∫_(−∞)^∞ e^(ix)/x dx = iπ"]},
+      {text: "We have principal value of e to the i x over x integrated equals i pi. Take the imaginary part: that gives integral of sine x over x equals pi. Since sine over x is even, the integral from zero to infinity is half of pi.",
+       visual: "dirichletContour", formula: "\\int_0^\\infty \\frac{\\sin x}{x}\\,dx = \\frac{\\pi}{2}",
+       mathLines: ["PV ∫ e^(ix)/x dx = iπ", "imag part: ∫ sin(x)/x dx = π", "sin(x)/x is even", "∫_0^∞ sin(x)/x dx = π/2  ✓"]},
     ]
   }, quiz: {
     question: "If a simple pole is ON the contour and we indent above it counterclockwise, the small arc integral is...",
