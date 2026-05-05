@@ -5,8 +5,13 @@
 <title>Complex Analysis — Deep Lessons</title>
 <script>
 MathJax = {
-  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
-  options: { enableMenu: false }
+  tex: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    processEscapes: true
+  },
+  options: { enableMenu: false, renderActions: { addMenu: [] } },
+  startup: { typeset: false }
 };
 </script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -2323,6 +2328,44 @@ function goToLesson(i) {
   if (isPlaying) speakCurrent();
 }
 
+// Robust MathJax-aware formula renderer.
+// Handles the race where the formula gets set before MathJax is loaded.
+let _mjReady = false;
+let _pendingFormulaCall = null;
+function setFormula(latex, fallbackText) {
+  const el = document.getElementById('formula');
+  if (!el) return;
+  if (!latex) {
+    el.innerHTML = '<span style="color:#64748b; font-size:14px;">' + (fallbackText || '') + '</span>';
+    return;
+  }
+  // Always overwrite with raw TeX delimiters; MathJax will rescan.
+  el.innerHTML = '\\(\\displaystyle ' + latex + '\\)';
+  const tryTypeset = () => {
+    if (window.MathJax && MathJax.typesetPromise) {
+      // Clear previous typeset state if any, then typeset fresh
+      try {
+        if (MathJax.typesetClear) MathJax.typesetClear([el]);
+      } catch (e) { /* ignore */ }
+      // Re-set the innerHTML in case typesetClear stripped it
+      el.innerHTML = '\\(\\displaystyle ' + latex + '\\)';
+      MathJax.typesetPromise([el]).catch(err => console.warn('MathJax error:', err));
+      _mjReady = true;
+    } else {
+      _pendingFormulaCall = () => setFormula(latex, fallbackText);
+      setTimeout(() => {
+        if (_pendingFormulaCall) { const c = _pendingFormulaCall; _pendingFormulaCall = null; c(); }
+      }, 200);
+    }
+  };
+  // If MathJax has a startup promise, await it for first render
+  if (window.MathJax && MathJax.startup && MathJax.startup.promise && !_mjReady) {
+    MathJax.startup.promise.then(tryTypeset).catch(tryTypeset);
+  } else {
+    tryTypeset();
+  }
+}
+
 function updateUI() {
   const lesson = LESSONS[lessonIdx];
   const scene = getCurrentScene();
@@ -2330,13 +2373,7 @@ function updateUI() {
   window.currentScene = scene;
   scene.exTitle = scene.exTitle || (phase === 'example' ? lesson.title + ' — example' : lesson.title);
   document.getElementById('caption').textContent = scene.text;
-  const formulaEl = document.getElementById('formula');
-  if (scene.formula) {
-    formulaEl.innerHTML = '\\(\\displaystyle ' + scene.formula + '\\)';
-    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([formulaEl]).catch(() => {});
-  } else {
-    formulaEl.innerHTML = '<span style="color:#64748b; font-size:14px;">' + lesson.title + '</span>';
-  }
+  setFormula(scene.formula, lesson.title);
   const totalScenes = lesson.scenes.length + (lesson.example ? lesson.example.steps.length + 1 : 0);
   let curScene;
   if (phase === 'teach') curScene = phaseSceneIdx + 1;
