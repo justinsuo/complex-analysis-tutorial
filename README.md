@@ -2,7 +2,12 @@
 
 A self-contained, browser-based tutorial covering a full undergraduate Complex Analysis course (Brown & Churchill, 9th ed.). 23 modules from complex numbers up to evaluating real integrals via residues.
 
-**Live site:** open `index.html` in any browser, or visit the GitHub Pages link (after enabling).
+Two ways to learn:
+
+- **`index.html`** — interactive 23-module text tutorial with definitions, theorems, click-to-reveal proofs, and worked examples.
+- **`video.html`** — animated AI tutor that narrates the entire course (~12 minutes) with synchronized canvas visualizations and live formula display.
+
+**Live:** open `index.html` for the tutorial or `video.html` for the video tour.
 
 ## Contents
 

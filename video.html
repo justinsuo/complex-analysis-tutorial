@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Complex Analysis — AI Tutor Video</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  options: { enableMenu: false }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; overflow: hidden; }
+#app { display: flex; flex-direction: column; height: 100vh; }
+header { padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; background: #1e293b; border-bottom: 1px solid #334155; }
+header h1 { margin: 0; font-size: 18px; color: #fbbf24; font-weight: 600; }
+header a { color: #94a3b8; text-decoration: none; font-size: 13px; }
+header a:hover { color: #fbbf24; }
+#progress { height: 4px; background: #334155; }
+#bar { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); width: 0; transition: width 0.3s; }
+main { flex: 1; display: grid; grid-template-columns: 320px 1fr; gap: 16px; padding: 16px; min-height: 0; }
+#left-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+#avatar-box { background: linear-gradient(135deg, #1e293b, #334155); border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: center; }
+#avatar { width: 100%; height: auto; max-width: 260px; }
+#caption-box { flex: 1; background: #1e293b; border-radius: 12px; padding: 18px; overflow-y: auto; border: 1px solid #334155; min-height: 0; }
+#caption-box::before { content: "💬 Narration"; color: #fbbf24; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+#caption { font-size: 15px; line-height: 1.6; color: #e2e8f0; }
+#right-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+#visual-box { flex: 1; background: white; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: center; min-height: 0; }
+#visual { max-width: 100%; max-height: 100%; border-radius: 8px; }
+#formula-box { background: #1e293b; border-radius: 12px; padding: 16px; min-height: 80px; display: flex; align-items: center; justify-content: center; border: 1px solid #334155; }
+#formula { color: #f1f5f9; font-size: 22px; }
+footer { padding: 12px 24px; background: #1e293b; border-top: 1px solid #334155; display: flex; align-items: center; gap: 12px; }
+button { background: #fbbf24; color: #1e293b; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.15s; }
+button:hover { background: #f59e0b; transform: translateY(-1px); }
+button:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; transform: none; }
+button.secondary { background: #475569; color: #e2e8f0; }
+button.secondary:hover { background: #64748b; }
+select { background: #334155; color: #e2e8f0; border: 1px solid #475569; padding: 8px 12px; border-radius: 6px; }
+#counter { color: #94a3b8; font-size: 13px; font-family: monospace; margin-left: auto; }
+#scene-title { color: #fbbf24; font-size: 13px; margin-left: 12px; font-weight: 600; }
+#start-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.95); display: flex; align-items: center; justify-content: center; z-index: 100; flex-direction: column; gap: 24px; }
+#start-overlay h2 { font-size: 36px; color: #fbbf24; margin: 0; }
+#start-overlay p { color: #94a3b8; max-width: 480px; text-align: center; line-height: 1.6; }
+#start-overlay button { font-size: 18px; padding: 14px 32px; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="start-overlay">
+<h2>🎬 Complex Analysis — AI Tutor</h2>
+<p>An animated AI tutor walks you through the entire course in about 12 minutes — from $i^2 = -1$ to evaluating real integrals with residues, with synchronized visualizations for every concept.</p>
+<p style="font-size: 13px;">Uses your browser's text-to-speech. Best in Chrome, Safari, or Edge with audio enabled.</p>
+<button onclick="startTour()">▶ Start the Tour</button>
+</div>
+
+<div id="app">
+<header>
+<h1>Complex Analysis — AI Video Tour</h1>
+<a href="index.html">← Back to interactive tutorial</a>
+</header>
+<div id="progress"><div id="bar"></div></div>
+
+<main>
+<section id="left-panel">
+<div id="avatar-box">
+<svg id="avatar" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="headGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#60a5fa"/>
+<stop offset="1" stop-color="#2563eb"/>
+</linearGradient>
+<linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#475569"/>
+<stop offset="1" stop-color="#334155"/>
+</linearGradient>
+<radialGradient id="eyeShine">
+<stop offset="0" stop-color="white"/>
+<stop offset="1" stop-color="#cbd5e1"/>
+</radialGradient>
+</defs>
+<g id="head-group">
+<line x1="110" y1="42" x2="110" y2="22" stroke="#fbbf24" stroke-width="3"/>
+<circle cx="110" cy="16" r="6" fill="#fbbf24">
+<animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/>
+</circle>
+<rect x="55" y="220" width="110" height="55" fill="url(#bodyGrad)" rx="10"/>
+<rect x="75" y="232" width="70" height="20" fill="#1e293b" rx="4"/>
+<text x="110" y="247" fill="#fbbf24" font-size="11" text-anchor="middle" font-family="monospace" font-weight="bold">AI</text>
+<circle cx="110" cy="125" r="80" fill="url(#headGrad)" stroke="#1e3a8a" stroke-width="2"/>
+<rect x="40" y="100" width="14" height="30" fill="#475569" rx="3"/>
+<rect x="166" y="100" width="14" height="30" fill="#475569" rx="3"/>
+<ellipse id="eye-l" cx="85" cy="115" rx="13" ry="17" fill="url(#eyeShine)"/>
+<ellipse id="eye-r" cx="135" cy="115" rx="13" ry="17" fill="url(#eyeShine)"/>
+<circle cx="85" cy="120" r="6" fill="#1e293b"/>
+<circle cx="135" cy="120" r="6" fill="#1e293b"/>
+<circle cx="87" cy="118" r="2" fill="white"/>
+<circle cx="137" cy="118" r="2" fill="white"/>
+<path d="M 70 95 Q 85 88 100 93" stroke="#1e3a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M 120 93 Q 135 88 150 95" stroke="#1e3a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<ellipse id="mouth" cx="110" cy="170" rx="22" ry="3" fill="#1e293b"/>
+</g>
+</svg>
+</div>
+<div id="caption-box">
+<div id="caption">Click "Start the Tour" to begin.</div>
+</div>
+</section>
+
+<section id="right-panel">
+<div id="visual-box">
+<canvas id="visual" width="800" height="540"></canvas>
+</div>
+<div id="formula-box">
+<div id="formula"></div>
+</div>
+</section>
+</main>
+
+<footer>
+<button id="play-btn" onclick="togglePlay()">▶ Play</button>
+<button class="secondary" onclick="prevScene()">⏮ Prev</button>
+<button class="secondary" onclick="nextScene()">Next ⏭</button>
+<select id="speed" onchange="changeSpeed()">
+<option value="0.85">0.85×</option>
+<option value="1" selected>1×</option>
+<option value="1.15">1.15×</option>
+<option value="1.3">1.3×</option>
+</select>
+<select id="voice-select"></select>
+<span id="scene-title"></span>
+<span id="counter">0 / 0</span>
+</footer>
+</div>
+
+<script>
+// ============== SCENES ==============
+const SCENES = [
+{title: "Welcome", text: "Hi! I'm your A I tutor for complex analysis. In about twelve minutes, we'll go through the entire course, from imaginary numbers all the way to evaluating real integrals using residues. Let's get started.", visual: "title", formula: ""},
+{title: "The Imaginary Unit", text: "Everything begins with one bold invention. The imaginary unit i, defined by i squared equals negative one. From this single rule, an entire universe of new numbers opens up.", visual: "imaginary", formula: "i^2 = -1"},
+{title: "Complex Numbers", text: "A complex number is z equals x plus i times y, where x and y are real numbers. We call x the real part of z, and y the imaginary part. Just y, not i y. That's a common trip-up.", visual: "number", formula: "z = x + iy"},
+{title: "The Complex Plane", text: "We picture each complex number as a point in the plane. x is the horizontal coordinate, y is vertical. Adding two complex numbers is just like adding two vectors, component by component.", visual: "plane", formula: ""},
+{title: "Modulus", text: "The modulus, written z with vertical bars, is the distance from z to the origin. Square root of x squared plus y squared. It measures how big z is.", visual: "modulus", formula: "|z| = \\sqrt{x^2 + y^2}"},
+{title: "Conjugate", text: "The conjugate, z bar, flips the sign of the imaginary part. Geometrically, it's reflection across the real axis. And here's a fundamental identity we'll use everywhere. z times its conjugate equals z modulus squared.", visual: "conjugate", formula: "z\\bar{z} = |z|^2"},
+{title: "Polar Form", text: "In polar form, we write z as r times e to the i theta. Where r is the modulus, and theta is the angle from the positive real axis. This form is incredibly useful for multiplication and powers.", visual: "polar", formula: "z = re^{i\\theta}"},
+{title: "Euler's Formula", text: "Behind it all is Euler's formula. e to the i theta equals cosine theta plus i sine theta. This single equation links exponentials and trigonometry. It's everywhere in this subject.", visual: "euler", formula: "e^{i\\theta} = \\cos\\theta + i\\sin\\theta"},
+{title: "Multiplication", text: "Polar form makes multiplication beautifully geometric. To multiply two complex numbers, you multiply their moduli, and add their angles. Multiplication is a rotation combined with a scaling.", visual: "multiply", formula: "z_1 z_2 = r_1 r_2 e^{i(\\theta_1+\\theta_2)}"},
+{title: "Roots of Unity", text: "Every nonzero complex number has exactly n n-th roots, equally spaced around a circle. Here are the five fifth roots of unity. They form a perfect pentagon.", visual: "roots", formula: "z^{1/n} = r^{1/n} e^{i(\\theta+2k\\pi)/n}"},
+{title: "Functions", text: "A complex function takes complex numbers in, and returns complex numbers out. We usually write f equals u plus i v. Where u and v are real-valued functions of x and y.", visual: "func", formula: "f(z) = u(x,y) + iv(x,y)"},
+{title: "The Complex Derivative", text: "The complex derivative is defined just like the real one. But with a critical twist. The limit must exist, and be the same value, no matter which direction delta z approaches zero from.", visual: "derivative", formula: "f'(z_0) = \\lim_{\\Delta z\\to 0}\\frac{f(z_0+\\Delta z)-f(z_0)}{\\Delta z}"},
+{title: "Cauchy-Riemann", text: "That single requirement is incredibly strict. It forces the Cauchy-Riemann equations. u sub x equals v sub y. And u sub y equals minus v sub x. These two equations are the fingerprint of complex differentiability.", visual: "cr", formula: "u_x = v_y, \\qquad u_y = -v_x"},
+{title: "Analytic Functions", text: "A function is analytic at a point if it's differentiable in some open disk around that point. Not just at the point. Analytic functions are the heroes of complex analysis. Almost every theorem assumes analyticity.", visual: "analytic", formula: ""},
+{title: "Real vs Complex", text: "Here's where the magic begins. In real calculus, differentiable does not mean infinitely differentiable. But in complex analysis, analytic at a single point means infinitely differentiable, equal to its Taylor series, and a host of other miracles. Let's see why.", visual: "compare", formula: ""},
+{title: "The Exponential", text: "The exponential extends naturally. e to the z equals e to the x times cosine y plus i sine y. It's an entire function. Analytic on all of the complex plane. And surprisingly, it's periodic with period two pi i.", visual: "exp", formula: "e^z = e^x(\\cos y + i\\sin y)"},
+{title: "The Logarithm", text: "Because the exponential is periodic, the complex logarithm is multi valued. log z equals natural log r, plus i theta plus 2 n pi i. For any integer n. Infinitely many values for the same z.", visual: "log", formula: "\\log z = \\ln r + i(\\theta + 2n\\pi)"},
+{title: "Branch Cuts", text: "To make log single valued and analytic, we cut a ray out of the plane. We call this the branch cut. And we choose one consistent value of theta. The principal branch uses theta between negative pi and pi.", visual: "branch", formula: ""},
+{title: "Contour Integration", text: "To integrate a complex function, we integrate along a curve, called a contour. Parametrize the curve as z of t. Then integrate f of z of t, times z prime of t, dt. It's a one-dimensional integral over a curve in the plane.", visual: "contour", formula: "\\int_C f(z)\\,dz = \\int_a^b f(z(t))z'(t)\\,dt"},
+{title: "Cauchy-Goursat", text: "Now the first big theorem. Cauchy-Goursat. If f is analytic everywhere inside and on a closed loop, then the integral around that loop is exactly zero. It's a kind of conservation law.", visual: "goursat", formula: "\\oint_C f(z)\\,dz = 0"},
+{title: "The 1/z example", text: "But if f has a singularity inside, the integral can be nonzero. The classic example. The integral of one over z, around any loop enclosing the origin, is exactly two pi i. Always two pi i, no matter the shape of the loop.", visual: "oneoverz", formula: "\\oint_C \\frac{dz}{z} = 2\\pi i"},
+{title: "Cauchy Integral Formula", text: "From Cauchy-Goursat we get the magical Cauchy integral formula. If z naught is inside the loop, the value f at z naught equals one over two pi i, times the integral of f of z divided by z minus z naught, around the loop. The values inside are completely determined by the values on the boundary.", visual: "cif", formula: "f(z_0) = \\frac{1}{2\\pi i}\\oint_C \\frac{f(z)}{z-z_0}\\,dz"},
+{title: "Infinitely Differentiable", text: "By differentiating this formula again and again, you express every higher derivative as an integral. So in complex analysis, analytic on an open set means infinitely differentiable. This is dramatically stronger than the real case.", visual: "derivatives", formula: "f^{(n)}(z_0) = \\frac{n!}{2\\pi i}\\oint_C \\frac{f(z)}{(z-z_0)^{n+1}}\\,dz"},
+{title: "Liouville's Theorem", text: "Here's another miracle. Liouville's theorem. Any bounded entire function must be constant. Unlike sine x in real analysis, you can't have an interesting bounded function defined on the entire complex plane.", visual: "liouville", formula: ""},
+{title: "Fundamental Theorem of Algebra", text: "From Liouville, we derive the fundamental theorem of algebra. Every non constant complex polynomial has at least one root, and factors completely into linear factors. Real analysis can't do this. Real polynomials might not have any real roots.", visual: "fta", formula: "P(z) = a_n(z-z_1)(z-z_2)\\cdots(z-z_n)"},
+{title: "Taylor and Laurent Series", text: "If a function is analytic on a disk, it equals its Taylor series there. If the function has a singularity at the center, we extend with negative powers. That's the Laurent series. It converges in an annulus around the singular point.", visual: "series", formula: "f(z) = \\sum_n a_n(z-z_0)^n + \\sum_n \\frac{b_n}{(z-z_0)^n}"},
+{title: "Three Singularity Types", text: "We classify isolated singularities by the principal part of the Laurent series. Three types. Removable, where there are no negative powers. Poles of order m, with finitely many. And essential, where there are infinitely many. Things get wild at essential singularities.", visual: "singularities", formula: ""},
+{title: "The Residue", text: "Here's the magic number. The residue of f at a singularity is just b sub one. The coefficient of one over z minus z naught in the Laurent series. This single complex number captures all the integration behavior at the singularity.", visual: "residue", formula: "\\text{Res}_{z=z_0} f = b_1"},
+{title: "Residue Theorem", text: "Cauchy's residue theorem. The integral of f around a closed loop equals two pi i, times the sum of the residues of f at all singularities inside the loop. This single formula computes integrals that would otherwise be nearly impossible.", visual: "rt", formula: "\\oint_C f\\,dz = 2\\pi i \\sum_k \\text{Res}_{z_k} f"},
+{title: "Real Integrals", text: "And the punchline. Hard real integrals, like the integral from zero to infinity of one over x to the sixth plus one, fall to residues in just a few lines. Extend to a complex contour, find the residues in the upper half plane, and you're done.", visual: "realint", formula: "\\int_0^\\infty \\frac{dx}{x^6+1} = \\frac{\\pi}{3}"},
+{title: "Goodbye!", text: "That's complex analysis, end to end. The whole subject is built on one idea. Complex differentiability is so strong it forces every other miracle. Thanks for watching, and good luck on your final!", visual: "closing", formula: ""},
+];
+
+// ============== CANVAS SETUP ==============
+const canvas = document.getElementById('visual');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const cx = W/2, cy = H/2;
+const scale = 90;
+
+function plot(x, y) { return [cx + x*scale, cy - y*scale]; }
+function plotS(x, y, s) { return [cx + x*s, cy - y*s]; }
+
+function drawAxes(ctx, label = true) {
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(40, cy); ctx.lineTo(W-30, cy);
+  ctx.moveTo(cx, 40); ctx.lineTo(cx, H-30);
+  ctx.stroke();
+  ctx.fillStyle = '#cbd5e1';
+  // arrows
+  ctx.beginPath();
+  ctx.moveTo(W-30, cy); ctx.lineTo(W-40, cy-6); ctx.lineTo(W-40, cy+6); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx, 40); ctx.lineTo(cx-6, 50); ctx.lineTo(cx+6, 50); ctx.closePath(); ctx.fill();
+  if (label) {
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 16px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Re', W-26, cy+5);
+    ctx.fillText('Im', cx+8, 38);
+  }
+}
+
+function drawGrid(ctx) {
+  ctx.strokeStyle = '#f1f5f9';
+  ctx.lineWidth = 1;
+  for (let i = -5; i <= 5; i++) {
+    if (i === 0) continue;
+    ctx.beginPath();
+    ctx.moveTo(40, cy - i*scale);
+    ctx.lineTo(W-30, cy - i*scale);
+    ctx.moveTo(cx + i*scale, 40);
+    ctx.lineTo(cx + i*scale, H-30);
+    ctx.stroke();
+  }
+}
+
+function fillBg(ctx, color = 'white') {
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawArrow(ctx, x1, y1, x2, y2, color = '#dc2626', lw = 3) {
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lw;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  const angle = Math.atan2(y2-y1, x2-x1);
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 12*Math.cos(angle - Math.PI/6), y2 - 12*Math.sin(angle - Math.PI/6));
+  ctx.lineTo(x2 - 12*Math.cos(angle + Math.PI/6), y2 - 12*Math.sin(angle + Math.PI/6));
+  ctx.closePath();
+  ctx.fill();
+}
+
+// ============== VISUALS ==============
+const visuals = {
+  title: (ctx, t) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 60; i++) {
+      const x = ((i * 137 + t * 30) % W);
+      const y = (i * 91) % H;
+      const r = 1 + 2*Math.sin(t*1.5 + i);
+      ctx.fillStyle = `hsla(${(i*8)%360}, 70%, 70%, ${0.4 + 0.4*Math.sin(t*2 + i)})`;
+      ctx.beginPath();
+      ctx.arc(x, y, Math.abs(r), 0, 2*Math.PI);
+      ctx.fill();
+    }
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 64px Georgia, serif';
+    const wobble = Math.sin(t*0.8) * 4;
+    ctx.fillText('Complex Analysis', cx, cy - 40 + wobble);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = 'italic 26px Georgia, serif';
+    ctx.fillText('A 12-minute video tour', cx, cy + 20);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '18px sans-serif';
+    ctx.fillText('from $i^2 = -1$ to residue theorem', cx, cy + 60);
+  },
+
+  imaginary: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 110px Georgia, serif';
+    const s = 1 + 0.05 * Math.sin(t * 1.5);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(s, s);
+    ctx.fillText('i² = −1', 0, 30);
+    ctx.restore();
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic 22px serif';
+    ctx.fillText('the rule that opens a new universe', cx, H - 60);
+    // tiny floating i's
+    for (let i = 0; i < 10; i++) {
+      const px = (i * 87 + t * 20) % W;
+      const py = 80 + ((i * 53) % 80);
+      ctx.fillStyle = `hsla(${i*40}, 60%, 50%, 0.4)`;
+      ctx.font = 'italic 24px serif';
+      ctx.fillText('i', px, py);
+    }
+  },
+
+  number: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const px = 2.5, py = 1.8;
+    const [x, y] = plot(px, py);
+    // dashed projections
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, cy);
+    ctx.moveTo(x, y); ctx.lineTo(cx, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // axis labels
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('x = 2.5', x, cy + 28);
+    ctx.textAlign = 'left';
+    ctx.fillText('y = 1.8', cx + 8, y + 4);
+    // point
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.arc(x, y, 8 + 2*Math.sin(t*3), 0, 2*Math.PI);
+    ctx.fill();
+    // label
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 24px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('z = 2.5 + 1.8i', x + 16, y - 14);
+  },
+
+  plane: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // two vectors and their sum
+    const [ax, ay] = plot(2, 1);
+    const [bx, by] = plot(1, 2);
+    const [sx, sy] = plot(3, 3);
+    drawArrow(ctx, cx, cy, ax, ay, '#3b82f6');
+    drawArrow(ctx, cx, cy, bx, by, '#10b981');
+    // dashed parallelogram
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(ax, ay); ctx.lineTo(sx, sy);
+    ctx.moveTo(bx, by); ctx.lineTo(sx, sy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    drawArrow(ctx, cx, cy, sx, sy, '#dc2626', 4);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 18px serif';
+    ctx.fillText('z₁ = 2+i', ax + 8, ay + 8);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('z₂ = 1+2i', bx - 100, by - 8);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('z₁+z₂ = 3+3i', sx + 8, sy - 8);
+  },
+
+  modulus: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const px = 3, py = 2;
+    const [x, y] = plot(px, py);
+    drawArrow(ctx, cx, cy, x, y, '#dc2626', 3.5);
+    // length label, perpendicular offset
+    const midx = (cx+x)/2, midy = (cy+y)/2;
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 24px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('|z| = √13', midx + 12, midy - 8);
+    // dashed projections
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, cy);
+    ctx.moveTo(x, cy); ctx.lineTo(cx, cy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#475569';
+    ctx.font = '16px serif';
+    ctx.fillText('x', (cx+x)/2 - 6, cy + 18);
+    ctx.fillText('y', x + 8, (cy+y)/2);
+    // point
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.arc(x, y, 7, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.fillText('z = 3+2i', x+10, y-10);
+  },
+
+  conjugate: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const px = 2.5, py = 2;
+    const [x, y] = plot(px, py);
+    const [x2, y2] = plot(px, -py);
+    // animated reflection
+    const phase = (Math.sin(t*1.5) + 1) / 2;
+    // original
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 20px Georgia, serif';
+    ctx.fillText('z', x+12, y);
+    // reflected
+    ctx.fillStyle = '#3b82f6';
+    ctx.beginPath();
+    ctx.arc(x2, y2, 8, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.fillStyle = '#3b82f6';
+    ctx.fillText('z̄', x2+12, y2+8);
+    // dashed line between
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('reflection across real axis', cx, H - 50);
+  },
+
+  polar: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const r = 2.5;
+    const theta = Math.PI/4 + 0.2*Math.sin(t);
+    const [x, y] = plot(r*Math.cos(theta), r*Math.sin(theta));
+    // arc for theta
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 50, 0, -theta, true);
+    ctx.stroke();
+    // r line
+    drawArrow(ctx, cx, cy, x, y, '#dc2626', 3.5);
+    // labels
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 22px serif';
+    ctx.fillText('θ', cx + 60, cy - 18);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('r', (cx+x)/2 + 8, (cy+y)/2 - 8);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('z = re^{iθ}', x+10, y-12);
+    // point
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2*Math.PI); ctx.fill();
+  },
+
+  euler: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx, false);
+    // unit circle
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, scale, 0, 2*Math.PI);
+    ctx.stroke();
+    // moving point
+    const theta = (t * 0.7) % (2*Math.PI);
+    const [x, y] = plot(Math.cos(theta), Math.sin(theta));
+    drawArrow(ctx, cx, cy, x, y, '#dc2626', 3);
+    // projections
+    ctx.strokeStyle = '#94a3b8';
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, cy);
+    ctx.moveTo(x, y); ctx.lineTo(cx, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // labels
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('cos θ', x, cy + 25);
+    ctx.textAlign = 'left';
+    ctx.fillText('i sin θ', cx + 10, y);
+    ctx.fillText('e^{iθ}', x + 10, y - 10);
+    // big formula at bottom
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 26px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('e^{iθ} = cos θ + i sin θ', cx, H - 40);
+  },
+
+  multiply: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const phase = (t * 0.6) % (2*Math.PI);
+    // z1 fixed
+    const r1 = 1.4, t1 = 0.6;
+    // z2 rotating
+    const r2 = 1.2, t2 = 0.9 + phase*0.3;
+    // product
+    const r3 = r1*r2, t3 = t1+t2;
+    const [x1, y1] = plot(r1*Math.cos(t1), r1*Math.sin(t1));
+    const [x2, y2] = plot(r2*Math.cos(t2), r2*Math.sin(t2));
+    const [x3, y3] = plot(r3*Math.cos(t3), r3*Math.sin(t3));
+    drawArrow(ctx, cx, cy, x1, y1, '#3b82f6', 3);
+    drawArrow(ctx, cx, cy, x2, y2, '#10b981', 3);
+    drawArrow(ctx, cx, cy, x3, y3, '#dc2626', 4);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 18px serif';
+    ctx.fillText('z₁', x1+10, y1-5);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('z₂', x2+10, y2-5);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('z₁·z₂', x3+10, y3-5);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('multiply moduli, add angles', cx, H - 40);
+  },
+
+  roots: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx, false);
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, scale*1.6, 0, 2*Math.PI);
+    ctx.stroke();
+    // 5 roots
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let k = 0; k < 5; k++) {
+      const theta = 2*Math.PI*k/5;
+      const [px, py] = plot(1.6*Math.cos(theta), 1.6*Math.sin(theta));
+      if (k === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    for (let k = 0; k < 5; k++) {
+      const theta = 2*Math.PI*k/5;
+      const [px, py] = plot(1.6*Math.cos(theta), 1.6*Math.sin(theta));
+      const pulse = 8 + 3*Math.sin(t*2 + k);
+      ctx.fillStyle = `hsl(${k*72}, 70%, 50%)`;
+      ctx.beginPath(); ctx.arc(px, py, pulse, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 16px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`ω^${k}`, px + 24*Math.cos(theta), py - 24*Math.sin(theta));
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 20px serif';
+    ctx.fillText('5 fifth roots of unity', cx, H - 40);
+  },
+
+  func: (ctx, t) => {
+    fillBg(ctx);
+    // two squares
+    const sq = 180;
+    const lx = 100, ly = (H-sq)/2;
+    const rx = W - 100 - sq, ry = (H-sq)/2;
+    // left z plane
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(lx, ly, sq, sq);
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('z plane (input)', lx + sq/2, ly - 12);
+    // right w plane
+    ctx.strokeStyle = '#10b981';
+    ctx.strokeRect(rx, ry, sq, sq);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('w plane (output)', rx + sq/2, ry - 12);
+    // animated point
+    const phase = t*0.6;
+    const px = Math.cos(phase) * 0.6, py = Math.sin(phase) * 0.6;
+    const lpx = lx + sq/2 + px*60, lpy = ly + sq/2 - py*60;
+    // f(z) = z^2: r^2, 2θ
+    const r = Math.sqrt(px*px+py*py);
+    const th = Math.atan2(py, px);
+    const wpx = r*r*Math.cos(2*th), wpy = r*r*Math.sin(2*th);
+    const rpx = rx + sq/2 + wpx*120, rpy = ry + sq/2 - wpy*120;
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(lpx, lpy, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.beginPath(); ctx.arc(rpx, rpy, 8, 0, 2*Math.PI); ctx.fill();
+    // arrow between
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 3;
+    drawArrow(ctx, lx + sq + 10, ly + sq/2, rx - 10, ry + sq/2, '#475569', 3);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px serif';
+    ctx.fillText('f', (lx+sq+rx)/2, ly + sq/2 - 20);
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 16px serif';
+    ctx.fillText('example: f(z)=z²', cx, H - 40);
+  },
+
+  derivative: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // z0 in center area
+    const [zx, zy] = plot(0.5, 0.5);
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath(); ctx.arc(zx, zy, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.font = 'bold 20px serif';
+    ctx.fillText('z₀', zx + 10, zy - 8);
+    // arrows from many directions
+    const k = Math.floor(t*3) % 8;
+    for (let i = 0; i < 8; i++) {
+      const ang = i*Math.PI/4;
+      const len = 65 + (i === k ? 10*Math.sin(t*5) : 0);
+      const ex = zx + len*Math.cos(ang);
+      const ey = zy + len*Math.sin(ang);
+      const color = i === k ? '#dc2626' : '#94a3b8';
+      drawArrow(ctx, ex, ey, zx + 14*Math.cos(ang), zy + 14*Math.sin(ang), color, i === k ? 3 : 1.5);
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Δz → 0 from any direction — limit must agree', cx, H - 40);
+  },
+
+  cr: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 30px Georgia, serif';
+    ctx.fillText('Cauchy–Riemann Equations', cx, 80);
+    // big equations
+    ctx.font = 'bold 56px Georgia, serif';
+    const s = 1 + 0.03*Math.sin(t*2);
+    ctx.save();
+    ctx.translate(cx, cy - 20);
+    ctx.scale(s, s);
+    ctx.fillText('u_x = v_y', 0, 0);
+    ctx.fillText('u_y = −v_x', 0, 80);
+    ctx.restore();
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic 22px serif';
+    ctx.fillText('the fingerprint of complex differentiability', cx, H - 50);
+  },
+
+  analytic: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    const [zx, zy] = plot(0.8, 0.8);
+    // open disk
+    const r = 100 + 5*Math.sin(t*1.5);
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 4]);
+    ctx.beginPath();
+    ctx.arc(zx, zy, r, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // center dot
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath(); ctx.arc(zx, zy, 6, 0, 2*Math.PI); ctx.fill();
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('z₀', zx, zy - 14);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 20px serif';
+    ctx.fillText('analytic = differentiable in an OPEN neighborhood', cx, H - 40);
+  },
+
+  compare: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 28px Georgia, serif';
+    ctx.fillText('Real vs Complex Differentiability', cx, 60);
+    // two columns
+    const lx = W*0.25, rx = W*0.75;
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 22px serif';
+    ctx.fillText('Real (ℝ → ℝ)', lx, 110);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('Complex (ℂ → ℂ)', rx, 110);
+    ctx.font = '17px sans-serif';
+    ctx.fillStyle = '#1e293b';
+    const realFacts = ['differentiable ≠ C∞', 'bounded ≠ constant', '|x| not differentiable', 'no FTA'];
+    const cxFacts = ['analytic ⟹ C∞', 'bounded entire ⟹ constant', 'analytic ⟹ Taylor series', 'every poly factors fully'];
+    realFacts.forEach((f, i) => {
+      ctx.fillStyle = '#475569';
+      ctx.fillText('• ' + f, lx, 160 + i*40);
+    });
+    cxFacts.forEach((f, i) => {
+      ctx.fillStyle = '#065f46';
+      ctx.fillText('✓ ' + f, rx, 160 + i*40);
+    });
+    // divider
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.beginPath();
+    ctx.moveTo(cx, 130); ctx.lineTo(cx, H - 60);
+    ctx.stroke();
+  },
+
+  exp: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx, false);
+    // periodicity strips - light blue stripes every 2pi
+    for (let k = -2; k <= 2; k++) {
+      const y = cy - k*scale*Math.PI*0.5;
+      ctx.fillStyle = `rgba(59, 130, 246, ${0.05 + 0.08*Math.abs(Math.sin(t*0.5 + k))})`;
+      ctx.fillRect(40, y - scale*Math.PI*0.25, W-70, scale*Math.PI*0.5);
+    }
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // arrows showing periodicity
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 2.5;
+    for (let k = -1; k <= 1; k++) {
+      const y = cy - k*scale*Math.PI*0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx - 30, y); ctx.lineTo(cx + 30, y);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('e^{z+2πi} = e^z', cx, 60);
+    ctx.font = 'italic 18px serif';
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('e^z is periodic with period 2πi', cx, H - 40);
+  },
+
+  log: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx, false);
+    // spiral showing infinite values
+    const r = 2.5;
+    const [x0, y0] = plot(r, 0);
+    // single point
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(x0, y0, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px serif';
+    ctx.fillText('z', x0 + 12, y0 - 8);
+    // log values (vertical column)
+    ctx.fillStyle = '#3b82f6';
+    ctx.font = '16px monospace';
+    ctx.textAlign = 'left';
+    for (let n = -2; n <= 2; n++) {
+      const y = cy + n*40;
+      ctx.fillStyle = `hsla(${(n+2)*60}, 70%, 50%, 0.9)`;
+      ctx.beginPath(); ctx.arc(W*0.7, y, 6, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.fillText(`log r + ${2*n}πi`, W*0.7 + 12, y + 5);
+    }
+    // arrow from z to log values
+    ctx.strokeStyle = '#475569';
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    for (let n = -2; n <= 2; n++) {
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(W*0.7 - 8, cy + n*40);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('log z is multi-valued', cx, H - 40);
+  },
+
+  branch: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // negative real axis as branch cut
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(40, cy);
+    ctx.lineTo(cx, cy);
+    ctx.stroke();
+    // hatching on branch cut
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 1.5;
+    for (let x = 50; x < cx; x += 10) {
+      ctx.beginPath();
+      ctx.moveTo(x, cy - 8); ctx.lineTo(x + 6, cy + 8);
+      ctx.stroke();
+    }
+    // moving point
+    const ang = (Math.sin(t * 0.6) * 0.8) + 0.6;
+    const r = 2;
+    const [px, py] = plot(r*Math.cos(ang), r*Math.sin(ang));
+    drawArrow(ctx, cx, cy, px, py, '#10b981', 3);
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath(); ctx.arc(px, py, 6, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('branch cut', (40+cx)/2, cy + 30);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 20px serif';
+    ctx.fillText('slit plane: principal log is analytic here', cx, H - 40);
+  },
+
+  contour: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // wavy contour
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let s = 0; s <= 1; s += 0.005) {
+      const x = -2 + 4*s;
+      const y = 0.5 + Math.sin(s*Math.PI*3) * 1.2;
+      const [px, py] = plot(x, y);
+      if (s === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    // moving point
+    const s = (t*0.2) % 1;
+    const x = -2 + 4*s;
+    const y = 0.5 + Math.sin(s*Math.PI*3) * 1.2;
+    const [px, py] = plot(x, y);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(px, py, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px serif';
+    ctx.fillText('z(t)', px + 12, py - 8);
+    ctx.fillStyle = '#3b82f6';
+    ctx.font = 'italic 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('contour C: z(t) for t in [a, b]', cx, H - 40);
+  },
+
+  goursat: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // closed loop
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 50;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 1.8 + 0.3*Math.sin(theta*3);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
+    ctx.fill();
+    ctx.stroke();
+    // arrow indicating direction
+    const phase = (t*0.3) % 1;
+    const theta = phase*2*Math.PI;
+    const r = 1.8 + 0.3*Math.sin(theta*3);
+    const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+    const dx = -Math.sin(theta), dy = Math.cos(theta);
+    ctx.strokeStyle = '#dc2626';
+    drawArrow(ctx, px, py, px + dx*30, py + dy*30, '#dc2626', 3);
+    // text in middle
+    ctx.fillStyle = '#065f46';
+    ctx.font = 'bold 38px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('∮ f(z) dz = 0', cx, cy + 12);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('f analytic inside ⟹ integral around loop = 0', cx, H - 40);
+  },
+
+  oneoverz: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // red dot at origin
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(cx, cy, 10, 0, 2*Math.PI); ctx.fill();
+    // X marks
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - 14, cy - 14); ctx.lineTo(cx + 14, cy + 14);
+    ctx.moveTo(cx - 14, cy + 14); ctx.lineTo(cx + 14, cy - 14);
+    ctx.stroke();
+    // loop around it
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 130, 0, 2*Math.PI);
+    ctx.stroke();
+    // moving point on loop
+    const ang = t * 0.8;
+    const px = cx + 130*Math.cos(ang), py = cy - 130*Math.sin(ang);
+    const dx = -Math.sin(ang), dy = -Math.cos(ang);
+    drawArrow(ctx, px, py, px + dx*25, py + dy*25, '#dc2626', 3);
+    // formula
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 32px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('∮  dz/z  = 2πi', cx, H - 80);
+    ctx.font = 'italic 18px serif';
+    ctx.fillStyle = '#475569';
+    ctx.fillText('for ANY simple closed loop around 0', cx, H - 40);
+  },
+
+  cif: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // closed loop
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 60;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 1.7 + 0.2*Math.cos(theta*4);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+    ctx.fill();
+    ctx.stroke();
+    // z0 inside, glowing
+    const [zx, zy] = plot(0.3, 0.4);
+    ctx.fillStyle = `rgba(220, 38, 38, ${0.7 + 0.3*Math.sin(t*3)})`;
+    ctx.beginPath(); ctx.arc(zx, zy, 12 + 3*Math.sin(t*3), 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(zx, zy, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('z₀', zx, zy - 18);
+    // text
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('value inside = average of values on boundary', cx, H - 40);
+  },
+
+  derivatives: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 32px Georgia, serif';
+    ctx.fillText('Analytic ⟹ all derivatives exist', cx, 80);
+    // ladder of derivatives
+    const labels = ['f(z)', "f'(z)", "f''(z)", "f'''(z)", "f''''(z)", '...', 'f^(n)(z)'];
+    const phase = Math.floor(t*1.5) % labels.length;
+    labels.forEach((lab, i) => {
+      const y = 150 + i*48;
+      const opacity = i <= phase ? 1 : 0.2;
+      ctx.fillStyle = `rgba(59, 130, 246, ${opacity})`;
+      ctx.font = `bold ${28 - i*1.5}px Georgia, serif`;
+      ctx.fillText(lab, cx, y);
+      if (i <= phase && i < labels.length - 1) {
+        ctx.fillStyle = `rgba(220, 38, 38, ${opacity})`;
+        ctx.font = '20px serif';
+        ctx.fillText('↓', cx, y + 22);
+      }
+    });
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('and theyʼre all analytic too!', cx, H - 30);
+  },
+
+  liouville: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // bounded region
+    ctx.fillStyle = 'rgba(220, 38, 38, 0.2)';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 200, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.strokeStyle = '#dc2626';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, 200, 0, 2*Math.PI); ctx.stroke();
+    ctx.setLineDash([]);
+    // dots representing values
+    for (let i = 0; i < 25; i++) {
+      const ang = i * 0.7 + t*0.3;
+      const r = 30 + 130 * Math.abs(Math.sin(i*1.7 + t*0.5));
+      const px = cx + r*Math.cos(ang), py = cy + r*Math.sin(ang);
+      ctx.fillStyle = `hsla(${i*15}, 60%, 50%, 0.7)`;
+      ctx.beginPath(); ctx.arc(px, py, 5, 0, 2*Math.PI); ctx.fill();
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 28px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('|f| ≤ M everywhere', cx, 70);
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic 20px serif';
+    ctx.fillText('then f must be CONSTANT', cx, H - 40);
+  },
+
+  fta: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 28px Georgia, serif';
+    ctx.fillText('Fundamental Theorem of Algebra', cx, 70);
+    ctx.font = 'bold 32px Georgia, serif';
+    const phase = (t * 0.5) % 2;
+    if (phase < 1) {
+      ctx.fillText('P(z) = z⁴ − 1', cx, cy - 40);
+    } else {
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillText('= (z−1)(z+1)(z−i)(z+i)', cx, cy - 40);
+    }
+    drawAxes(ctx, false);
+    // 4 roots of unity
+    const r = 1.5;
+    [0, Math.PI/2, Math.PI, 3*Math.PI/2].forEach((th, i) => {
+      const [px, py] = plot(r*Math.cos(th), r*Math.sin(th));
+      ctx.fillStyle = `hsl(${i*90}, 70%, 50%)`;
+      ctx.beginPath(); ctx.arc(px, py, 9, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 16px serif';
+      const labels = ['1', 'i', '−1', '−i'];
+      ctx.fillText(labels[i], px + 18*Math.cos(th), py - 18*Math.sin(th));
+    });
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('every poly factors completely in ℂ', cx, H - 40);
+  },
+
+  series: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx, false);
+    // disk of convergence
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 130, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    // center dot
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(cx, cy, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('z₀', cx + 14, cy + 4);
+    // series terms
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('f(z) = a₀ + a₁(z−z₀) + a₂(z−z₀)² + ...', cx, 80);
+    ctx.fillStyle = '#3b82f6';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('converges in disk |z−z₀| < R', cx, H - 60);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('R = radius of convergence', cx, H - 30);
+  },
+
+  singularities: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 28px Georgia, serif';
+    ctx.fillText('Three types of isolated singularities', cx, 60);
+    const types = [
+      { x: W*0.18, name: 'Removable', desc: 'no neg powers', ex: '(sin z)/z', color: '#10b981' },
+      { x: cx, name: 'Pole order m', desc: 'finite neg powers', ex: '1/(z−z₀)ᵐ', color: '#f59e0b' },
+      { x: W*0.82, name: 'Essential', desc: '∞ neg powers', ex: 'e^(1/z)', color: '#dc2626' }
+    ];
+    types.forEach((t2, i) => {
+      ctx.fillStyle = t2.color;
+      ctx.font = 'bold 22px serif';
+      ctx.fillText(t2.name, t2.x, 130);
+      ctx.fillStyle = '#475569';
+      ctx.font = '16px serif';
+      ctx.fillText(t2.desc, t2.x, 160);
+      // dot pulsing
+      const pulse = 14 + 4*Math.sin(t*2 + i);
+      ctx.fillStyle = t2.color;
+      ctx.beginPath(); ctx.arc(t2.x, 220, pulse, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 18px serif';
+      ctx.fillText('●', t2.x, 226);
+      // example
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'italic 17px serif';
+      ctx.fillText(t2.ex, t2.x, 280);
+    });
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 16px serif';
+    ctx.fillText('classified by principal part of Laurent series', cx, H - 40);
+  },
+
+  residue: (ctx, t) => {
+    fillBg(ctx);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 26px Georgia, serif';
+    ctx.fillText('Laurent series at singularity z₀:', cx, 70);
+    ctx.font = 'bold 22px Georgia, serif';
+    // f(z) = a0 + a1(z-z0) + ... + b1/(z-z0) + b2/(z-z0)^2 + ...
+    const baseY = 160;
+    ctx.fillText('f(z) = a₀ + a₁(z−z₀) + a₂(z−z₀)² + ...', cx, baseY);
+    // highlight residue term
+    const flash = 0.8 + 0.2*Math.sin(t*3);
+    ctx.fillStyle = `rgba(220, 38, 38, ${flash})`;
+    ctx.font = 'bold 32px Georgia, serif';
+    ctx.fillText('+ b₁/(z−z₀)', cx, baseY + 80);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('+ b₂/(z−z₀)² + b₃/(z−z₀)³ + ...', cx, baseY + 130);
+    // arrow + label
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic bold 26px serif';
+    ctx.fillText('↑ THIS is the residue', cx, baseY + 190);
+    ctx.fillStyle = '#475569';
+    ctx.font = '18px serif';
+    ctx.fillText('Res_{z=z₀} f = b₁', cx, baseY + 230);
+  },
+
+  rt: (ctx, t) => {
+    fillBg(ctx);
+    drawGrid(ctx);
+    drawAxes(ctx);
+    // closed loop
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    const N = 60;
+    for (let i = 0; i <= N; i++) {
+      const theta = 2*Math.PI*i/N;
+      const r = 2 + 0.4*Math.cos(theta*5);
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.08)';
+    ctx.fill();
+    ctx.stroke();
+    // 3 singularities inside
+    const sings = [[-0.6, 0.8], [0.9, 0.3], [0.1, -0.7]];
+    sings.forEach((s, i) => {
+      const [px, py] = plot(s[0], s[1]);
+      const pulse = 1 + 0.4*Math.sin(t*2 + i);
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(px, py, 8*pulse, 0, 2*Math.PI); ctx.fill();
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(px-12, py-12); ctx.lineTo(px+12, py+12);
+      ctx.moveTo(px-12, py+12); ctx.lineTo(px+12, py-12);
+      ctx.stroke();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 14px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Res ${i+1}`, px, py - 18);
+    });
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 24px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('∮_C f dz = 2πi · (Res₁ + Res₂ + Res₃)', cx, H - 40);
+  },
+
+  realint: (ctx, t) => {
+    fillBg(ctx);
+    drawAxes(ctx);
+    // semicircle UHP
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(40, cy);
+    ctx.lineTo(W-40, cy);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 280, Math.PI, 2*Math.PI);
+    ctx.stroke();
+    // residues in UHP
+    const sings = [[-1.5, 1.2], [0, 1.6], [1.5, 1.2]];
+    sings.forEach((s, i) => {
+      const [px, py] = plot(s[0], s[1]);
+      const pulse = 1 + 0.3*Math.sin(t*2 + i);
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(px, py, 9*pulse, 0, 2*Math.PI); ctx.fill();
+    });
+    // moving direction arrow
+    const phase = (t*0.5) % 1;
+    if (phase < 0.5) {
+      const x = 40 + (W-80)*phase*2;
+      drawArrow(ctx, x-30, cy, x, cy, '#dc2626', 3);
+    } else {
+      const ang = Math.PI - (phase-0.5)*2 * Math.PI;
+      const px = cx + 280*Math.cos(ang);
+      const py = cy + 280*Math.sin(ang);
+      const dx = -280*Math.sin(ang)*0.001;
+      const dy = 280*Math.cos(ang)*0.001;
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(px, py, 8, 0, 2*Math.PI); ctx.fill();
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 26px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('∫₀^∞ dx/(x⁶+1) = π/3', cx, 70);
+    ctx.fillStyle = '#475569';
+    ctx.font = 'italic 16px serif';
+    ctx.fillText('extend to UHP semicircle, sum residues', cx, H - 30);
+  },
+
+  closing: (ctx, t) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, W, H);
+    // sparkles
+    for (let i = 0; i < 80; i++) {
+      const x = ((i * 113 + t*60) % W);
+      const y = ((i * 71) % H);
+      ctx.fillStyle = `hsla(${i*5}, 80%, 70%, ${0.3 + 0.5*Math.abs(Math.sin(t*3 + i))})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5 + Math.abs(Math.sin(t + i)), 0, 2*Math.PI);
+      ctx.fill();
+    }
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 60px Georgia, serif';
+    const wobble = Math.sin(t) * 4;
+    ctx.fillText('You did it! 🎉', cx, cy - 30 + wobble);
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '24px Georgia, serif';
+    ctx.fillText('Good luck on your final.', cx, cy + 30);
+    ctx.font = 'italic 18px Georgia, serif';
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('— Your AI tutor', cx, cy + 70);
+  },
+};
+
+// ============== AVATAR ANIMATION ==============
+const eyeL = document.getElementById('eye-l');
+const eyeR = document.getElementById('eye-r');
+const mouth = document.getElementById('mouth');
+const headGroup = document.getElementById('head-group');
+
+function blink() {
+  eyeL.setAttribute('ry', 1);
+  eyeR.setAttribute('ry', 1);
+  setTimeout(() => {
+    eyeL.setAttribute('ry', 17);
+    eyeR.setAttribute('ry', 17);
+  }, 130);
+}
+setInterval(blink, 3500 + Math.random()*1000);
+
+function animateAvatar() {
+  const speaking = window.speechSynthesis && speechSynthesis.speaking;
+  if (speaking) {
+    const ry = 4 + Math.abs(Math.sin(Date.now() * 0.025)) * 12;
+    mouth.setAttribute('ry', ry);
+  } else {
+    mouth.setAttribute('ry', 3);
+  }
+  // subtle head bob
+  const tilt = Math.sin(Date.now()*0.0015) * 1.5;
+  headGroup.setAttribute('transform', `rotate(${tilt} 110 130)`);
+  requestAnimationFrame(animateAvatar);
+}
+animateAvatar();
+
+// ============== SCENE CONTROLLER ==============
+let currentScene = 0;
+let isPlaying = false;
+let sceneStartTime = 0;
+let chosenVoice = null;
+let speechRate = 1;
+let utterance = null;
+
+function pickVoice() {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  // prefer English voices, prefer common ones
+  const preferred = voices.find(v =>
+    /en-US|en_US|en-GB/.test(v.lang) &&
+    /Samantha|Daniel|Karen|Google US English|Microsoft Aria|Microsoft Zira/i.test(v.name)
+  );
+  if (preferred) return preferred;
+  return voices.find(v => /en/i.test(v.lang)) || voices[0];
+}
+
+function populateVoices() {
+  const sel = document.getElementById('voice-select');
+  sel.innerHTML = '';
+  const voices = speechSynthesis.getVoices().filter(v => /en/i.test(v.lang));
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = v.name + ' (' + v.lang + ')';
+    sel.appendChild(opt);
+  });
+  chosenVoice = pickVoice();
+  if (chosenVoice) {
+    const idx = voices.indexOf(chosenVoice);
+    if (idx >= 0) sel.value = idx;
+  }
+  sel.onchange = () => {
+    chosenVoice = voices[parseInt(sel.value)];
+  };
+}
+
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  setTimeout(populateVoices, 500);
+}
+
+function updateUI() {
+  const sc = SCENES[currentScene];
+  document.getElementById('caption').textContent = sc.text;
+  const formulaEl = document.getElementById('formula');
+  if (sc.formula) {
+    formulaEl.innerHTML = '\\(\\displaystyle ' + sc.formula + '\\)';
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise([formulaEl]).catch(() => {});
+    }
+  } else {
+    formulaEl.innerHTML = '';
+  }
+  document.getElementById('counter').textContent = (currentScene + 1) + ' / ' + SCENES.length;
+  document.getElementById('scene-title').textContent = sc.title;
+  document.getElementById('bar').style.width = ((currentScene / (SCENES.length - 1)) * 100) + '%';
+  sceneStartTime = Date.now();
+}
+
+function speakCurrent() {
+  speechSynthesis.cancel();
+  const sc = SCENES[currentScene];
+  utterance = new SpeechSynthesisUtterance(sc.text);
+  if (chosenVoice) utterance.voice = chosenVoice;
+  utterance.rate = speechRate;
+  utterance.pitch = 1;
+  utterance.onend = () => {
+    if (isPlaying && currentScene < SCENES.length - 1) {
+      currentScene++;
+      updateUI();
+      speakCurrent();
+    } else if (isPlaying && currentScene === SCENES.length - 1) {
+      isPlaying = false;
+      document.getElementById('play-btn').textContent = '▶ Play Again';
+    }
+  };
+  speechSynthesis.speak(utterance);
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    speechSynthesis.pause();
+    isPlaying = false;
+    document.getElementById('play-btn').textContent = '▶ Resume';
+  } else {
+    isPlaying = true;
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume();
+    } else {
+      speakCurrent();
+    }
+    document.getElementById('play-btn').textContent = '⏸ Pause';
+  }
+}
+
+function nextScene() {
+  if (currentScene < SCENES.length - 1) {
+    currentScene++;
+    updateUI();
+    if (isPlaying) speakCurrent();
+  }
+}
+
+function prevScene() {
+  if (currentScene > 0) {
+    currentScene--;
+    updateUI();
+    if (isPlaying) speakCurrent();
+  }
+}
+
+function changeSpeed() {
+  speechRate = parseFloat(document.getElementById('speed').value);
+  if (isPlaying) {
+    speechSynthesis.cancel();
+    speakCurrent();
+  }
+}
+
+function startTour() {
+  document.getElementById('start-overlay').classList.add('hidden');
+  isPlaying = true;
+  currentScene = 0;
+  updateUI();
+  speakCurrent();
+  document.getElementById('play-btn').textContent = '⏸ Pause';
+}
+
+// ============== ANIMATION LOOP ==============
+function animate() {
+  const sc = SCENES[currentScene];
+  const elapsed = (Date.now() - sceneStartTime) / 1000;
+  if (visuals[sc.visual]) {
+    visuals[sc.visual](ctx, elapsed);
+  } else {
+    fillBg(ctx);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = '32px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(sc.title, cx, cy);
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// initial UI
+updateUI();
+</script>
+
+</body>
+</html>
