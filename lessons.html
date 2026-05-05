@@ -193,9 +193,11 @@ const LESSONS = [
     intro: "Let me walk through a basic example together.",
     steps: [
       {text: "Suppose z equals 4 minus 7i. What's the real part? What's the imaginary part?",
-       visual: "imaginary", formula: "z = 4 - 7i"},
-      {text: "Just match it to z equals x plus iy. Here x is 4. So Re of z is 4. The coefficient of i is negative 7. So Im of z is negative 7, not negative 7i.",
-       visual: "imaginary", formula: "\\text{Re}(z) = 4, \\quad \\text{Im}(z) = -7"},
+       visual: "walkthrough", formula: "z = 4 - 7i",
+       mathLines: ["Given:", "z = 4 − 7i"]},
+      {text: "Match it to z equals x plus iy. Here x is 4 and the coefficient of i is negative 7. So Re of z is 4. Im of z is negative 7. Not negative 7 i — just negative 7.",
+       visual: "walkthrough", formula: "\\text{Re}(z) = 4, \\quad \\text{Im}(z) = -7",
+       mathLines: ["z = 4 − 7i", "match: z = x + iy", "x = 4,  y = −7", "Re(z) = 4,  Im(z) = −7"]},
     ]
   }, quiz: {
     question: "If z = 5 - 3i, what is Im(z)?",
@@ -218,17 +220,20 @@ const LESSONS = [
     intro: "Here's another. Multiply (1+i) by (2-i).",
     steps: [
       {text: "Step 1: distribute. We get 1 times 2, plus 1 times negative i, plus i times 2, plus i times negative i.",
-       visual: "imaginary", formula: "1 \\cdot 2 - i + 2i - i^2"},
-      {text: "Step 2: simplify. Negative i times i is i squared, but with a negative sign. That's negative i squared, which is positive one. So we have 2 minus i plus 2i plus 1.",
-       visual: "imaginary", formula: "2 - i + 2i + 1"},
+       visual: "distribute", formula: "1 \\cdot 2 - i + 2i - i^2",
+       mathLines: ["(1 + i)(2 − i)", "= 1·2 + 1·(−i) + i·2 + i·(−i)", "= 2 − i + 2i − i²"]},
+      {text: "Step 2: simplify. Negative i times i is negative i squared, which is positive one — because i squared is negative one. So we have 2 minus i plus 2 i plus 1.",
+       visual: "distribute", formula: "2 - i + 2i + 1",
+       mathLines: ["= 2 − i + 2i − i²", "since i² = −1, −i² = +1", "= 2 − i + 2i + 1"]},
       {text: "Step 3: combine real and imaginary. Real part: 2 plus 1 equals 3. Imaginary part: negative 1 plus 2 equals 1. Final answer: 3 plus i.",
-       visual: "imaginary", formula: "(1+i)(2-i) = 3 + i"},
+       visual: "distribute", formula: "(1+i)(2-i) = 3 + i",
+       mathLines: ["= 2 − i + 2i + 1", "real: 2 + 1 = 3,  imag: −1 + 2 = 1", "(1 + i)(2 − i) = 3 + i  ✓"]},
     ]
   }, quiz: {
     question: "Compute (3+2i)(1+i). What's the result?",
-    options: ["3 + 5i", "1 + 5i", "1 + 2i", "5 + 5i"],
-    correct: 0,
-    explain: "Distribute: 3 + 3i + 2i + 2i² = 3 + 5i + 2(-1) = 3 + 5i - 2 = 1 + 5i. Wait — I need to recheck. Actually: 3·1 + 3·i + 2i·1 + 2i·i = 3 + 3i + 2i - 2 = 1 + 5i. So the correct answer is 1+5i, option B. (Whichever you picked, the key is to use distribution and then i²=-1.)"
+    options: ["3 + 5i", "1 + 5i", "5 + 5i", "1 - 5i"],
+    correct: 1,
+    explain: "Distribute: 3·1 + 3·i + 2i·1 + 2i·i = 3 + 3i + 2i + 2i² = 3 + 5i − 2 = 1 + 5i. So the answer is option B."
   }},
 
   // ============== LESSON 3 ==============
@@ -244,12 +249,15 @@ const LESSONS = [
   ], example: {
     intro: "Let me walk through computing 1 over (2 plus 3i).",
     steps: [
-      {text: "Multiply top and bottom by the conjugate of the denominator, which is 2 minus 3i.",
-       visual: "conjugate", formula: "\\frac{1}{2+3i} \\cdot \\frac{2-3i}{2-3i}"},
-      {text: "The denominator becomes (2 plus 3i)(2 minus 3i), which is 4 minus 9i squared, which is 4 plus 9 equals 13. The numerator stays 2 minus 3i.",
-       visual: "conjugate", formula: "\\frac{2-3i}{13}"},
+      {text: "We want to compute 1 over (2 plus 3i). The conjugate trick: multiply top and bottom by the conjugate of the denominator, which is 2 minus 3i.",
+       visual: "walkthrough", formula: "\\frac{1}{2+3i} \\cdot \\frac{2-3i}{2-3i}",
+       mathLines: ["1 / (2 + 3i)", "multiply by  (2 − 3i)/(2 − 3i)", "= (2 − 3i) / [(2 + 3i)(2 − 3i)]"]},
+      {text: "The denominator becomes (2 plus 3i)(2 minus 3i). Use difference of squares: 4 minus (3i) squared, which is 4 minus negative 9, which is 13. The numerator stays 2 minus 3i.",
+       visual: "walkthrough", formula: "\\frac{2-3i}{13}",
+       mathLines: ["= (2 − 3i) / [(2 + 3i)(2 − 3i)]", "denom = 2² − (3i)² = 4 − (−9) = 13", "= (2 − 3i) / 13"]},
       {text: "Final answer: 2 over 13 minus 3 over 13 times i. The real part is 2 over 13. The imaginary part is negative 3 over 13.",
-       visual: "conjugate", formula: "\\frac{1}{2+3i} = \\frac{2}{13} - \\frac{3}{13}i"},
+       visual: "walkthrough", formula: "\\frac{1}{2+3i} = \\frac{2}{13} - \\frac{3}{13}i",
+       mathLines: ["= (2 − 3i) / 13", "= 2/13  −  (3/13) i", "Re = 2/13,   Im = −3/13   ✓"]},
     ]
   }, quiz: {
     question: "What is the conjugate of z = 4 - 5i?",
@@ -271,10 +279,12 @@ const LESSONS = [
   ], example: {
     intro: "Compute the modulus of z = 3 + 4i.",
     steps: [
-      {text: "Use the formula. x is 3, y is 4. Modulus is square root of 3 squared plus 4 squared.",
-       visual: "modulus", formula: "|z| = \\sqrt{9 + 16}"},
-      {text: "That's the square root of 25, which is 5. Notice 3, 4, 5 — the famous Pythagorean triple. So z lies on a circle of radius 5 around the origin.",
-       visual: "modulus", formula: "|3+4i| = 5"},
+      {text: "We want the modulus of z equals 3 plus 4i. Use the formula. x is 3, y is 4. So the modulus is the square root of 3 squared plus 4 squared.",
+       visual: "triangle345", formula: "|z| = \\sqrt{9 + 16}",
+       mathLines: ["z = 3 + 4i", "|z| = √(x² + y²)", "= √(3² + 4²)", "= √(9 + 16)"]},
+      {text: "Square root of 25 equals 5. Notice 3, 4, 5 — the famous Pythagorean triple. So z lies on a circle of radius 5 around the origin.",
+       visual: "triangle345", formula: "|3+4i| = 5",
+       mathLines: ["= √(9 + 16)", "= √25", "|3 + 4i| = 5  ✓"]},
     ]
   }, quiz: {
     question: "What is |1 + i|?",
@@ -296,12 +306,15 @@ const LESSONS = [
   ], example: {
     intro: "Let's convert z = 1 + i to polar form.",
     steps: [
-      {text: "First find the modulus. Square root of 1 squared plus 1 squared. That's the square root of 2.",
-       visual: "polar", formula: "r = \\sqrt{2}"},
+      {text: "We're converting 1 plus i to polar form. First find the modulus. Square root of 1 squared plus 1 squared, which is the square root of 2.",
+       visual: "polar1plusi", formula: "r = \\sqrt{2}",
+       mathLines: ["z = 1 + i", "r = |z| = √(1² + 1²) = √2"]},
       {text: "Now the angle. Since x and y are both positive and equal, the vector points at 45 degrees, which is pi over 4 radians.",
-       visual: "polar", formula: "\\theta = \\pi/4"},
+       visual: "polar1plusi", formula: "\\theta = \\pi/4",
+       mathLines: ["r = √2", "tan θ = y/x = 1/1 = 1", "θ = π/4  (45°)"]},
       {text: "So z equals square root of 2 times e to the i pi over 4. Polar form is now ready for easy multiplication.",
-       visual: "polar", formula: "1 + i = \\sqrt{2}\\, e^{i\\pi/4}"},
+       visual: "polar1plusi", formula: "1 + i = \\sqrt{2}\\, e^{i\\pi/4}",
+       mathLines: ["r = √2,  θ = π/4", "z = r · e^(iθ)", "1 + i = √2 · e^(iπ/4)  ✓"]},
     ]
   }, quiz: {
     question: "What is e^(iπ/2)?",
@@ -323,12 +336,15 @@ const LESSONS = [
   ], example: {
     intro: "Compute (1 + i) times (1 - i) using polar form.",
     steps: [
-      {text: "1 plus i equals square root of 2 times e to the i pi over 4. 1 minus i equals square root of 2 times e to the negative i pi over 4.",
-       visual: "multiply", formula: ""},
-      {text: "Multiply moduli: square root of 2 times square root of 2 equals 2. Add angles: pi over 4 plus negative pi over 4 equals 0.",
-       visual: "multiply", formula: "2 \\cdot e^{i \\cdot 0} = 2"},
-      {text: "Result: 2 times e to the i times zero, which is 2 times 1 equals 2. You can verify directly: (1+i)(1-i) = 1 - i² = 1 + 1 = 2. Same answer.",
-       visual: "multiply", formula: "(1+i)(1-i) = 2"},
+      {text: "First convert each factor to polar. 1 plus i equals square root of 2 times e to the i pi over 4. 1 minus i is the conjugate, so it's square root of 2 times e to the negative i pi over 4.",
+       visual: "walkthrough", formula: "(1+i)(1-i)",
+       mathLines: ["(1 + i)(1 − i)", "1 + i = √2 · e^(iπ/4)", "1 − i = √2 · e^(−iπ/4)"]},
+      {text: "Multiply moduli: square root of 2 times square root of 2 equals 2. Add angles: pi over 4 plus negative pi over 4 equals zero.",
+       visual: "walkthrough", formula: "2 \\cdot e^{i \\cdot 0} = 2",
+       mathLines: ["= √2 · e^(iπ/4) · √2 · e^(−iπ/4)", "moduli: √2 · √2 = 2", "angles: π/4 + (−π/4) = 0", "= 2 · e^(i·0)"]},
+      {text: "Result: 2 times e to the zero, which is just 2. You can verify directly: (1+i)(1-i) equals 1 minus i squared, which equals 1 plus 1 equals 2. Same answer.",
+       visual: "walkthrough", formula: "(1+i)(1-i) = 2",
+       mathLines: ["= 2 · e^(i·0)", "= 2 · 1 = 2", "(1 + i)(1 − i) = 2  ✓"]},
     ]
   }, quiz: {
     question: "What is (e^(iπ/3))^6?",
@@ -350,12 +366,15 @@ const LESSONS = [
   ], example: {
     intro: "Find all four fourth roots of -16.",
     steps: [
-      {text: "Write -16 in polar. Modulus is 16, angle is pi (it's on the negative real axis). So -16 equals 16 times e to the i pi.",
-       visual: "roots", formula: "-16 = 16 e^{i\\pi}"},
-      {text: "Take the fourth root. r becomes 16 to the 1 over 4, which is 2. Angles become pi over 4 plus 2 n pi over 4, for n = 0, 1, 2, 3.",
-       visual: "roots", formula: "(-16)^{1/4} = 2 e^{i(\\pi + 2n\\pi)/4}"},
-      {text: "Plugging in: at n=0, we get 2 e^(iπ/4) which is √2 + i√2. At n=1: 2 e^(i3π/4) which is -√2 + i√2. At n=2: -√2 - i√2. At n=3: √2 - i√2. Four roots forming a square around the origin.",
-       visual: "roots", formula: "\\pm\\sqrt{2} \\pm i\\sqrt{2}"},
+      {text: "Find the four fourth roots of negative 16. Write -16 in polar form. Modulus is 16, angle is pi — it sits on the negative real axis. So -16 equals 16 times e to the i pi.",
+       visual: "walkthrough", formula: "-16 = 16 e^{i\\pi}",
+       mathLines: ["−16 in polar", "|−16| = 16", "arg(−16) = π", "−16 = 16 · e^(iπ)"]},
+      {text: "Take the fourth root. r becomes 16 to the one fourth, which is 2. The angles become (pi plus 2 n pi) divided by 4, for n equals 0, 1, 2, 3.",
+       visual: "walkthrough", formula: "(-16)^{1/4} = 2 e^{i(\\pi + 2n\\pi)/4}",
+       mathLines: ["(−16)^(1/4) = 16^(1/4) · e^(i(π + 2nπ)/4)", "16^(1/4) = 2", "= 2 · e^(i(π + 2nπ)/4)  for n = 0,1,2,3"]},
+      {text: "Plugging in: at n=0, we get 2 e^(iπ/4) which is square root 2 plus i square root 2. At n=1: minus square root 2 plus i square root 2. At n=2: minus minus. At n=3: plus minus. Four roots forming a square around the origin.",
+       visual: "fourthRootsNeg16", formula: "\\pm\\sqrt{2} \\pm i\\sqrt{2}",
+       mathLines: ["n=0: 2·e^(iπ/4) = √2 + √2 i", "n=1: 2·e^(i3π/4) = −√2 + √2 i", "n=2: 2·e^(i5π/4) = −√2 − √2 i", "n=3: 2·e^(i7π/4) = √2 − √2 i"]},
     ]
   }, quiz: {
     question: "How many distinct cube roots does any nonzero complex number have?",
@@ -379,12 +398,15 @@ const LESSONS = [
   ], example: {
     intro: "Examples of simply connected vs not.",
     steps: [
-      {text: "C itself is simply connected — any closed loop shrinks to a point.",
-       visual: "analytic", formula: ""},
-      {text: "An open disk is simply connected. So is the slit plane: complex plane minus a ray. We removed an entire ray, so there's no loop left to enclose anything.",
-       visual: "branch", formula: ""},
-      {text: "But C minus the origin is not simply connected. A circle around 0 cannot be shrunk to a point without crossing the missing origin.",
-       visual: "oneoverz", formula: ""},
+      {text: "The complex plane C itself is simply connected — any closed loop shrinks to a point. So is an open disk.",
+       visual: "analytic", formula: "\\mathbb{C} \\text{ simply connected}",
+       mathLines: ["Simply connected examples:", "• C (whole plane)", "• open disk |z − z₀| < r", "• half-plane Re(z) > 0"]},
+      {text: "The slit plane — complex plane minus a ray — is also simply connected. We removed an entire ray, so there's no loop that can enclose what we removed.",
+       visual: "branch", formula: "\\text{slit plane}",
+       mathLines: ["Slit plane:", "{re^(iθ): r > 0, −π < θ < π}", "still simply connected", "(branch cut removes a whole ray, no hole)"]},
+      {text: "But C minus the origin is NOT simply connected. A circle around zero cannot be shrunk to a point without crossing the missing origin. There's a hole.",
+       visual: "oneoverz", formula: "\\mathbb{C}\\setminus\\{0\\}\\text{ NOT simply connected}",
+       mathLines: ["NOT simply connected:", "• C ∖ {0} (one hole)", "• annulus  1 < |z| < 2", "• any region with a missing point"]},
     ]
   }, quiz: {
     question: "Which of these is simply connected?",
@@ -408,10 +430,12 @@ const LESSONS = [
   ], example: {
     intro: "Compute the limit of (z² + 1) as z approaches i.",
     steps: [
-      {text: "z squared plus 1 is a polynomial. Polynomials are continuous everywhere — limits equal the value.",
-       visual: "func", formula: ""},
-      {text: "Plug in z equals i. We get i squared plus 1, which is negative 1 plus 1, which is 0.",
-       visual: "func", formula: "\\lim_{z\\to i} (z^2 + 1) = 0"},
+      {text: "We want the limit of z squared plus 1 as z goes to i. z squared plus 1 is a polynomial. Polynomials are continuous everywhere, so the limit just equals the value.",
+       visual: "zApproachI", formula: "\\lim_{z\\to i}(z^2 + 1)",
+       mathLines: ["lim_(z → i) (z² + 1)", "z² + 1 is a polynomial", "polynomials are continuous everywhere", "so limit = value at z = i"]},
+      {text: "Plug in z equals i. We get i squared plus 1, which is negative 1 plus 1, which is zero.",
+       visual: "zApproachI", formula: "\\lim_{z\\to i} (z^2 + 1) = 0",
+       mathLines: ["plug in z = i", "= i² + 1", "= −1 + 1", "= 0  ✓"]},
     ]
   }, quiz: {
     question: "If f(z) = z̄, is f continuous at z = 0?",
@@ -439,10 +463,12 @@ const LESSONS = [
   ], example: {
     intro: "Show f(z) = z² is differentiable using the definition.",
     steps: [
-      {text: "Compute (z + Δz)² minus z². Expanding: 2 z delta z plus delta z squared.",
-       visual: "func", formula: "(z+\\Delta z)^2 - z^2 = 2z\\Delta z + (\\Delta z)^2"},
-      {text: "Divide by delta z. We get 2 z plus delta z. As delta z goes to zero, this goes to 2 z, regardless of direction.",
-       visual: "func", formula: "f'(z) = 2z"},
+      {text: "Compute (z plus delta z) squared minus z squared. Expanding the binomial: z squared plus 2 z delta z plus delta z squared, minus z squared. The z squared cancels.",
+       visual: "walkthrough", formula: "(z+\\Delta z)^2 - z^2 = 2z\\Delta z + (\\Delta z)^2",
+       mathLines: ["f(z) = z²", "(z + Δz)² − z² = ?", "= z² + 2z·Δz + (Δz)² − z²", "= 2z·Δz + (Δz)²"]},
+      {text: "Divide by delta z. We get 2 z plus delta z. As delta z goes to zero, this goes to 2 z, regardless of direction. So f prime equals 2 z everywhere.",
+       visual: "walkthrough", formula: "f'(z) = 2z",
+       mathLines: ["[(z + Δz)² − z²] / Δz", "= [2z·Δz + (Δz)²] / Δz", "= 2z + Δz", "→ 2z as Δz → 0  (any direction!)"]},
     ]
   }, quiz: {
     question: "Is f(z) = |z|² differentiable at z = 0?",
@@ -466,12 +492,15 @@ const LESSONS = [
   ], example: {
     intro: "Use CR to verify f(z) = z² is differentiable.",
     steps: [
-      {text: "We had u equals x squared minus y squared, v equals 2 x y. Compute partials.",
-       visual: "cr", formula: "u = x^2 - y^2, \\, v = 2xy"},
-      {text: "u sub x equals 2 x. u sub y equals negative 2 y. v sub x equals 2 y. v sub y equals 2 x.",
-       visual: "cr", formula: "u_x = 2x, u_y = -2y, v_x = 2y, v_y = 2x"},
-      {text: "Check: u sub x equals 2 x equals v sub y. ✓ And u sub y equals minus 2 y equals minus v sub x. ✓ All continuous, CR holds, so f is differentiable. f prime equals u sub x plus i v sub x equals 2 x plus 2 i y equals 2 z. As expected!",
-       visual: "cr", formula: "f'(z) = 2z"},
+      {text: "f of z equals z squared. Expanding with z equals x plus iy gives u equals x squared minus y squared, and v equals 2 x y. Now compute the partial derivatives.",
+       visual: "walkthrough", formula: "u = x^2 - y^2, \\, v = 2xy",
+       mathLines: ["f(z) = z²", "z² = (x + iy)² = (x² − y²) + i(2xy)", "u = x² − y²,   v = 2xy"]},
+      {text: "Compute partials: u sub x equals 2 x. u sub y equals negative 2 y. v sub x equals 2 y. v sub y equals 2 x.",
+       visual: "walkthrough", formula: "u_x = 2x,\\ u_y = -2y,\\ v_x = 2y,\\ v_y = 2x",
+       mathLines: ["u = x² − y²,  v = 2xy", "u_x = 2x,   u_y = −2y", "v_x = 2y,   v_y = 2x"]},
+      {text: "Check Cauchy-Riemann: u sub x equals 2 x equals v sub y. ✓ And u sub y equals minus 2 y equals minus v sub x. ✓ Both hold, partials continuous, so f is differentiable. And f prime equals u sub x plus i v sub x equals 2 x plus 2 i y, which equals 2 z. As expected!",
+       visual: "walkthrough", formula: "f'(z) = 2z",
+       mathLines: ["CR: u_x = v_y? 2x = 2x  ✓", "CR: u_y = −v_x? −2y = −(2y)  ✓", "f'(z) = u_x + i v_x = 2x + i(2y) = 2z  ✓"]},
     ]
   }, quiz: {
     question: "For f(z) = z̄ = x - iy, what are u_x and v_y?",
@@ -495,10 +524,12 @@ const LESSONS = [
   ], example: {
     intro: "Use the partial-zbar test on f(z) = |z|² = z·z̄.",
     steps: [
-      {text: "Take partial over partial z bar treating z and z bar as independent variables. We get just z.",
-       visual: "cr", formula: "\\frac{\\partial}{\\partial \\bar z}(z\\bar z) = z"},
-      {text: "This is zero only when z is zero. So f satisfies CR only at z=0. Hence differentiable only at z=0 — confirming our earlier observation.",
-       visual: "cr", formula: ""},
+      {text: "f equals modulus z squared, which we can write as z times z bar. Now take partial over partial z bar, treating z and z bar as independent variables. The z stays put, the z bar differentiates to 1, so we get just z.",
+       visual: "walkthrough", formula: "\\frac{\\partial}{\\partial \\bar z}(z\\bar z) = z",
+       mathLines: ["f(z) = |z|² = z · z̄", "treat z and z̄ as independent", "∂/∂z̄ (z · z̄) = z · 1 = z"]},
+      {text: "For CR, we need partial f over partial z bar equals zero. But z is not identically zero — it's only zero at the single point z = 0. So f is differentiable only at z = 0, and analytic nowhere.",
+       visual: "walkthrough", formula: "\\partial_{\\bar z} f = 0 \\iff z = 0",
+       mathLines: ["∂f/∂z̄ = z", "= 0 only when z = 0", "So f differentiable only at z = 0", "Not analytic anywhere ✓"]},
     ]
   }, quiz: {
     question: "Using the ∂/∂z̄ rule, is f(z) = z̄² differentiable anywhere?",
@@ -522,10 +553,12 @@ const LESSONS = [
   ], example: {
     intro: "If |f(z)| is constant on a domain, must f be constant?",
     steps: [
-      {text: "Yes! If modulus f is zero, then f is zero. Otherwise, f-bar equals modulus f squared over f, so f-bar is also analytic.",
-       visual: "analytic", formula: "\\bar f = |f|^2 / f"},
-      {text: "If f and f-bar are both analytic, applying CR to both forces u_x = u_y = v_x = v_y = 0. So f is constant.",
-       visual: "analytic", formula: ""},
+      {text: "Suppose modulus f equals some constant c. If c is zero, then f is zero — done. If c is nonzero, then we can write f bar as modulus f squared over f, which equals c squared over f. So f bar is analytic too.",
+       visual: "walkthrough", formula: "\\bar f = |f|^2 / f = c^2 / f",
+       mathLines: ["assume |f| = c (constant)", "case c = 0: then f = 0, done", "case c > 0:  f̄ = |f|²/f = c²/f", "so f̄ is also analytic"]},
+      {text: "Now apply CR to both f and f-bar. f equals u plus iv satisfies CR. f bar equals u minus iv also satisfies CR. Combining the two sets of equations forces all partial derivatives of u and v to be zero. So u and v are constants. So f is constant.",
+       visual: "walkthrough", formula: "u_x = u_y = v_x = v_y = 0",
+       mathLines: ["CR on f: u_x = v_y, u_y = −v_x", "CR on f̄: u_x = −v_y, u_y = v_x", "combine: u_x = v_y AND u_x = −v_y", "so u_x = 0 (and similarly all others)", "u, v constant ⟹ f constant ✓"]},
     ]
   }, quiz: {
     question: "Is f(z) = e^z entire?",
@@ -547,12 +580,15 @@ const LESSONS = [
   ], example: {
     intro: "Verify u = x² - y² is harmonic.",
     steps: [
-      {text: "u sub x equals 2 x. u sub xx equals 2.",
-       visual: "cr", formula: "u_{xx} = 2"},
-      {text: "u sub y equals negative 2 y. u sub yy equals negative 2. Sum is zero. Harmonic!",
-       visual: "cr", formula: "u_{xx} + u_{yy} = 2 - 2 = 0 \\,\\checkmark"},
-      {text: "And of course it should be — it's the real part of f of z equals z squared, which is entire.",
-       visual: "cr", formula: ""},
+      {text: "Verify u equals x squared minus y squared is harmonic. First compute u sub x. Differentiate with respect to x: 2 x. Then u sub xx is the derivative of 2 x, which is 2.",
+       visual: "walkthrough", formula: "u_{xx} = 2",
+       mathLines: ["u = x² − y²", "u_x = 2x", "u_xx = 2"]},
+      {text: "Now u sub y. Differentiate with respect to y: negative 2 y. Then u sub yy is negative 2. Sum: 2 plus negative 2 equals zero. Harmonic!",
+       visual: "walkthrough", formula: "u_{xx} + u_{yy} = 2 + (-2) = 0",
+       mathLines: ["u_xx = 2", "u_y = −2y,   u_yy = −2", "u_xx + u_yy = 2 + (−2) = 0  ✓", "u is harmonic"]},
+      {text: "And of course it should be — it's the real part of f of z equals z squared, which is entire. Real parts of analytic functions are always harmonic.",
+       visual: "walkthrough", formula: "u = \\text{Re}(z^2)",
+       mathLines: ["bonus: where does u come from?", "z² = (x² − y²) + i(2xy)", "so u = Re(z²) = x² − y²", "and z² is entire ⟹ u harmonic (for free!)"]},
     ]
   }, quiz: {
     question: "If u = 2xy, what is its harmonic conjugate v?",
@@ -574,12 +610,15 @@ const LESSONS = [
   ], example: {
     intro: "What does 1/z do to the line x = 1?",
     steps: [
-      {text: "Parametrize z equals 1 plus i y. Compute 1 over z: multiply by conjugate. We get (1 minus i y) over (1 plus y squared).",
-       visual: "func", formula: "\\frac{1}{1+iy} = \\frac{1-iy}{1+y^2}"},
-      {text: "So u equals 1 over (1 plus y squared) and v equals minus y over (1 plus y squared). Compute u² + v². You'll find it equals u.",
-       visual: "func", formula: "u^2 + v^2 = u"},
-      {text: "Rearrange: (u minus 1/2) squared plus v squared equals 1/4. That's a circle of radius 1/2 centered at 1/2! So 1/z maps the line x=1 to a circle.",
-       visual: "func", formula: "(u - 1/2)^2 + v^2 = (1/2)^2"},
+      {text: "Parametrize the line x = 1 as z equals 1 plus iy, with y ranging over all reals. Compute 1 over z by multiplying top and bottom by the conjugate. We get (1 minus iy) over (1 plus y squared).",
+       visual: "walkthrough", formula: "\\frac{1}{1+iy} = \\frac{1-iy}{1+y^2}",
+       mathLines: ["line x = 1:  z = 1 + iy", "1/z · (1 − iy)/(1 − iy)", "= (1 − iy) / (1 + y²)"]},
+      {text: "So the image has u equals 1 over (1 plus y squared) and v equals negative y over (1 plus y squared). Now compute u squared plus v squared.",
+       visual: "walkthrough", formula: "u^2 + v^2 = u",
+       mathLines: ["u = 1/(1+y²),  v = −y/(1+y²)", "u² + v² = (1 + y²)/(1+y²)²", "= 1/(1+y²) = u"]},
+      {text: "We have u squared plus v squared equals u. Rearrange: subtract u from both sides, complete the square. We get (u minus one half) squared plus v squared equals one fourth — a circle of radius 1/2 centered at (1/2, 0)!",
+       visual: "walkthrough", formula: "(u - 1/2)^2 + v^2 = (1/2)^2",
+       mathLines: ["u² + v² = u", "u² − u + v² = 0", "(u − ½)² + v² = ¼", "circle: center (½, 0), radius ½  ✓"]},
     ]
   }, quiz: {
     question: "What is the inverse of f(z) = z + 5?",
@@ -1672,6 +1711,370 @@ const visuals = {
     ctx.fillStyle = '#e2e8f0'; ctx.font = '20px Georgia, serif';
     ctx.fillText('Good luck on your final.', CX, CY+30);
   },
+
+  // ===== walkthrough: accumulating math display =====
+  walkthrough: (ctx, t) => {
+    fillBg(ctx);
+    const sc = window.currentScene;
+    if (!sc) return;
+    const lines = sc.mathLines || (sc.formula ? [sc.formula] : ['']);
+    const titleStr = sc.exTitle || 'Walking through it...';
+    // Title
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('✏️ ' + titleStr, CX, 36);
+    // Lines stacked, last highlighted
+    const lh = 56;
+    const startY = Math.max(90, CY - (lines.length - 1) * lh / 2);
+    lines.forEach((line, i) => {
+      const isCur = i === lines.length - 1;
+      const y = startY + i * lh;
+      if (isCur) {
+        const alpha = 0.18 + 0.12 * Math.sin(t * 3);
+        ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
+        ctx.fillRect(20, y - 28, W - 40, 48);
+      }
+      ctx.font = isCur ? 'bold 26px Georgia, serif' : '18px Georgia, serif';
+      ctx.fillStyle = isCur ? '#dc2626' : 'rgba(75, 85, 105, 0.6)';
+      ctx.fillText(line, CX, y);
+    });
+    // Step indicator
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px monospace';
+    ctx.fillText(`step ${lines.length}`, CX, H - 16);
+  },
+
+  // ===== triangle345: 3-4-5 right triangle for |3+4i|=5 =====
+  triangle345: (ctx, t) => {
+    fillBg(ctx);
+    const ox = 200, oy = 380;
+    const scale_ = 60;
+    const px = ox + 3*scale_, py = oy;
+    const qx = px, qy = oy - 4*scale_;
+    // shading
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.12)';
+    ctx.beginPath();
+    ctx.moveTo(ox, oy); ctx.lineTo(px, py); ctx.lineTo(qx, qy);
+    ctx.closePath(); ctx.fill();
+    // sides
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(ox, oy); ctx.lineTo(px, py);
+    ctx.lineTo(qx, qy); ctx.closePath();
+    ctx.stroke();
+    // hypotenuse glow
+    const pulse = 0.5 + 0.3 * Math.sin(t * 3);
+    ctx.strokeStyle = `rgba(220, 38, 38, ${pulse})`;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(ox, oy); ctx.lineTo(qx, qy); ctx.stroke();
+    // labels
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('3', (ox+px)/2, oy + 28);
+    ctx.fillText('4', px + 22, (py+qy)/2);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('5 = |z|', (ox+qx)/2 - 50, (oy+qy)/2 - 8);
+    // dots
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath(); ctx.arc(ox, oy, 5, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(qx, qy, 9, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 18px serif';
+    ctx.fillText('z = 3 + 4i', qx + 75, qy + 6);
+    // bottom caption
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.fillText('|z| = √(3² + 4²) = √25 = 5', CX, H - 50);
+    ctx.font = 'italic 14px serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('classic 3-4-5 right triangle', CX, H - 26);
+  },
+
+  // ===== polar11plus_i: 1+i in polar form with √2 and π/4 =====
+  polar1plusi: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    const [px, py] = plot(1, 1);
+    // angle arc
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(CX, CY, 50, 0, -Math.PI/4, true);
+    ctx.stroke();
+    // r line with pulse
+    const pulse = 0.7 + 0.3 * Math.sin(t * 2);
+    ctx.strokeStyle = `rgba(220, 38, 38, ${pulse})`;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(CX, CY); ctx.lineTo(px, py); ctx.stroke();
+    // labels
+    ctx.fillStyle = '#10b981'; ctx.font = 'bold 20px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('θ = π/4', CX + 60, CY - 20);
+    ctx.fillStyle = '#dc2626';
+    ctx.fillText('r = √2', (CX+px)/2 + 14, (CY+py)/2 - 14);
+    // point
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(px, py, 8, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 20px Georgia, serif';
+    ctx.fillText('1 + i', px + 14, py - 14);
+    // bottom
+    ctx.font = 'bold 24px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('1 + i = √2 · e^(iπ/4)', CX, H - 30);
+  },
+
+  // ===== fourthRootsNeg16: shows 4 fourth roots of -16 =====
+  fourthRootsNeg16: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    // -16 marked on negative real axis (out of plot)
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'italic 16px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('-16 (off-screen)', 80, CY - 8);
+    ctx.beginPath(); ctx.arc(80, CY, 6, 0, 2*Math.PI); ctx.fill();
+    // 4 roots at 2 * e^(i(pi+2kpi)/4)
+    const r = 2;
+    for (let k = 0; k < 4; k++) {
+      const theta = (Math.PI + 2*Math.PI*k) / 4;
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      const pulse = 8 + 3*Math.sin(t*2 + k);
+      const colors = ['#dc2626', '#10b981', '#3b82f6', '#f59e0b'];
+      ctx.fillStyle = colors[k];
+      ctx.beginPath(); ctx.arc(px, py, pulse, 0, 2*Math.PI); ctx.fill();
+      // label
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 14px Georgia, serif';
+      const lx = px + 22*Math.cos(theta);
+      const ly = py - 22*Math.sin(theta);
+      const labels = ['√2 + √2 i', '-√2 + √2 i', '-√2 - √2 i', '√2 - √2 i'];
+      ctx.fillText(labels[k], lx, ly);
+    }
+    // connecting square
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    for (let k = 0; k < 5; k++) {
+      const theta = (Math.PI + 2*Math.PI*(k%4)) / 4;
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // caption
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('4 fourth roots of -16', CX, H - 50);
+    ctx.font = 'italic 14px serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('arranged in a square around the origin', CX, H - 26);
+  },
+
+  // ===== rightTriangleApproach: shows z approaching i =====
+  zApproachI: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    // target point i
+    const [tx, ty] = plot(0, 1);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(tx, ty, 10, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('z₀ = i', tx + 14, ty - 8);
+    // approaching points
+    const phase = (t * 0.5) % 1;
+    const closeness = 1 - phase;
+    for (let k = 0; k < 6; k++) {
+      const ang = k * Math.PI / 3;
+      const dist = closeness * 1.5;
+      const px = tx + dist * 60 * Math.cos(ang);
+      const py = ty - dist * 60 * Math.sin(ang);
+      ctx.fillStyle = `rgba(59, 130, 246, ${0.4 + 0.5*closeness})`;
+      ctx.beginPath(); ctx.arc(px, py, 5, 0, 2*Math.PI); ctx.fill();
+      // arrow toward target
+      ctx.strokeStyle = `rgba(100, 130, 180, ${0.5})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(px, py); ctx.lineTo(tx, ty); ctx.stroke();
+    }
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 16px serif';
+    ctx.fillText('z → i from any direction', CX, H - 50);
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('lim (z² + 1) = i² + 1 = 0', CX, H - 22);
+  },
+
+  // ===== unitDiscMax: max modulus example =====
+  unitDiscMax: (ctx, t) => {
+    fillBg(ctx); drawGrid(ctx); drawAxes(ctx);
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+    ctx.beginPath(); ctx.arc(CX, CY, SCALE, 0, 2*Math.PI); ctx.fill();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(CX, CY, SCALE, 0, 2*Math.PI); ctx.stroke();
+    // moving point on boundary
+    const ang = (t * 0.6) % (2*Math.PI);
+    const px = CX + SCALE * Math.cos(ang);
+    const py = CY - SCALE * Math.sin(ang);
+    const pulse = 8 + 3 * Math.sin(t * 3);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(px, py, pulse, 0, 2*Math.PI); ctx.fill();
+    // label
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 16px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('|z| = 1', CX, CY - SCALE - 14);
+    // best point at z = 1: |z²+1| = 2
+    const [bx, by] = plot(1, 0);
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath(); ctx.arc(bx, by, 11, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 16px Georgia, serif';
+    ctx.fillText('max here', bx + 50, by - 4);
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('max |z² + 1| on |z|≤1 is 2', CX, H - 28);
+  },
+
+  // ===== contour real integral example =====
+  contour1overx2plus1: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx);
+    // real axis emphasis
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(40, CY); ctx.lineTo(W - 40, CY); ctx.stroke();
+    // semicircle UHP
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(CX, CY, 240, Math.PI, 2*Math.PI); ctx.stroke();
+    // pole at i
+    const [px, py] = plot(0, 1);
+    const pulse = 1 + 0.4 * Math.sin(t * 3);
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(px, py, 12 * pulse, 0, 2*Math.PI); ctx.fill();
+    ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(px - 10, py - 10); ctx.lineTo(px + 10, py + 10);
+    ctx.moveTo(px - 10, py + 10); ctx.lineTo(px + 10, py - 10);
+    ctx.stroke();
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 18px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('z = i (pole)', px + 18, py - 4);
+    // pole at -i (outside contour)
+    const [npx, npy] = plot(0, -1);
+    ctx.fillStyle = '#94a3b8';
+    ctx.beginPath(); ctx.arc(npx, npy, 6, 0, 2*Math.PI); ctx.fill();
+    ctx.font = '14px serif';
+    ctx.fillText('z = -i (outside)', npx + 12, npy + 4);
+    // direction arrow
+    const arrowAng = Math.PI + (t * 0.3) % 1 * Math.PI;
+    const ax = CX + 240 * Math.cos(arrowAng);
+    const ay = CY + 240 * Math.sin(arrowAng);
+    drawArrow(ctx, ax - 15*Math.sin(arrowAng), ay - 15*-Math.cos(arrowAng), ax, ay, '#dc2626', 3);
+    // text
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 20px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('∫₋∞^∞ dx/(x²+1) = 2πi · Res_i = π', CX, 56);
+    ctx.font = 'italic 14px serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('UHP semicircle + residue at i', CX, H - 26);
+  },
+
+  // ===== Dirichlet contour for sin x / x =====
+  dirichletContour: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx);
+    // pole at 0 (X mark)
+    ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(CX - 14, CY - 14); ctx.lineTo(CX + 14, CY + 14);
+    ctx.moveTo(CX - 14, CY + 14); ctx.lineTo(CX + 14, CY - 14);
+    ctx.stroke();
+    // big semicircle UHP
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(CX, CY, 240, Math.PI, 2*Math.PI); ctx.stroke();
+    // line segments on real axis (not through 0)
+    const rho = 30;
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(CX - 240, CY); ctx.lineTo(CX - rho, CY);
+    ctx.moveTo(CX + rho, CY); ctx.lineTo(CX + 240, CY);
+    ctx.stroke();
+    // small indent semicircle (UHP) around origin
+    ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(CX, CY, rho, Math.PI, 2*Math.PI); ctx.stroke();
+    // labels
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 14px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('indent', CX, CY - 35);
+    ctx.fillStyle = '#dc2626';
+    ctx.font = 'bold 14px Georgia, serif';
+    ctx.fillText('pole at 0', CX + 60, CY + 35);
+    // formula
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.fillText('∫₀^∞ sin(x)/x dx = π/2', CX, 56);
+    ctx.font = 'italic 14px serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('indented contour around the simple pole', CX, H - 26);
+  },
+
+  // ===== distribute multiplication step =====
+  distribute: (ctx, t) => {
+    fillBg(ctx);
+    const sc = window.currentScene;
+    const lines = sc?.mathLines || [];
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'bold 20px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('✏️ Distributing the product', CX, 40);
+    // big distributing diagram
+    const startY = 110;
+    lines.forEach((line, i) => {
+      const isCur = i === lines.length - 1;
+      const y = startY + i * 60;
+      if (isCur) {
+        const a = 0.18 + 0.12 * Math.sin(t * 3);
+        ctx.fillStyle = `rgba(251, 191, 36, ${a})`;
+        ctx.fillRect(20, y - 28, W - 40, 50);
+      }
+      ctx.fillStyle = isCur ? '#dc2626' : 'rgba(75, 85, 105, 0.65)';
+      ctx.font = isCur ? 'bold 28px Georgia, serif' : '20px Georgia, serif';
+      ctx.fillText(line, CX, y);
+    });
+  },
+
+  // ===== rootsCircle: alias for roots that takes labels =====
+  rootsLabeled: (ctx, t) => {
+    fillBg(ctx); drawAxes(ctx, false);
+    const labels = (window.currentScene && window.currentScene.rootLabels) || ['1','i','-1','-i'];
+    const r = 1.5;
+    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(CX, CY, SCALE*r, 0, 2*Math.PI); ctx.stroke();
+    const N = labels.length;
+    for (let k = 0; k < N; k++) {
+      const theta = 2*Math.PI*k/N;
+      const [px, py] = plot(r*Math.cos(theta), r*Math.sin(theta));
+      const pulse = 9 + 3*Math.sin(t*2 + k);
+      const hue = (k * 360 / N) % 360;
+      ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+      ctx.beginPath(); ctx.arc(px, py, pulse, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 16px Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(labels[k], px + 24*Math.cos(theta), py - 24*Math.sin(theta));
+    }
+    ctx.fillStyle = '#1e293b';
+    ctx.font = 'italic 16px serif';
+    ctx.fillText((window.currentScene && window.currentScene.rootCaption) || 'roots of unity', CX, H - 26);
+  },
 };
 
 // ============================================================
@@ -1874,6 +2277,8 @@ function updateUI() {
   const lesson = LESSONS[lessonIdx];
   const scene = getCurrentScene();
   if (!scene) return;
+  window.currentScene = scene;
+  scene.exTitle = scene.exTitle || (phase === 'example' ? lesson.title + ' — example' : lesson.title);
   document.getElementById('caption').textContent = scene.text;
   const formulaEl = document.getElementById('formula');
   if (scene.formula) {
