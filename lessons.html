@@ -1209,6 +1209,190 @@ const LESSONS = [
     {text: "Good luck on your final. You've got this. And if you forget anything, come back and review the lessons — I'll be here.",
      visual: "closing", formula: ""},
   ], example: null, quiz: null},
+
+  // ============================================================
+  // HOMEWORK 3 — full walkthroughs of every problem
+  // ============================================================
+
+  // ============== HW3 Problem 1 ==============
+  {section: 'hw3', title: "HW3 #1: Polar f differentiable", scenes: [
+    {text: "Welcome to homework 3, problem 1. We're given f of z equals e to the negative theta times open paren cosine of natural log r plus i sine of natural log r close paren. Where r is positive and theta is between zero and two pi. We need to prove f is differentiable, and find f prime.",
+     visual: "walkthrough", formula: "f(z) = e^{-\\theta}[\\cos(\\ln r) + i\\sin(\\ln r)]",
+     mathLines: ["f(z) = e^(−θ) · [cos(ln r) + i sin(ln r)]", "domain: r > 0,  θ ∈ (0, 2π)", "goal: prove differentiable, find f′"]},
+    {text: "Step 1: identify u and v. The real part u is e to the negative theta times cosine of natural log r. The imaginary part v is e to the negative theta times sine of natural log r.",
+     visual: "walkthrough", formula: "u = e^{-\\theta}\\cos(\\ln r),\\ v = e^{-\\theta}\\sin(\\ln r)",
+     mathLines: ["f = u + iv", "u(r, θ) = e^(−θ) · cos(ln r)", "v(r, θ) = e^(−θ) · sin(ln r)"]},
+    {text: "Step 2: compute partial derivatives of u. With respect to r, e to the negative theta is constant. Derivative of cosine of natural log r needs the chain rule. Derivative of cosine is negative sine, times derivative of natural log r which is one over r.",
+     visual: "walkthrough", formula: "u_r = -\\frac{e^{-\\theta}\\sin(\\ln r)}{r}",
+     mathLines: ["u(r, θ) = e^(−θ) · cos(ln r)", "u_r = e^(−θ) · (−sin(ln r)) · (1/r)", "u_r = −e^(−θ) sin(ln r) / r"]},
+    {text: "With respect to theta: cosine of natural log r is constant. Derivative of e to the negative theta is negative e to the negative theta. So u sub theta equals negative e to the negative theta cosine of natural log r.",
+     visual: "walkthrough", formula: "u_\\theta = -e^{-\\theta}\\cos(\\ln r)",
+     mathLines: ["u(r, θ) = e^(−θ) · cos(ln r)", "u_θ = (−e^(−θ)) · cos(ln r)", "u_θ = −e^(−θ) cos(ln r)"]},
+    {text: "Now partials of v. With respect to r: e to the negative theta is constant. Derivative of sine of natural log r is cosine of natural log r over r. So v sub r equals e to the negative theta cosine natural log r over r.",
+     visual: "walkthrough", formula: "v_r = \\frac{e^{-\\theta}\\cos(\\ln r)}{r}",
+     mathLines: ["v(r, θ) = e^(−θ) · sin(ln r)", "v_r = e^(−θ) · cos(ln r) · (1/r)", "v_r = e^(−θ) cos(ln r) / r"]},
+    {text: "With respect to theta: derivative of e to the negative theta is negative e to the negative theta, sine natural log r is constant. So v sub theta equals negative e to the negative theta sine natural log r.",
+     visual: "walkthrough", formula: "v_\\theta = -e^{-\\theta}\\sin(\\ln r)",
+     mathLines: ["v(r, θ) = e^(−θ) · sin(ln r)", "v_θ = (−e^(−θ)) · sin(ln r)", "v_θ = −e^(−θ) sin(ln r)"]},
+    {text: "Step 3: verify the polar Cauchy-Riemann equations. The first says r times u sub r equals v sub theta. r times u sub r is r times negative e to the negative theta sine natural log r over r. The r's cancel, giving negative e to the negative theta sine natural log r. That equals v sub theta. Check.",
+     visual: "walkthrough", formula: "r u_r = v_\\theta\\ \\checkmark",
+     mathLines: ["polar CR (1):  r · u_r = v_θ", "r · u_r = r · (−e^(−θ) sin(ln r) / r)", "         = −e^(−θ) sin(ln r)", "         = v_θ  ✓"]},
+    {text: "The second equation says u sub theta equals negative r times v sub r. Negative r times v sub r is negative r times e to the negative theta cosine natural log r over r. The r's cancel, giving negative e to the negative theta cosine natural log r. That equals u sub theta. Check.",
+     visual: "walkthrough", formula: "u_\\theta = -r v_r\\ \\checkmark",
+     mathLines: ["polar CR (2):  u_θ = −r · v_r", "−r · v_r = −r · (e^(−θ) cos(ln r) / r)", "         = −e^(−θ) cos(ln r)", "         = u_θ  ✓"]},
+    {text: "All four partials are continuous functions of r and theta on the domain. So u and v are real-differentiable. Both polar Cauchy-Riemann equations hold. Therefore f is complex differentiable on its entire domain.",
+     visual: "walkthrough", formula: "f \\text{ is differentiable}",
+     mathLines: ["partials all continuous", "u, v real-differentiable", "polar CR holds", "∴ f is complex-differentiable on its domain  ✓"]},
+    {text: "Now find f prime. The polar derivative formula is f prime z equals e to the negative i theta times open paren u sub r plus i v sub r close paren. Plug in our partials. Both partials share the factor e to the negative theta over r.",
+     visual: "walkthrough", formula: "f'(z) = e^{-i\\theta}(u_r + iv_r)",
+     mathLines: ["f′(z) = e^(−iθ) · (u_r + i v_r)", "u_r + i v_r = (e^(−θ)/r) · [−sin(ln r) + i cos(ln r)]"]},
+    {text: "Now a key trick. Negative sine alpha plus i cosine alpha equals i times open paren cosine alpha plus i sine alpha close paren. Apply that here. We get i times e to the negative theta over r times open paren cosine natural log r plus i sine natural log r close paren. But that bracket is exactly f over e to the negative theta over... wait, the bracket times e to the negative theta is f. So u sub r plus i v sub r equals i over r times f of z.",
+     visual: "walkthrough", formula: "u_r + iv_r = \\frac{i\\, f(z)}{r}",
+     mathLines: ["−sin α + i cos α = i (cos α + i sin α)", "u_r + i v_r = (i/r) · e^(−θ) [cos(ln r) + i sin(ln r)]", "         = (i/r) · f(z)"]},
+    {text: "Plug back into the formula. f prime equals e to the negative i theta times i over r times f. Combine: r times e to the i theta is just z. So f prime z equals i times f of z over z.",
+     visual: "walkthrough", formula: "f'(z) = \\frac{i\\,f(z)}{z}",
+     mathLines: ["f′(z) = e^(−iθ) · (i/r) · f(z)", "       = i · f(z) / (r · e^(iθ))", "       = i · f(z) / z", "f′(z) = i f(z) / z  ✓"]},
+    {text: "A satisfying check. Notice f of z equals e to the negative theta times e to the i natural log r, which is e to the i natural log r minus theta. That's e to the i times open paren natural log r plus i theta close paren. And natural log r plus i theta is exactly the principal log of z. So f of z equals e to the i log z. By chain rule, derivative is i over z times the same thing — i times f over z. Same answer.",
+     visual: "walkthrough", formula: "f(z) = e^{i\\,\\text{Log}\\,z}",
+     mathLines: ["bonus check: simplify f", "f(z) = e^(−θ) · e^(i ln r) = e^(i ln r − θ)", "     = e^(i(ln r + iθ)) = e^(i Log z)", "f′(z) = i · (1/z) · e^(i Log z) = i f(z)/z ✓"]},
+  ], example: null, quiz: {
+    question: "We showed f(z) = e^(iLog z). What is f'(z)?",
+    options: ["f(z)/z", "i f(z) / z", "i z · f(z)", "e^z"],
+    correct: 1,
+    explain: "By the chain rule, d/dz [e^(iLog z)] = i · (1/z) · e^(iLog z) = i f(z)/z. Polar CR gave the same answer."
+  }},
+
+  // ============== HW3 Problem 2 ==============
+  {section: 'hw3', title: "HW3 #2: 2xy + i(x²−y²) nowhere analytic", scenes: [
+    {text: "Problem 2. Verify that f of z equals 2 x y plus i times open paren x squared minus y squared close paren is nowhere analytic. We'll apply the Cauchy-Riemann equations.",
+     visual: "walkthrough", formula: "f(z) = 2xy + i(x^2 - y^2)",
+     mathLines: ["f(z) = 2xy + i(x² − y²)", "show: f is nowhere analytic"]},
+    {text: "Step 1: read off u and v. The real part u equals 2 x y. The imaginary part v equals x squared minus y squared.",
+     visual: "walkthrough", formula: "u = 2xy,\\ v = x^2 - y^2",
+     mathLines: ["f = u + iv", "u(x, y) = 2xy", "v(x, y) = x² − y²"]},
+    {text: "Step 2: compute the partials of u. u sub x is 2 y. u sub y is 2 x.",
+     visual: "walkthrough", formula: "u_x = 2y,\\ u_y = 2x",
+     mathLines: ["u = 2xy", "u_x = 2y", "u_y = 2x"]},
+    {text: "Now partials of v. v sub x is 2 x. v sub y is negative 2 y.",
+     visual: "walkthrough", formula: "v_x = 2x,\\ v_y = -2y",
+     mathLines: ["v = x² − y²", "v_x = 2x", "v_y = −2y"]},
+    {text: "Apply the first Cauchy-Riemann equation: u sub x equals v sub y. We need 2 y equals negative 2 y. Move everything to one side: 4 y equals zero. So y must be zero. Cauchy-Riemann (1) holds only on the real axis.",
+     visual: "walkthrough", formula: "u_x = v_y \\iff y = 0",
+     mathLines: ["CR (1):  u_x = v_y", "2y = −2y", "4y = 0", "y = 0  (real axis only)"]},
+    {text: "Second equation: u sub y equals negative v sub x. We need 2 x equals negative 2 x. So 4 x equals zero, giving x equals zero. Cauchy-Riemann (2) holds only on the imaginary axis.",
+     visual: "walkthrough", formula: "u_y = -v_x \\iff x = 0",
+     mathLines: ["CR (2):  u_y = −v_x", "2x = −2x", "4x = 0", "x = 0  (imaginary axis only)"]},
+    {text: "For f to be differentiable at a point, BOTH equations must hold there simultaneously. CR1 demands y equals zero. CR2 demands x equals zero. Both at once means z equals zero. So f is differentiable only at the single point z equals zero.",
+     visual: "walkthrough", formula: "\\text{both hold} \\iff z = 0",
+     mathLines: ["both CR equations must hold", "y = 0  AND  x = 0", "⟺  z = 0", "f differentiable only at z = 0"]},
+    {text: "But analytic at a point requires differentiability in an open neighborhood, not just at one point. There's no open disk around zero where f is differentiable, because every neighborhood of zero contains points where x is non-zero or y is non-zero. Therefore f is nowhere analytic.",
+     visual: "walkthrough", formula: "\\text{f is nowhere analytic}",
+     mathLines: ["analytic = differentiable in OPEN neighborhood", "every nbhd of 0 contains points where x ≠ 0 or y ≠ 0", "no such nbhd exists", "∴ f is nowhere analytic  ✓"]},
+  ], example: null, quiz: {
+    question: "f is differentiable at z = 0 but nowhere analytic. Why?",
+    options: ["differentiable means analytic", "analytic requires differentiability in an open neighborhood", "0 is a special point", "CR fails at 0"],
+    correct: 1,
+    explain: "Differentiable at one isolated point ≠ analytic. Analytic requires an open neighborhood where the function is differentiable."
+  }},
+
+  // ============== HW3 Problem 3 ==============
+  {section: 'hw3', title: "HW3 #3: ln√(x²+y²) is harmonic", scenes: [
+    {text: "Problem 3. Show that u of x y equals natural log of square root of open paren x squared plus y squared close paren is harmonic on the punctured plane. We need to verify Laplace's equation: u sub xx plus u sub yy equals zero.",
+     visual: "walkthrough", formula: "u(x,y) = \\ln\\sqrt{x^2+y^2}",
+     mathLines: ["u(x, y) = ln √(x² + y²)", "(x, y) ≠ (0, 0)", "show:  u_xx + u_yy = 0"]},
+    {text: "First simplify. Natural log of square root is one half natural log. So u equals one half natural log of x squared plus y squared.",
+     visual: "walkthrough", formula: "u = \\tfrac{1}{2}\\ln(x^2+y^2)",
+     mathLines: ["u = ln √(x² + y²)", "= ln (x² + y²)^(1/2)", "= ½ · ln(x² + y²)"]},
+    {text: "Compute u sub x with the chain rule. Derivative of one half natural log of expression is one half over the expression, times the derivative of the expression. The expression is x squared plus y squared, derivative with respect to x is 2 x. Combine: u sub x equals x over open paren x squared plus y squared close paren.",
+     visual: "walkthrough", formula: "u_x = \\frac{x}{x^2+y^2}",
+     mathLines: ["u = ½ ln(x² + y²)", "u_x = ½ · (1/(x² + y²)) · 2x", "u_x = x / (x² + y²)"]},
+    {text: "Now u sub xx via the quotient rule. Derivative of x over x squared plus y squared. Numerator times derivative of denominator subtracted from derivative of numerator times denominator, all over denominator squared. Numerator is x, derivative 1. Denominator is x squared plus y squared, derivative with respect to x is 2 x.",
+     visual: "walkthrough", formula: "u_{xx} = \\frac{y^2 - x^2}{(x^2+y^2)^2}",
+     mathLines: ["u_x = x / (x² + y²)", "u_xx = [(x² + y²) · 1 − x · 2x] / (x² + y²)²", "      = (x² + y² − 2x²) / (x² + y²)²", "u_xx = (y² − x²) / (x² + y²)²"]},
+    {text: "By symmetry, u sub y equals y over x squared plus y squared. Same form with x and y swapped.",
+     visual: "walkthrough", formula: "u_y = \\frac{y}{x^2+y^2}",
+     mathLines: ["by symmetry of u in x and y:", "u_y = y / (x² + y²)"]},
+    {text: "And u sub yy by the same quotient rule. We get x squared minus y squared all over x squared plus y squared squared. Note the swap of signs in the numerator compared to u sub xx.",
+     visual: "walkthrough", formula: "u_{yy} = \\frac{x^2 - y^2}{(x^2+y^2)^2}",
+     mathLines: ["u_y = y / (x² + y²)", "u_yy = [(x² + y²) · 1 − y · 2y] / (x² + y²)²", "       = (x² + y² − 2y²) / (x² + y²)²", "u_yy = (x² − y²) / (x² + y²)²"]},
+    {text: "Now sum them. u sub xx is y squared minus x squared over the denominator. u sub yy is x squared minus y squared over the same denominator. The numerators are negatives of each other. They cancel exactly.",
+     visual: "walkthrough", formula: "u_{xx} + u_{yy} = 0",
+     mathLines: ["u_xx + u_yy = ?", "= [(y² − x²) + (x² − y²)] / (x² + y²)²", "= 0 / (x² + y²)²", "= 0  ✓"]},
+    {text: "Laplace's equation holds at every point where x and y are not both zero. The second partial derivatives are continuous on the punctured plane. So u is harmonic on the punctured plane. Done.",
+     visual: "walkthrough", formula: "u \\text{ is harmonic on } \\mathbb{R}^2 \\setminus \\{0\\}",
+     mathLines: ["u_xx + u_yy = 0  on  ℝ² \\ {(0, 0)}", "second partials continuous there", "∴ u is harmonic  ✓", "(remark: u = ln|z| is the real part of Log z)"]},
+  ], example: null, quiz: {
+    question: "Why must we exclude (0, 0) from the domain?",
+    options: ["The function is undefined there (ln 0)", "Laplace fails there", "(x²+y²) = 0 there", "All of the above"],
+    correct: 3,
+    explain: "At (0,0), x²+y² = 0, so √(x²+y²) = 0, and ln 0 is undefined. The partial derivatives also blow up. So we exclude this point."
+  }},
+
+  // ============== HW3 Problem 4 ==============
+  {section: 'hw3', title: "HW3 #4: image of y=c under 1/z", scenes: [
+    {text: "Problem 4. Find the image of the horizontal line y equals c under the inversion map f of z equals one over z. We need both cases: c equals zero and c not equal to zero.",
+     visual: "walkthrough", formula: "f(z) = 1/z,\\ \\text{image of } y = c",
+     mathLines: ["map: f(z) = 1/z", "find image of horizontal line y = c", "two cases: c = 0 and c ≠ 0"]},
+    {text: "Case one: c equals zero. The line y equals zero is the real axis. We must remove the origin since 1 over zero is undefined. For real x not zero, 1 over x is also real. So the image is the real axis minus the origin, mapped to itself.",
+     visual: "inversionLine", formula: "y = 0 \\to \\text{real axis} \\setminus \\{0\\}",
+     mathLines: ["case c = 0: line is real axis", "z = x + 0i,  x ≠ 0", "1/z = 1/x = real number", "image = real axis (minus origin)"], lineC: 0},
+    {text: "Case two: c not equal to zero. Parametrize z equals x plus i times c, where x ranges over all reals. Compute 1 over z by multiplying top and bottom by the conjugate, x minus i c.",
+     visual: "inversionLine", formula: "z = x + ic,\\ \\frac{1}{z} = \\frac{x - ic}{x^2 + c^2}",
+     mathLines: ["case c ≠ 0: z = x + ic", "1/z = 1/(x + ic) · (x − ic)/(x − ic)", "      = (x − ic) / (x² + c²)"], lineC: 1},
+    {text: "Read off the real and imaginary parts. u equals x over open paren x squared plus c squared close paren. v equals negative c over the same denominator.",
+     visual: "inversionLine", formula: "u = \\tfrac{x}{x^2+c^2},\\ v = \\tfrac{-c}{x^2+c^2}",
+     mathLines: ["1/z = (x − ic) / (x² + c²)", "u = x / (x² + c²)", "v = −c / (x² + c²)"], lineC: 1},
+    {text: "Compute u squared plus v squared. The numerator becomes x squared plus c squared, and the denominator is open paren x squared plus c squared close paren squared. So u squared plus v squared simplifies to one over open paren x squared plus c squared close paren.",
+     visual: "inversionLine", formula: "u^2 + v^2 = \\tfrac{1}{x^2+c^2}",
+     mathLines: ["u² + v² = (x² + c²) / (x² + c²)²", "         = 1 / (x² + c²)"], lineC: 1},
+    {text: "Now relate this to v. We have v equals negative c over open paren x squared plus c squared close paren. So v over negative c equals one over open paren x squared plus c squared close paren. Set them equal: u squared plus v squared equals negative v over c.",
+     visual: "inversionLine", formula: "u^2 + v^2 = -\\tfrac{v}{c}",
+     mathLines: ["v = −c / (x² + c²)", "v / (−c) = 1 / (x² + c²)", "but RHS = u² + v²", "u² + v² = −v / c"], lineC: 1},
+    {text: "Move the v over c term to the left. u squared plus v squared plus v over c equals zero. Now complete the square in v. Add one over four c squared to both sides.",
+     visual: "inversionLine", formula: "u^2 + (v + \\tfrac{1}{2c})^2 = \\tfrac{1}{4c^2}",
+     mathLines: ["u² + v² + v/c = 0", "complete the square in v:", "u² + (v + 1/(2c))² = 1/(4c²)"], lineC: 1},
+    {text: "That's the equation of a circle. Center at u equals zero, v equals negative one over two c. Radius is one over two times absolute value of c. The circle passes through the origin: at u equals v equals zero, both sides equal one over four c squared. But the origin corresponds to z equals infinity, which isn't on our line. So the image is the circle minus the origin.",
+     visual: "inversionLine", formula: "\\text{circle, center } (0, -\\tfrac{1}{2c}),\\ r = \\tfrac{1}{2|c|}",
+     mathLines: ["circle of radius 1/(2|c|)", "centered at (0, −1/(2c))", "passes through origin (which corresponds to z = ∞)", "image = circle MINUS origin"], lineC: 1},
+    {text: "Summary. Case c equals zero: the real axis maps to the real axis, minus the origin. Case c not equal to zero: the line y equals c maps to a circle of radius one over two absolute value of c, centered at zero comma negative one over two c. The image is the circle minus the origin.",
+     visual: "walkthrough", formula: "\\text{summary}",
+     mathLines: ["c = 0:  real axis  →  real axis (minus 0)", "c ≠ 0:  y = c  →  circle radius 1/(2|c|)", "                      centered at (0, −1/(2c))", "                      minus origin"]},
+  ], example: null, quiz: {
+    question: "For c ≠ 0, the image circle's center is at...",
+    options: ["(1/(2c), 0)", "(0, 1/(2c))", "(0, -1/(2c))", "(c, 0)"],
+    correct: 2,
+    explain: "Completing the square gave u² + (v + 1/(2c))² = 1/(4c²), so the center is at (u, v) = (0, −1/(2c))."
+  }},
+
+  // ============== HW3 Problem 5 ==============
+  {section: 'hw3', title: "HW3 #5: real-valued analytic ⟹ constant", scenes: [
+    {text: "Problem 5. Let f be analytic everywhere in a domain D. Prove: if f of z is real-valued for all z in D, then f must be constant throughout D.",
+     visual: "walkthrough", formula: "f \\text{ analytic on } D,\\ f(z) \\in \\mathbb{R}",
+     mathLines: ["f analytic on domain D", "f(z) ∈ ℝ  for all z ∈ D", "show:  f ≡ constant"]},
+    {text: "Step 1: extract what real-valued means. If f equals u plus i v, then f real-valued means the imaginary part v is identically zero throughout D.",
+     visual: "walkthrough", formula: "v(x,y) \\equiv 0",
+     mathLines: ["f = u + iv", "f real-valued  ⟺  Im(f) = 0", "v(x, y) = 0  for all (x, y) ∈ D"]},
+    {text: "Step 2: apply the Cauchy-Riemann equations. f is analytic, so CR holds throughout D. The first equation says u sub x equals v sub y. But v is identically zero, so v sub y is zero. Therefore u sub x is zero on D.",
+     visual: "walkthrough", formula: "u_x = v_y = 0",
+     mathLines: ["CR (1):  u_x = v_y", "v ≡ 0  ⟹  v_y ≡ 0", "∴ u_x ≡ 0 on D"]},
+    {text: "Second equation: u sub y equals negative v sub x. Again v is zero, so v sub x is zero. Therefore u sub y is also zero on D.",
+     visual: "walkthrough", formula: "u_y = -v_x = 0",
+     mathLines: ["CR (2):  u_y = −v_x", "v ≡ 0  ⟹  v_x ≡ 0", "∴ u_y ≡ 0 on D"]},
+    {text: "Both partial derivatives of u are zero on D. The gradient of u is the zero vector everywhere. Since D is a connected domain, this forces u to be constant on D. A function with zero gradient on a connected set is constant.",
+     visual: "walkthrough", formula: "\\nabla u = 0,\\ D \\text{ connected} \\Rightarrow u \\equiv \\text{const}",
+     mathLines: ["u_x = 0  AND  u_y = 0 on D", "∇u ≡ 0", "D is a connected domain (open + path-connected)", "u must be constant on D"]},
+    {text: "Putting it all together. u is constant on D. v is identically zero on D. So f equals u plus i v equals that constant plus zero, which is constant. f is constant throughout D.",
+     visual: "walkthrough", formula: "f \\equiv \\text{constant}",
+     mathLines: ["u ≡ constant,   v ≡ 0", "f = u + iv = constant + 0i", "f ≡ constant on D  ✓"]},
+    {text: "Quick remark: this is one of those striking facts that's specific to complex analysis. In real analysis, real-valued analytic functions of two variables are not forced to be constant. The Cauchy-Riemann conditions are doing all the work.",
+     visual: "compare", formula: "",
+     mathLines: ["real analysis: u(x,y) real and smooth ⇏ constant", "complex analysis: f analytic AND real-valued ⟹ constant", "CR equations are the difference"]},
+  ], example: null, quiz: {
+    question: "Which step in the proof requires D to be CONNECTED?",
+    options: ["Reading off v = 0", "Applying CR equations", "Concluding u is constant from ∇u = 0", "All of them"],
+    correct: 2,
+    explain: "Zero gradient implies constant only on a connected set. On a disconnected set, u could be different constants on different components."
+  }},
 ];
 
 // ============================================================
@@ -2106,6 +2290,115 @@ const visuals = {
     });
   },
 
+  // ===== inversionLine: shows horizontal line y=c → circle under 1/z =====
+  inversionLine: (ctx, t) => {
+    fillBg(ctx);
+    // two side-by-side panels: z-plane and w-plane
+    const sq = 220;
+    const lx = 30, ly = (H - sq) / 2;
+    const rx = W - sq - 30, ry = (H - sq) / 2;
+    // Frames
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
+    ctx.strokeRect(lx, ly, sq, sq);
+    ctx.strokeStyle = '#10b981';
+    ctx.strokeRect(rx, ry, sq, sq);
+    // Labels
+    ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 16px serif'; ctx.textAlign = 'center';
+    ctx.fillText('z plane', lx + sq/2, ly - 10);
+    ctx.fillStyle = '#10b981';
+    ctx.fillText('w = 1/z plane', rx + sq/2, ry - 10);
+    // helpers for each panel
+    const drawAxesPanel = (ox, oy) => {
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(ox, oy + sq/2); ctx.lineTo(ox + sq, oy + sq/2);
+      ctx.moveTo(ox + sq/2, oy); ctx.lineTo(ox + sq/2, oy + sq);
+      ctx.stroke();
+    };
+    drawAxesPanel(lx, ly);
+    drawAxesPanel(rx, ry);
+    // Get c value from scene
+    const sc = window.currentScene;
+    const c = (sc && sc.lineC !== undefined) ? sc.lineC : 1;
+    const sc_l = sq / 4;  // unit scale per panel
+    // Left: horizontal line y = c
+    ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    const lineY = ly + sq/2 - c * sc_l;
+    ctx.moveTo(lx, lineY); ctx.lineTo(lx + sq, lineY);
+    ctx.stroke();
+    // Label the line
+    ctx.fillStyle = '#dc2626'; ctx.font = 'bold 14px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('y = ' + (c === 0 ? '0' : c), lx + sq - 50, lineY - 6);
+    // Moving point on line
+    const phase = (t * 0.3) % 1;
+    const xVal = -2 + 4 * phase;
+    const ptL_x = lx + sq/2 + xVal * sc_l;
+    const ptL_y = lineY;
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath(); ctx.arc(ptL_x, ptL_y, 7, 0, 2*Math.PI); ctx.fill();
+    // Right: image
+    if (c === 0) {
+      // image is real axis (excluding 0)
+      ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(rx, ry + sq/2); ctx.lineTo(rx + sq, ry + sq/2);
+      ctx.stroke();
+      // hole at origin
+      ctx.fillStyle = 'white';
+      ctx.beginPath(); ctx.arc(rx + sq/2, ry + sq/2, 6, 0, 2*Math.PI); ctx.fill();
+      ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(rx + sq/2, ry + sq/2, 6, 0, 2*Math.PI); ctx.stroke();
+      // moving image point
+      const u = xVal !== 0 ? 1 / xVal : 0;
+      const ptR_x = rx + sq/2 + Math.max(-2, Math.min(2, u)) * sc_l;
+      const ptR_y = ry + sq/2;
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath(); ctx.arc(ptR_x, ptR_y, 7, 0, 2*Math.PI); ctx.fill();
+    } else {
+      // image is circle: center (0, -1/(2c)), radius 1/(2|c|)
+      const center_v = -1 / (2 * c);
+      const radius = 1 / (2 * Math.abs(c));
+      const cx_w = rx + sq/2;
+      const cy_w = ry + sq/2 - center_v * sc_l;
+      const r_w = radius * sc_l;
+      ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(cx_w, cy_w, r_w, 0, 2*Math.PI);
+      ctx.stroke();
+      // hole at origin
+      ctx.fillStyle = 'white';
+      ctx.beginPath(); ctx.arc(rx + sq/2, ry + sq/2, 6, 0, 2*Math.PI); ctx.fill();
+      ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(rx + sq/2, ry + sq/2, 6, 0, 2*Math.PI); ctx.stroke();
+      // center point
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath(); ctx.arc(cx_w, cy_w, 4, 0, 2*Math.PI); ctx.fill();
+      // moving image point: w = 1/(x + ic)
+      const denom = xVal*xVal + c*c;
+      const u_im = xVal / denom;
+      const v_im = -c / denom;
+      const ptR_x = rx + sq/2 + u_im * sc_l;
+      const ptR_y = ry + sq/2 - v_im * sc_l;
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath(); ctx.arc(ptR_x, ptR_y, 7, 0, 2*Math.PI); ctx.fill();
+      // center label
+      ctx.fillStyle = '#1e293b'; ctx.font = 'italic 12px serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('center: (0, −1/(2c))', cx_w + 8, cy_w + 4);
+    }
+    // arrow between
+    drawArrow(ctx, lx + sq + 5, ly + sq/2, rx - 5, ry + sq/2, '#475569', 3);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 16px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('1/z', (lx + sq + rx) / 2, ly + sq/2 - 12);
+    // Caption
+    ctx.fillStyle = '#1e293b'; ctx.font = 'italic 14px serif';
+    if (c === 0) ctx.fillText('horizontal line  y = 0  →  real axis (minus origin)', W/2, H - 26);
+    else ctx.fillText('horizontal line  y = c ≠ 0  →  circle through origin (minus origin)', W/2, H - 26);
+  },
+
   // ===== rootsCircle: alias for roots that takes labels =====
   rootsLabeled: (ctx, t) => {
     fillBg(ctx); drawAxes(ctx, false);
@@ -2208,7 +2501,15 @@ if (typeof speechSynthesis !== 'undefined') {
 function buildLessonList() {
   const ul = document.getElementById('lesson-list');
   ul.innerHTML = '';
+  let hw3HeaderInserted = false;
   LESSONS.forEach((l, i) => {
+    if (l.section === 'hw3' && !hw3HeaderInserted) {
+      const header = document.createElement('div');
+      header.style.cssText = 'color:#fbbf24; font-weight:700; font-size:11px; margin:18px 0 6px; padding:8px 10px; background:#0f172a; border-radius:6px; text-transform:uppercase; letter-spacing:1.5px; border-left:3px solid #fbbf24;';
+      header.textContent = '📝 Homework 3';
+      ul.appendChild(header);
+      hw3HeaderInserted = true;
+    }
     const li = document.createElement('li');
     li.textContent = l.title;
     li.dataset.idx = i;
